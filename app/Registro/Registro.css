@@ -1,0 +1,267 @@
+body{
+    background: linear-gradient(to bottom, #ffffff 50%, #734a91 50%);
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 130vh;
+  }
+  
+  .left-panel {
+    background-color: white; /* Color para el panel izquierdo */
+    padding: 20px;
+    border: 1px solid black;
+    width: 70%;
+    margin-left: 20%;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    height: 75%;
+    border-top-left-radius: 3%;
+    border-bottom-left-radius: 3%;
+  }
+  
+  .right-panel {
+    padding: 20px;
+    background: linear-gradient(203.91deg, #e0b8ff, #734a91 83.33%);
+    width: 70%;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    height: 75%;
+    border-top-right-radius: 3%;
+    border-bottom-right-radius: 3%;
+    display: flex; /* Utilizar flexbox para controlar el diseño */
+    flex-direction: column; /* Alinear los elementos en una columna */
+    justify-content: space-between; /* Distribuir el espacio verticalmente */
+  }
+  
+  .title {
+    margin-bottom: 20px;
+    text-align: center;
+    color: gray;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    font-size: 200%;
+    font-weight: bold;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .login-btn {
+    background-color: #734a91; /* Color para el botón de Acceder */
+    border-radius: 7%;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    align-items: center;
+    display: block;
+  margin: 0 auto;
+  margin-top: 10%;
+  }
+  
+
+
+  #email {
+    border-radius: 5px; /* Redondea las esquinas */
+    padding: 5px; /* Agrega espacio interno */
+    width: 200px; /* Ajusta el ancho según sea necesario */
+    background-color: whitesmoke;
+    color: gray;
+    width: 80%;
+    height: 45px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 0.5%;
+}
+
+  #password {
+    border-radius: 5px; /* Redondea las esquinas */
+    padding: 5px; /* Agrega espacio interno */
+    width: 200px; /* Ajusta el ancho según sea necesario */
+    background-color: whitesmoke;
+    color: gray;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 0.5%;
+    height: 45px;
+
+  }
+
+  #studentCode{
+    border-radius: 5px; /* Redondea las esquinas */
+    padding: 5px; /* Agrega espacio interno */
+    width: 200px; /* Ajusta el ancho según sea necesario */
+    background-color: whitesmoke;
+    color: gray;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 0.5%;
+    height: 45px;
+  }
+
+  #career{
+    border-radius: 5px; /* Redondea las esquinas */
+    padding: 5px; /* Agrega espacio interno */
+    width: 200px; /* Ajusta el ancho según sea necesario */
+    background-color: whitesmoke;
+    color: gray;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 0.5%;
+    height: 45px;
+  }
+  
+  #username{
+    border-radius: 5px; /* Redondea las esquinas */
+    padding: 5px; /* Agrega espacio interno */
+    width: 200px; /* Ajusta el ancho según sea necesario */
+    background-color: whitesmoke;
+    color: gray;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 0.5%;
+    height: 45px;
+  }
+
+
+  .input-file-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .input-file-container input[type="file"] {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .input-file-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* La imagen no debe interferir con la interacción del usuario con el input */
+    object-fit: cover; /* La imagen se ajustará al tamaño del input */
+  }
+  
+
+  #credentialImage{
+    border-radius: 5px; /* Redondea las esquinas */
+    padding: 5px; /* Agrega espacio interno */
+    background-color: whitesmoke;
+    color: transparent;
+    width: 33%;
+    margin-left: 10%;
+    margin-right: 4%;
+    margin-bottom: 0.5%;
+    height: 45px;
+    cursor: pointer;
+  }
+  #credentialImage::-webkit-file-upload-button {
+    display: none; /* Oculta el botón de selección de archivo */
+  }
+  
+  #credentialImage::before {
+    content: 'IMG Credencial'; /* Texto que quieres mostrar */
+    display: inline-block;
+    background-color: whitesmoke;
+    color: gray;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+
+  #faceImage{
+    border-radius: 5px; /* Redondea las esquinas */
+    padding: 5px; /* Agrega espacio interno */
+    background-color: whitesmoke;
+    color: gray;
+    width: 33%;
+    margin-left: 10%;
+    margin-right: 4%;
+    margin-bottom: 0.5%;
+    height: 45px;
+    cursor: pointer;
+  }
+  #faceImage::-webkit-file-upload-button {
+    display: none; /* Oculta el botón de selección de archivo */
+  }
+
+  #faceImage{
+    color: transparent;
+  }
+  
+  #faceImage::before {
+    content: 'Imagen Cara'; /* Texto que quieres mostrar */
+    display: inline-block;
+    background-color: whitesmoke;
+    color: gray;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #textobienvenido {
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 300%;
+    margin-top: 20%;
+  }
+  
+  #Imagen {
+    margin-left: auto; /* Alinear la imagen al centro */
+    margin-right: auto;
+    display: block; /* Hacer que la imagen sea un bloque para ajustar el margen automáticamente */
+  }
+
+  @media (min-width: 768px) {
+    .mi-input {
+      width: 50%; /* Ancho del input como el 50% del contenedor padre para pantallas más grandes */
+    }
+  }
+
+  .register-text {
+    margin-top: 10%;
+    font-size: 80%;
+
+  }
+
+  .register-text a {
+    color: #734a91; /* Cambia el color a tu preferencia */
+    text-decoration: underline; /* Agrega subrayado para indicar que es un enlace */
+    font-weight: bold;
+    font-size: 85%;
+    margin-left: 50%;
+  }
+  
+  
+
+  @media screen and (max-width: 800px) {
+    .iniciar-sesion {
+      font-size: var(--font-size-9xl);
+    }
+    .email-field {
+      flex: 1;
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .iniciar-sesion {
+      font-size: var(--font-size-2xl);
+    }
+}
+
+.link-text{
+  text-decoration: underline;
+  color: #734a91;
+  cursor: pointer;
+}
