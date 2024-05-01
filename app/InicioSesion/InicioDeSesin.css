@@ -1,0 +1,138 @@
+body{
+    background: linear-gradient(to bottom, #ffffff 50%, #734a91 50%);
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .left-panel {
+    background-color: white; /* Color para el panel izquierdo */
+    padding: 20px;
+    border: 1px solid black;
+    width: 70%;
+    margin-left: 20%;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    height: 75%;
+    border-top-left-radius: 3%;
+    border-bottom-left-radius: 3%;
+  }
+  
+  .right-panel {
+    padding: 20px;
+    background: linear-gradient(203.91deg, #e0b8ff, #734a91 83.33%);
+    width: 70%;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    height: 75%;
+    border-top-right-radius: 3%;
+    border-bottom-right-radius: 3%;
+    display: flex; /* Utilizar flexbox para controlar el diseño */
+    flex-direction: column; /* Alinear los elementos en una columna */
+    justify-content: space-between; /* Distribuir el espacio verticalmente */
+  }
+  
+  .title {
+    margin-bottom: 20px;
+    text-align: center;
+    color: gray;
+    margin-top: 20%;
+    margin-bottom: 15%;
+    font-size: 200%;
+    font-weight: bold;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .login-btn {
+    background-color: #734a91; /* Color para el botón de Acceder */
+    border-radius: 7%;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    align-items: center;
+    display: block;
+  margin: 0 auto;
+  }
+  
+
+
+  #email {
+    border-radius: 5px; /* Redondea las esquinas */
+    padding: 5px; /* Agrega espacio interno */
+    width: 200px; /* Ajusta el ancho según sea necesario */
+    background-color: whitesmoke;
+    color: gray;
+    width: 80%;
+    height: 45px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 2%;
+}
+
+  #password {
+    border-radius: 5px; /* Redondea las esquinas */
+    padding: 5px; /* Agrega espacio interno */
+    width: 200px; /* Ajusta el ancho según sea necesario */
+    background-color: whitesmoke;
+    color: gray;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 10%;
+    height: 45px;
+
+  }
+  
+  #textobienvenido {
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 300%;
+    margin-top: 20%;
+  }
+  
+  #Imagen {
+    margin-left: auto; /* Alinear la imagen al centro */
+    margin-right: auto;
+    display: block; /* Hacer que la imagen sea un bloque para ajustar el margen automáticamente */
+  }
+  
+  @media (min-width: 768px) {
+    .mi-input {
+      width: 50%; /* Ancho del input como el 50% del contenedor padre para pantallas más grandes */
+    }
+  }
+
+  .register-text {
+    margin-top: 20px;
+    font-size: 80%;
+
+  }
+
+  .register-text a {
+    color: #734a91; /* Cambia el color a tu preferencia */
+    text-decoration: underline; /* Agrega subrayado para indicar que es un enlace */
+    font-weight: bold;
+    font-size: 85%;
+    margin-left: 50%;
+  }
+  
+  
+
+  @media screen and (max-width: 800px) {
+    .iniciar-sesion {
+      font-size: var(--font-size-9xl);
+    }
+    .email-field {
+      flex: 1;
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .iniciar-sesion {
+      font-size: var(--font-size-2xl);
+    }
+}
