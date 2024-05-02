@@ -1,21 +1,18 @@
-"use client";
+"use client"
 import Image from "@/node_modules/next/image";
 import Link from "@/node_modules/next/link";
 import { useState } from "react";
 import React, { FunctionComponent } from "react";
 import "./Registro.css";
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
 const Registro: FunctionComponent = () => {
-  const handleOpenTerms = () => {
-    window.open("../TerminosCondiciones", "_blank", "width=600,height=400");
-  };
-
   const [username, setUsername] = useState("");
   const [studentCode, setStudentCode] = useState("");
-  const [career, setCareer] = useState("");
-  const [credentialImage, setCredentialImage] = useState("");
-  const [faceImage, setFaceImage] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [termsChecked, setTermsChecked] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Nuevo estado para mostrar la contraseña
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -27,24 +24,16 @@ const Registro: FunctionComponent = () => {
     setStudentCode(event.target.value);
   };
 
-  const handleCareerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCareer(event.target.value);
-  };
-
-  const handleCredentialImageChange = (
+  const handlePasswordChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (event.target.files && event.target.files[0]) {
-      setCredentialImage(event.target.files[0].name);
-    }
+    setPassword(event.target.value);
   };
 
-  const handleFaceImageChange = (
+  const handleEmailChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (event.target.files && event.target.files[0]) {
-      setFaceImage(event.target.files[0].name);
-    }
+    setEmail(event.target.value);
   };
 
   const handleTermsCheckboxChange = (
@@ -53,8 +42,68 @@ const Registro: FunctionComponent = () => {
     setTermsChecked(event.target.checked);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    // Validación: Verificar si todos los campos están completados
+    if (!username || !studentCode || !password || !email) {
+      alert("Completa todos los campos");
+      return;
+    }
+
+    if (!termsChecked) {
+      alert("Acepta los términos y condiciones para continuar");
+      return;
+    }
+
+    try {
+      // Si el código no está registrado, procede con la creación de la credencial y el usuario
+      const credencialResponse = await fetch(`/api/credenciales/crear`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          codigo: studentCode,
+          password: password,
+          correo: email,
+        }),
+      });
+      const credencialData = await credencialResponse.json();
+
+      if (credencialResponse.ok) {
+        // Si la creación de la credencial fue exitosa, entonces procede a crear el usuario
+        const userResponse = await fetch(`/api/user/post`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            codigo: studentCode,
+            nombre: username,
+            strikes: 0,
+            imagenPerfil: 'notyet', // Se obtiene la imagen de la credencial
+          }),
+        });
+        const userData = await userResponse.json();
+
+        if (userResponse.ok) {
+          alert("¡Registro exitoso!");
+          // Aquí redirigir al usuario a la página principal
+        } else {
+          alert("Error al crear el usuario.");
+        }
+      } else {
+        alert("Error al crear la credencial.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error al procesar la solicitud");
+    }
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -68,15 +117,23 @@ const Registro: FunctionComponent = () => {
               id="email"
               name="email"
               placeholder="Correo Institucional"
+              value={email}
+              onChange={handleEmailChange}
             />
           </div>
           <div className="form-group">
+                        <button type="button" onClick={toggleShowPassword}>
+              {showPassword ? "👁️" : "👁️"}
+            </button>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               name="password"
               placeholder="Contraseña"
+              value={password}
+              onChange={handlePasswordChange}
             />
+
           </div>
           <div className="form-group">
             <input
@@ -98,34 +155,6 @@ const Registro: FunctionComponent = () => {
               onChange={handleStudentCodeChange}
             />
           </div>
-          <div className="form-group">
-            <input
-              type="text"
-              id="career"
-              name="career"
-              placeholder="Carrera"
-              value={career}
-              onChange={handleCareerChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <input
-              type="file"
-              id="credentialImage"
-              name="credentialImage"
-              accept="image/*"
-              onChange={handleCredentialImageChange}
-            />
-
-            <input
-              type="file"
-              id="faceImage"
-              name="faceImage"
-              accept="image/*"
-              onChange={handleFaceImageChange}
-            />
-          </div>
 
           <div className="form-group">
             <input
@@ -135,14 +164,12 @@ const Registro: FunctionComponent = () => {
               checked={termsChecked}
               onChange={handleTermsCheckboxChange}
             />
-            {/* Abre la ventana emergente con los términos y condiciones */}
-            <label htmlFor="terms" onClick={handleOpenTerms}>
-              Acepto los{" "}
-              <span className="link-text">términos y condiciones</span>
+            <label htmlFor="terms">
+              Acepto los <span className="link-text">términos y condiciones</span>
             </label>
           </div>
 
-          <button type="submit" className="login-btn" disabled={!termsChecked}>
+          <button type="submit" className="login-btn">
             Registrarse
           </button>
         </form>
@@ -153,7 +180,6 @@ const Registro: FunctionComponent = () => {
 
       <div className="right-panel">
         <h2 id="textobienvenido">¡Bienvenido!</h2>
-        {/* Reemplaza la ruta con tu logo */}
         <Image
           src="/logo_completo_blanco.png"
           alt="Logo"
