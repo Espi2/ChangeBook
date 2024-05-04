@@ -5,7 +5,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 130vh;
+    height: 60vw;
   }
   
   .left-panel {
@@ -15,7 +15,7 @@ body{
     width: 70%;
     margin-left: 20%;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-    height: 75%;
+    height: 45vw;
     border-top-left-radius: 3%;
     border-bottom-left-radius: 3%;
   }
@@ -25,7 +25,7 @@ body{
     background: linear-gradient(203.91deg, #e0b8ff, #734a91 83.33%);
     width: 70%;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-    height: 75%;
+    height: 45vw;
     border-top-right-radius: 3%;
     border-bottom-right-radius: 3%;
     display: flex; /* Utilizar flexbox para controlar el diseño */
@@ -69,8 +69,8 @@ body{
     width: 200px; /* Ajusta el ancho según sea necesario */
     background-color: whitesmoke;
     color: gray;
-    width: 75%;
-    height: 45px;
+    width: 50vh;
+    height: 7vh;
     margin-left: 10%;
     margin-right: 10%;
     margin-bottom: 0.5%;
@@ -82,11 +82,11 @@ body{
     width: 200px; /* Ajusta el ancho según sea necesario */
     background-color: whitesmoke;
     color: gray;
-    width: 75%;
+    width: 50vh;
     margin-left: 10%;
     margin-right: 10%;
     margin-bottom: 0.5%;
-    height: 45px;
+    height: 7vh;
 
   }
 
@@ -96,11 +96,11 @@ body{
     width: 200px; /* Ajusta el ancho según sea necesario */
     background-color: whitesmoke;
     color: gray;
-    width: 75%;
+    width: 50vh;
     margin-left: 10%;
     margin-right: 10%;
     margin-bottom: 0.5%;
-    height: 45px;
+    height: 7vh;
   }
 
   #career{
@@ -109,11 +109,11 @@ body{
     width: 200px; /* Ajusta el ancho según sea necesario */
     background-color: whitesmoke;
     color: gray;
-    width: 75%;
+    width: 50vh;
     margin-left: 10%;
     margin-right: 10%;
     margin-bottom: 0.5%;
-    height: 45px;
+    height: 7vh;
   }
   
   #username{
@@ -122,11 +122,11 @@ body{
     width: 200px; /* Ajusta el ancho según sea necesario */
     background-color: whitesmoke;
     color: gray;
-    width: 75%;
+    width: 50vh;
     margin-left: 10%;
     margin-right: 10%;
     margin-bottom: 0.5%;
-    height: 45px;
+    height: 7vh;
   }
 
 
@@ -164,7 +164,7 @@ body{
     margin-left: 33.5%;
     margin-right: 33.5%;
     margin-bottom: 0.5%;
-    height: 45px;
+    height: 7vh;
     cursor: pointer;
   }
   #credentialImage::-webkit-file-upload-button {
