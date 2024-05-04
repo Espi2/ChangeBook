@@ -1,7 +1,18 @@
-import React from 'react'
+"use client"
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from '@/node_modules/react-router-dom/dist/index';
+import InicioDeSesion from './InicioSesion/page';
 
-export default function Home() {
+function App() {
   return (
-    <div className='flex justify-center'>Hola Mundo!</div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<InicioDeSesion />} />
+        <Route path="/InicioSesion" element={<InicioDeSesion />} />
+      </Routes>
+    </Router>
+  );
 }
+
+
+export default App;
