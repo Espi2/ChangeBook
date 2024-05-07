@@ -1,16 +1,37 @@
-"use client"
+"use client";
 import { FunctionComponent, useState } from "react";
 import React from "react";
 import Link from "@/node_modules/next/link";
 import Image from "@/node_modules/next/image";
 import "./InicioDeSesin.css";
-
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { setCookie } from "nookies";
 
 const InicioDeSesin: FunctionComponent = () => {
-
-     const [codigo, setCodigo] = useState("");
+  const [codigo, setCodigo] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
+  const handleAuth = async () => {
+    try {
+      const response = await axios.post("/api/auth/login", {
+        codigo,
+        password,
+      });
+      const { access_token } = response.data;
+
+      setCookie(null, "token", access_token, {
+        maxAge: 60,
+        path: "/",
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      });
+    } catch (error) {
+      console.log("Error en la autenticacion:", error);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,8 +52,8 @@ const InicioDeSesin: FunctionComponent = () => {
       const data = await response.json();
 
       if (data.success) {
-        alert("¡Inicio de sesión exitoso!");
-        // Aquí podrías redirigir al usuario a la página principal
+        handleAuth();
+        router.push("/Home");
       } else {
         alert(data.message);
       }
