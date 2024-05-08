@@ -233,7 +233,7 @@ function Home() {
       {/*Muestra de los libros */}
 
       <div
-        className="bg-teal-500 rounded-2xl shadow-xl col-span-6 row-span-7 mb-3 overflow-auto "
+        className="bg-white rounded-2xl shadow-xl col-span-6 row-span-7 mb-3 overflow-auto "
         id="masLeidos"
       >
         <div className="flex items-center ml-4 h-12 font-cbookF font-bold text-xl">
