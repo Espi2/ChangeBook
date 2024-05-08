@@ -82,6 +82,7 @@ function Home() {
   const [navOption, setnavOption] = useState("");
   const [books, setBooks] = useState<book[]>([]);
   const [waitlist, setWaitlist] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     setBooks(initDummy);
@@ -93,6 +94,11 @@ function Home() {
 
   const redirectLogin = () => {
     redirect("/inicioSesion");
+  };
+
+  const handleSearch = (query: string) => {
+    // Aquí va la lógica de búsqueda utilizando el valor de "query"
+    console.log("Realizar búsqueda con el término:", query);
   };
 
   return (
@@ -109,71 +115,71 @@ function Home() {
         </div>
 
         {/* Menú */}
-        <div className="flex flex-col items-left mx-3 gap-16 font-cbookF font-bold text-2xl justify-center cursor-pointer overflow-hidden">
+        <div className="flex flex-col items-left mx-3 gap-50 font-cbookF font-bold text-x1 justify-center cursor-pointer overflow-hidden">
           <a
             href="/Home"
-            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-1"
+            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-3"
             onClick={() => setnavOption("inicio")}
           >
             <FontAwesomeIcon
               icon={faHome}
-              className="inline-block w-10 h-10 mr-3"
+              className="inline-block w-8 h-8 mr-3"
             ></FontAwesomeIcon>
             <span>Inicio</span>
           </a>
           <a
             href=""
-            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-1"
+            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-3"
             onClick={() => setnavOption("publicar")}
           >
             <FontAwesomeIcon
               icon={faBook}
-              className="inline-block w-10 h-10 mr-3"
+              className="inline-block w-8 h-8 mr-3"
             ></FontAwesomeIcon>
             <span>Publicar</span>
           </a>
           <a
             href=""
-            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-1"
+            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-3"
             onClick={() => setnavOption("lista")}
           >
             <FontAwesomeIcon
               icon={faClock}
-              className="inline-block w-10 h-auto mr-3"
+              className="inline-block w-8 h-8 mr-3"
             ></FontAwesomeIcon>
             <span>Lista de espera</span>
           </a>
           <a
             href=""
-            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl px-1"
+            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-3"
             onClick={() => setnavOption("perfil")}
           >
             <FontAwesomeIcon
               icon={faUser}
-              className="inline-block w-10 h-10 mr-3"
+              className="inline-block w-8 h-8 mr-3"
             ></FontAwesomeIcon>
             <span>Mi perfil</span>
           </a>
           <a
             href=""
-            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-1"
+            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-3"
             onClick={() => setnavOption("buscar")}
           >
             <FontAwesomeIcon
               icon={faSearch}
-              className="inline-block w-10 h-10 mr-3"
+              className="inline-block w-8 h-8 mr-3"
             ></FontAwesomeIcon>
             <span>Buscar</span>
           </a>
 
           <a
             href="InicioSesion"
-            className="py-4 text-white flex items-center p-1"
+            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-3"
             onClick={() => setnavOption("salir")}
           >
             <FontAwesomeIcon
               icon={faSignOut}
-              className="inline-block w-10 h-10 mr-3"
+              className="inline-block w-8 h-8 mr-3"
             ></FontAwesomeIcon>
             <span>Salir</span>
           </a>
@@ -183,16 +189,16 @@ function Home() {
 
       <div className=" bg-white rounded-2xl border-2 border-gray-200 shadow-xl col-span-8 row-span-1 mt-3 mr-3 flex items-center justify-end ">
         <a href="" className="flex items-center">
-          <span className="font-cbookF font-bold text-2xl text-cbookC-700 mr-2">
+          <span className="font-cbookF font-bold text-x1 text-cbookC-700 mr-2">
             Notificaciones
           </span>
           <FontAwesomeIcon
             icon={faBell}
-            className="w-10 h-10"
+            className="w-8 h-8 text-cbookC-700"
           ></FontAwesomeIcon>
         </a>
         <img
-          className="ml-6 w-12 h-12 mr-6"
+          className="ml-6 w-10 h-10 mr-6"
           src="/libro_morado.png"
           alt="Libro"
         />
@@ -200,12 +206,12 @@ function Home() {
 
       {/*Espacio para busqueda */}
 
-      <div className="bg-gradient-to-r from-cbookC-500 via-cbookC-700 to-cbookC-600 rounded-2xl shadow-xl row-span-2 col-span-6 flex flex-col items-center ">
+      <div className="bg-gradient-to-r from-cbookC-500 via-cbookC-700 to-cbookC-600 rounded-2xl shadow-xl row-span-3 col-span-6 flex flex-col items-center ">
         <section className="flex flex-col px-8 mt-4 font-bold text-center rounded-3xl max-w-[875px] max-md:px-5">
-          <h1 className="self-center font-cbookF font-bold text-5xl m-0 md:text-10px sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white">
+          <h1 className="self-center font-cbookF font-bold text-5xl m-5 md:text-10px sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl text-white">
             ¡Busquemos un nuevo libro!
           </h1>
-          <SearchInput placeholder="Buscar..." />
+          <SearchInput onSearch={handleSearch} placeholder="Buscar..." />
         </section>
       </div>
 
@@ -233,7 +239,7 @@ function Home() {
       {/*Muestra de los libros */}
 
       <div
-        className="bg-white rounded-2xl shadow-xl col-span-6 row-span-7 mb-3 overflow-auto "
+        className="bg-white rounded-2xl shadow-xl col-span-6 row-span-6 mb-3 overflow-auto "
         id="masLeidos"
       >
         <div className="flex items-center ml-4 h-12 font-cbookF font-bold text-xl">
@@ -244,7 +250,7 @@ function Home() {
             books.map((item) => (
               <div
                 key={item.id}
-                className="bg-gray-100 rounded-lg p-2 border-cbookC-400 border-2 shadow-md overflow-hidden flex flex-col"
+                className="bg-cbookC-100 rounded-lg p-2 shadow-md overflow-hidden flex flex-col"
                 style={{ maxWidth: "170px" }} // Tamaño fijo para la casilla
               >
                 <img

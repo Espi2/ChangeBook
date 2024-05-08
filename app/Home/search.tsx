@@ -3,31 +3,39 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as React from "react";
 
 interface SearchInputProps {
+  onSearch: (query: string) => void;
   placeholder: string;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ placeholder }) => {
-  return (
-    <div className="flex justify-center items-center px-16 py-5 mt-3 text-xl  bg-white rounded-3xl text-black text-opacity-50 w-full">
-      <div className="flex gap-0">
-        <FontAwesomeIcon
-          className="self-center"
-          icon={faSearch}
-        ></FontAwesomeIcon>
-        <div>{placeholder}</div>
-      </div>
-    </div>
-  );
-};
+const SearchInput: React.FC<SearchInputProps> = ({ onSearch, placeholder }) => {
+  const [query, setQuery] = React.useState("");
 
-const searchComponent: React.FC = () => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onSearch(query);
+  };
+
   return (
-    <section className="flex flex-col px-8 py-11 font-bold text-center rounded-3xl shadow-sm max-w-[875px] max-md:px-5">
-      <h1 className="self-center text-4xl text-white max-md:max-w-full">
-        ¡Busquemos un nuevo libro!
-      </h1>
-      <SearchInput placeholder="Buscar..." />
-    </section>
+    <form onSubmit={handleSubmit}>
+      <div className="flex justify-center items-center px-16 py-5 mt-3 text-xl bg-white rounded-3xl text-black text-opacity-50 w-full h-12">
+        <div className="flex gap-0">
+          <input
+            type="text"
+            value={query}
+            onChange={handleChange}
+            className="self-center font-cbookF font-bold flex-grow outline-none border-none text-center"
+            placeholder={placeholder}
+          />
+          <button type="submit">
+            <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+          </button>
+        </div>
+      </div>
+    </form>
   );
 };
 
