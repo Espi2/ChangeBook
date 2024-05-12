@@ -79,10 +79,16 @@ const initDummy: book[] = [
 ];
 
 function Home() {
-  const [navOption, setnavOption] = useState("");
-  const [books, setBooks] = useState<book[]>([]);
-  const [waitlist, setWaitlist] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [navOption, setnavOption] =
+    useState(""); /* Opcion de navegacion seleccionada */
+  const [books, setBooks] = useState<book[]>(
+    []
+  ); /* Representa la lista de libros */
+  const [waitlist, setWaitlist] =
+    useState(""); /* Representa la lista de espera */
+  const [searchResults, setSearchResults] = useState(
+    []
+  ); /* Representa los resultados de busqueda */
 
   useEffect(() => {
     setBooks(initDummy);
@@ -106,7 +112,7 @@ function Home() {
       {/*Navigator de la izquierda */}
 
       <div className="hidden sm:block bg-cbookC-500 rounded-r-3xl shadow-xl col-span-1 row-span-10 flex-col h-screen justify-between">
-        <div className="flex items-center justify-center m-5">
+        <div className="flex items-center justify-center m-5 mb-10">
           <img
             src="/logo_completo_blanco_recortado.png"
             alt="Logo de la empresa"
@@ -114,11 +120,15 @@ function Home() {
           />
         </div>
 
-        {/* Menú */}
-        <div className="flex flex-col items-left mx-3 gap-50 font-cbookF font-bold text-x1 justify-center cursor-pointer overflow-hidden">
+        {/* Menú lateral izquierdo*/}
+        <div className="flex flex-col items-left mx-3 gap-50 font-cbookF font-bold text-x1 cursor-pointer overflow-hidden mr-0">
           <a
             href="/Home"
-            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-3"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "inicio"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
             onClick={() => setnavOption("inicio")}
           >
             <FontAwesomeIcon
@@ -129,7 +139,11 @@ function Home() {
           </a>
           <a
             href=""
-            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-3"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "inicio"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
             onClick={() => setnavOption("publicar")}
           >
             <FontAwesomeIcon
@@ -140,7 +154,11 @@ function Home() {
           </a>
           <a
             href=""
-            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-3"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "inicio"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
             onClick={() => setnavOption("lista")}
           >
             <FontAwesomeIcon
@@ -151,7 +169,11 @@ function Home() {
           </a>
           <a
             href=""
-            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-3"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "inicio"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
             onClick={() => setnavOption("perfil")}
           >
             <FontAwesomeIcon
@@ -162,7 +184,11 @@ function Home() {
           </a>
           <a
             href=""
-            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-3"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "inicio"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
             onClick={() => setnavOption("buscar")}
           >
             <FontAwesomeIcon
@@ -174,7 +200,11 @@ function Home() {
 
           <a
             href="InicioSesion"
-            className="py-4 text-white hover:bg-cbookC-700 flex items-center hover:rounded-3xl p-3"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "inicio"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
             onClick={() => setnavOption("salir")}
           >
             <FontAwesomeIcon
@@ -204,7 +234,7 @@ function Home() {
         />
       </div>
 
-      {/*Espacio para busqueda */}
+      {/*Espacio para BUSCADOR */}
 
       <div className="bg-gradient-to-r from-cbookC-500 via-cbookC-700 to-cbookC-600 rounded-2xl shadow-xl row-span-3 col-span-6 flex flex-col items-center ">
         <section className="flex flex-col px-8 mt-4 font-bold text-center rounded-3xl max-w-[875px] max-md:px-5">
@@ -224,12 +254,12 @@ function Home() {
           ) : (
             <div className="flex flex-col items-center">
               <img
-                className="max-w-44 sm:max-w-20 md:max-w-24 lg:max-w-32 xl:max-w-48"
+                className="max-w-44 sm:max-w-20 md:max-w-24 lg:max-w-32 xl:max-w-48 opacity-60"
                 src="/libro_morado.png"
                 alt="Libro blanco"
               />
-              <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center">
-                Aun no has buscado libros
+              <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center text-cbookC-800 opacity-60">
+                Aún no has buscado libros.
               </span>
             </div>
           )}
@@ -242,7 +272,7 @@ function Home() {
         className="bg-white rounded-2xl shadow-xl col-span-6 row-span-6 mb-3 overflow-auto "
         id="masLeidos"
       >
-        <div className="flex items-center ml-4 h-12 font-cbookF font-bold text-xl">
+        <div className="flex items-center ml-4 h-12 font-cbookF font-bold text-2xl">
           Los libros más leídos
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mx-4">

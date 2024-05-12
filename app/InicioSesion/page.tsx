@@ -65,8 +65,9 @@ const InicioDeSesin: FunctionComponent = () => {
 
   return (
     <div className="container">
+      {/*Panel izquierdo*/}
       <div className="left-panel">
-        <h2 className="title">Inicio de sesión</h2>
+        <h2 className="title">Inicio de Sesión</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <input
@@ -97,13 +98,14 @@ const InicioDeSesin: FunctionComponent = () => {
         </p>
       </div>
 
+      {/*Panel derecho*/}
       <div className="right-panel">
         <h2 id="textobienvenido">¡Bienvenido!</h2>
         <Image
           src="/logo_completo_blanco.png"
           alt="Logo"
           width={350}
-          height={20}
+          height={10}
           id="Imagen"
         />
       </div>
