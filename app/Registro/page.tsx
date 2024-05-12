@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "@/node_modules/next/image";
 import Link from "@/node_modules/next/link";
 import { useState } from "react";
@@ -6,7 +6,10 @@ import React, { FunctionComponent } from "react";
 import "./Registro.css";
 
 import { FontAwesomeIcon } from "@/node_modules/@fortawesome/react-fontawesome/index";
-import { faEye, faEyeSlash } from "@/node_modules/@fortawesome/free-solid-svg-icons/index";
+import {
+  faEye,
+  faEyeSlash,
+} from "@/node_modules/@fortawesome/free-solid-svg-icons/index";
 
 const Registro: FunctionComponent = () => {
   const [username, setUsername] = useState("");
@@ -15,8 +18,7 @@ const Registro: FunctionComponent = () => {
   const [email, setEmail] = useState("");
   const [termsChecked, setTermsChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // Nuevo estado para mostrar la contraseña
-    const [credentialImage, setCredentialImage] = useState("");
-
+  const [credentialImage, setCredentialImage] = useState("");
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -28,15 +30,11 @@ const Registro: FunctionComponent = () => {
     setStudentCode(event.target.value);
   };
 
-  const handlePasswordChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
 
-  const handleEmailChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
 
@@ -46,12 +44,13 @@ const Registro: FunctionComponent = () => {
     setTermsChecked(event.target.checked);
   };
 
-
-   const handleOpenTerms = () => {
+  const handleOpenTerms = () => {
     window.open("../TerminosCondiciones", "_blank", "width=600,height=400");
   };
 
-  const handleCredentialImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCredentialImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (event.target.files && event.target.files[0]) {
       setCredentialImage(event.target.files[0].name);
     }
@@ -97,7 +96,7 @@ const Registro: FunctionComponent = () => {
             codigo: studentCode,
             nombre: username,
             strikes: 0,
-            imagenPerfil: 'notyet', // Se obtiene la imagen de la credencial
+            imagenPerfil: "notyet", // Se obtiene la imagen de la credencial
           }),
         });
         const userData = await userResponse.json();
@@ -137,18 +136,20 @@ const Registro: FunctionComponent = () => {
             />
           </div>
           <div className="form-group">
-  <input
-    type={showPassword ? "text" : "password"}
-    id="password"
-    name="password"
-    placeholder="Contraseña"
-    value={password}
-    onChange={handlePasswordChange}
-  />
-  <button type="button" onClick={toggleShowPassword}>
-    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-  </button>
-</div>
+            <div className="password-input-container">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                placeholder="Contraseña"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              <button type="button" onClick={toggleShowPassword}>
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+              </button>
+            </div>
+          </div>
           <div className="form-group">
             <input
               type="text"
@@ -171,30 +172,31 @@ const Registro: FunctionComponent = () => {
           </div>
 
           <div className="form-group">
-            <input 
-              type="file" 
-              id="credentialImage" 
-              name="credentialImage" 
+            <input
+              type="file"
+              id="credentialImage"
+              name="credentialImage"
               accept="image/*"
               onChange={handleCredentialImageChange}
             />
             {credentialImage && <p>Credencial: {credentialImage}</p>}
           </div>
 
-          <div className="form-group">
+          <div className="form-group flex items-center">
             <input
               type="checkbox"
               id="terms"
               name="terms"
               checked={termsChecked}
               onChange={handleTermsCheckboxChange}
+              className="mr-2 ml-11"
             />
-             <label htmlFor="terms" onClick={handleOpenTerms}>
+            <label htmlFor="terms" onClick={handleOpenTerms}>
               Acepto los{" "}
               <span className="link-text">términos y condiciones</span>
             </label>
           </div>
-          
+
           <button type="submit" className="login-btn">
             Registrarse
           </button>
@@ -209,7 +211,7 @@ const Registro: FunctionComponent = () => {
         <Image
           src="/logo_completo_blanco.png"
           alt="Logo"
-          width={300}
+          width={350}
           height={10}
           id="Imagen"
         />
