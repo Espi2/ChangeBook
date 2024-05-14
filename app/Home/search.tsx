@@ -1,6 +1,7 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as React from "react";
+import React from "react";
+import axios from "axios";
 
 interface SearchInputProps {
   onSearch: (query: string) => void;
@@ -14,9 +15,15 @@ const SearchInput: React.FC<SearchInputProps> = ({ onSearch, placeholder }) => {
     setQuery(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSearch(query);
+    try {
+      const response = await axios.get(`/api/libro/buscar/${query}`);
+      onSearch(response.data);
+    } catch (error) {
+      alert("No se encontró ningún libro registrado con ese nombre.");
+      //onSearch([]); // Clear the books
+    }
   };
 
   return (

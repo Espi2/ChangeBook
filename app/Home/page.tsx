@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SearchInput from "./search";
+import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@/node_modules/@fortawesome/free-solid-svg-icons/index";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { faSignOut } from "@fortawesome/free-solid-svg-icons/faSignOut";
 import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
 import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
@@ -15,102 +16,78 @@ import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
 import { redirect } from "next/navigation";
 
 import "./styles.css";
+import { parseCookies } from 'nookies';
 
-interface book {
+
+interface Book {
   id: number;
   imageUrl: string;
   title: string;
   author: string;
+  synopsis: string;
 }
 
-const initDummy: book[] = [
+const initDummy: Book[] = [
   {
     id: 1,
     imageUrl: "https://m.media-amazon.com/images/I/41gr3r3FSWL.jpg",
     title: "Book Cover Design Formula",
     author: "Anita Nipane",
+    synopsis: "A comprehensive guide to book cover design.",
   },
   {
     id: 2,
     imageUrl:
       "https://d1csarkz8obe9u.cloudfront.net/themedlandingpages/tlp_hero_book-cover-adb8a02f82394b605711f8632a44488b.jpg?ts%20=%201698323696",
-    title: "the Beauty Within",
+    title: "The Beauty Within",
     author: "Samantha Donald",
+    synopsis: "An exploration of inner beauty and self-acceptance.",
   },
-  {
-    id: 3,
-    imageUrl: "https://m.media-amazon.com/images/I/41gr3r3FSWL.jpg",
-    title: "Book Cover Design Formula",
-    author: "Anita Nipane",
-  },
-  {
-    id: 4,
-    imageUrl:
-      "https://d1csarkz8obe9u.cloudfront.net/themedlandingpages/tlp_hero_book-cover-adb8a02f82394b605711f8632a44488b.jpg?ts%20=%201698323696",
-    title: "the Beauty Within",
-    author: "Samantha Donald",
-  },
-  {
-    id: 5,
-    imageUrl: "https://m.media-amazon.com/images/I/41gr3r3FSWL.jpg",
-    title: "Book Cover Design Formula",
-    author: "Anita Nipane",
-  },
-  {
-    id: 6,
-    imageUrl:
-      "https://d1csarkz8obe9u.cloudfront.net/themedlandingpages/tlp_hero_book-cover-adb8a02f82394b605711f8632a44488b.jpg?ts%20=%201698323696",
-    title: "the Beauty Within",
-    author: "Samantha Donald",
-  },
-  {
-    id: 7,
-    imageUrl: "https://m.media-amazon.com/images/I/41gr3r3FSWL.jpg",
-    title: "Book Cover Design Formula",
-    author: "Anita Nipane",
-  },
-  {
-    id: 8,
-    imageUrl:
-      "https://d1csarkz8obe9u.cloudfront.net/themedlandingpages/tlp_hero_book-cover-adb8a02f82394b605711f8632a44488b.jpg?ts%20=%201698323696",
-    title: "the Beauty Within",
-    author: "Samantha Donald",
-  },
+  // Agrega más libros de ejemplo si es necesario
 ];
 
 function Home() {
-  const [navOption, setnavOption] =
-    useState(""); /* Opcion de navegacion seleccionada */
-  const [books, setBooks] = useState<book[]>(
-    []
-  ); /* Representa la lista de libros */
-  const [waitlist, setWaitlist] =
-    useState(""); /* Representa la lista de espera */
-  const [searchResults, setSearchResults] = useState(
-    []
-  ); /* Representa los resultados de busqueda */
+  const [navOption, setNavOption] = useState(""); /* Opcion de navegacion seleccionada */
+  const [books, setBooks] = useState<Book[]>(initDummy); /* Representa la lista de libros */
+  const [waitlist, setWaitlist] = useState(""); /* Representa la lista de espera */
+    const [searchText, setSearchText] = useState("Los más leídos");
 
-  useEffect(() => {
-    setBooks(initDummy);
-  }, []);
 
   const redirectHome = () => {
     redirect("/Home");
+  };
+
+  const redirectPublish = () => {
+    redirect("/Publicar");
   };
 
   const redirectLogin = () => {
     redirect("/inicioSesion");
   };
 
-  const handleSearch = (query: string) => {
-    // Aquí va la lógica de búsqueda utilizando el valor de "query"
+   const handleSearch = async (query: string) => {
     console.log("Realizar búsqueda con el término:", query);
+    try {
+      const response = await axios.get(`/api/libros/buscar/?title=${query}`);
+      const searchResults = response.data;
+
+      if (searchResults.length > 0) {
+        setBooks(searchResults);
+        setSearchText("Resultados de la búsqueda");
+      } else {
+        alert("No se encontró ningún libro registrado con ese nombre.");
+        setBooks([]);
+        setSearchText("Resultados de la búsqueda");
+      }
+    } catch (error) {
+      console.error("Error al buscar libros:", error);
+      alert("Hubo un error al realizar la búsqueda. Por favor, intenta nuevamente.");
+    }
   };
 
   return (
     <div className="grid grid-cols-9 grid-rows-10 gap-3 bg-gray-50 w-screen h-screen ">
       {/*Navigator de la izquierda */}
-
       <div className="hidden sm:block bg-cbookC-500 rounded-r-3xl shadow-xl col-span-1 row-span-10 flex-col h-screen justify-between">
         <div className="flex items-center justify-center m-5 mb-10">
           <img
@@ -129,7 +106,7 @@ function Home() {
                 ? "bg-cbookC-700 rounded-l-3xl"
                 : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
             }`}
-            onClick={() => setnavOption("inicio")}
+            onClick={() => setNavOption("inicio")}
           >
             <FontAwesomeIcon
               icon={faHome}
@@ -138,13 +115,13 @@ function Home() {
             <span>Inicio</span>
           </a>
           <a
-            href=""
+            href="Publicar"
             className={`py-4 text-white flex items-center p-3 transition duration-0 ${
-              navOption === "inicio"
+              navOption === "publicar"
                 ? "bg-cbookC-700 rounded-l-3xl"
                 : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
             }`}
-            onClick={() => setnavOption("publicar")}
+            onClick={() => setNavOption("Publicar")}
           >
             <FontAwesomeIcon
               icon={faBook}
@@ -155,11 +132,11 @@ function Home() {
           <a
             href=""
             className={`py-4 text-white flex items-center p-3 transition duration-0 ${
-              navOption === "inicio"
+              navOption === "lista"
                 ? "bg-cbookC-700 rounded-l-3xl"
                 : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
             }`}
-            onClick={() => setnavOption("lista")}
+            onClick={() => setNavOption("lista")}
           >
             <FontAwesomeIcon
               icon={faClock}
@@ -170,11 +147,11 @@ function Home() {
           <a
             href=""
             className={`py-4 text-white flex items-center p-3 transition duration-0 ${
-              navOption === "inicio"
+              navOption === "perfil"
                 ? "bg-cbookC-700 rounded-l-3xl"
                 : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
             }`}
-            onClick={() => setnavOption("perfil")}
+            onClick={() => setNavOption("perfil")}
           >
             <FontAwesomeIcon
               icon={faUser}
@@ -185,11 +162,11 @@ function Home() {
           <a
             href=""
             className={`py-4 text-white flex items-center p-3 transition duration-0 ${
-              navOption === "inicio"
+              navOption === "buscar"
                 ? "bg-cbookC-700 rounded-l-3xl"
                 : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
             }`}
-            onClick={() => setnavOption("buscar")}
+            onClick={() => setNavOption("buscar")}
           >
             <FontAwesomeIcon
               icon={faSearch}
@@ -201,11 +178,11 @@ function Home() {
           <a
             href="InicioSesion"
             className={`py-4 text-white flex items-center p-3 transition duration-0 ${
-              navOption === "inicio"
+              navOption === "salir"
                 ? "bg-cbookC-700 rounded-l-3xl"
                 : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
             }`}
-            onClick={() => setnavOption("salir")}
+            onClick={() => setNavOption("salir")}
           >
             <FontAwesomeIcon
               icon={faSignOut}
@@ -216,8 +193,7 @@ function Home() {
         </div>
       </div>
       {/*Barra superior con notificaciones */}
-
-      <div className=" bg-white rounded-2xl border-2 border-gray-200 shadow-xl col-span-8 row-span-1 mt-3 mr-3 flex items-center justify-end ">
+      <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl col-span-8 row-span-1 mt-3 mr-3 flex items-center justify-end ">
         <a href="" className="flex items-center">
           <span className="font-cbookF font-bold text-x1 text-cbookC-700 mr-2">
             Notificaciones
@@ -235,7 +211,6 @@ function Home() {
       </div>
 
       {/*Espacio para BUSCADOR */}
-
       <div className="bg-gradient-to-r from-cbookC-500 via-cbookC-700 to-cbookC-600 rounded-2xl shadow-xl row-span-3 col-span-6 flex flex-col items-center ">
         <section className="flex flex-col px-8 mt-4 font-bold text-center rounded-3xl max-w-[875px] max-md:px-5">
           <h1 className="self-center font-cbookF font-bold text-5xl m-5 md:text-10px sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl text-white">
@@ -246,7 +221,6 @@ function Home() {
       </div>
 
       {/*Muestra de info del perfil */}
-
       <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-xl col-span-2 row-span-9 mr-3 mb-3 flex justify-center items-center">
         <div className="">
           {waitlist ? (
@@ -266,35 +240,29 @@ function Home() {
         </div>
       </div>
 
-      {/*Muestra de los libros */}
-
+ {/*Muestra de los libros */}
       <div
         className="bg-white rounded-2xl shadow-xl col-span-6 row-span-6 mb-3 overflow-auto "
         id="masLeidos"
       >
+        {/* Cambios para mostrar los resultados de la búsqueda */}
         <div className="flex items-center ml-4 h-12 font-cbookF font-bold text-2xl">
-          Los libros más leídos
+          {searchText}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mx-4">
-          {books ? (
+          {books.length > 0 ? (
             books.map((item) => (
               <div
                 key={item.id}
                 className="bg-cbookC-100 rounded-lg p-2 shadow-md overflow-hidden flex flex-col"
                 style={{ maxWidth: "170px" }} // Tamaño fijo para la casilla
               >
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className="max-w-full h-auto object-cover mb-2" // Ajuste automático del ancho de la imagen
-                  style={{ maxWidth: "150px", maxHeight: "220px" }} // Tamaño máximo para la imagen
-                />
                 <div className="flex flex-col flex-grow">
                   <h3 className="text-xl font-cbookF font-bold mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-gray-500 font-cbookF font-normal max-w-full truncate">
-                    {item.author}
+                  <p className="text-gray-500 font-cbookF font-normal max-w-full">
+                    {item.synopsis}
                   </p>
                 </div>
               </div>
