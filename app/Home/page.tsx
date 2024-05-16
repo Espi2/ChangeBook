@@ -1,6 +1,9 @@
-"use client";
 
-import React, { useState } from "react";
+"use client";
+import BookCard from './cardBook';
+import { fetchBooks } from './libro.service';
+
+import React, { useState, useEffect } from "react";
 import SearchInput from "./search";
 import axios from "axios";
 
@@ -12,45 +15,55 @@ import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
-
 import { redirect } from "next/navigation";
-
+import { useRouter } from 'next/router';
 import "./styles.css";
 import { parseCookies } from 'nookies';
 
 
+
+
 interface Book {
-  id: number;
-  imageUrl: string;
-  title: string;
-  author: string;
-  synopsis: string;
+  idLibro: string;
+  titulo: string;
+  editorial: string;
+  descripcion: string;
+  sinopsis: string;
+  autor: string;
+  calificacion: number;
+  intercambios: number;
 }
 
-const initDummy: Book[] = [
-  {
-    id: 1,
-    imageUrl: "https://m.media-amazon.com/images/I/41gr3r3FSWL.jpg",
-    title: "Book Cover Design Formula",
-    author: "Anita Nipane",
-    synopsis: "A comprehensive guide to book cover design.",
-  },
-  {
-    id: 2,
-    imageUrl:
-      "https://d1csarkz8obe9u.cloudfront.net/themedlandingpages/tlp_hero_book-cover-adb8a02f82394b605711f8632a44488b.jpg?ts%20=%201698323696",
-    title: "The Beauty Within",
-    author: "Samantha Donald",
-    synopsis: "An exploration of inner beauty and self-acceptance.",
-  },
-  // Agrega más libros de ejemplo si es necesario
-];
+interface User {
+  codigo: string;
+  nombre: string;
+  strikes: number;
+  imagenPerfil: string;
+  creadoEn: Date;
+  actualizadoEn: Date;
+}
+
+
+
 
 function Home() {
-  const [navOption, setNavOption] = useState(""); /* Opcion de navegacion seleccionada */
-  const [books, setBooks] = useState<Book[]>(initDummy); /* Representa la lista de libros */
+   const [navOption, setNavOption] = useState(""); /* Opcion de navegacion seleccionada */
   const [waitlist, setWaitlist] = useState(""); /* Representa la lista de espera */
-    const [searchText, setSearchText] = useState("Los más leídos");
+  const [searchText, setSearchText] = useState("Los más leídos");
+  const [books, setBooks] = useState<Book[]>([]);
+  const [searchResults, setSearchResults] = useState<Book[]>([]); // Nuevo estado para los resultados de búsqueda
+
+
+ useEffect(() => {
+    fetchBooks("Orgullo y Prejuicio")
+  .then((fetchedBooks) => {
+    setBooks(fetchedBooks);
+  })
+  .catch((error) => {
+    console.error('Error fetching books:', error);
+  });
+
+  }, []);
 
 
   const redirectHome = () => {
@@ -65,18 +78,17 @@ function Home() {
     redirect("/inicioSesion");
   };
 
-   const handleSearch = async (query: string) => {
+  const handleSearch = async (query: string) => {
     console.log("Realizar búsqueda con el término:", query);
     try {
-      const response = await axios.get(`/api/libros/buscar/?title=${query}`);
+      const response = await axios.get(`/api/libros/buscar/${query}`);
       const searchResults = response.data;
-
-      if (searchResults.length > 0) {
-        setBooks(searchResults);
+        setSearchResults(searchResults); // Actualiza los resultados de búsqueda en el nuevo estado
         setSearchText("Resultados de la búsqueda");
-      } else {
+        
+       if (searchResults.length === 0)  {
         alert("No se encontró ningún libro registrado con ese nombre.");
-        setBooks([]);
+        setSearchResults([]);
         setSearchText("Resultados de la búsqueda");
       }
     } catch (error) {
@@ -84,6 +96,8 @@ function Home() {
       alert("Hubo un error al realizar la búsqueda. Por favor, intenta nuevamente.");
     }
   };
+
+  
 
   return (
     <div className="grid grid-cols-9 grid-rows-10 gap-3 bg-gray-50 w-screen h-screen ">
@@ -240,7 +254,7 @@ function Home() {
         </div>
       </div>
 
- {/*Muestra de los libros */}
+{/* Muestra de los libros */}
       <div
         className="bg-white rounded-2xl shadow-xl col-span-6 row-span-6 mb-3 overflow-auto "
         id="masLeidos"
@@ -249,26 +263,16 @@ function Home() {
         <div className="flex items-center ml-4 h-12 font-cbookF font-bold text-2xl">
           {searchText}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mx-4">
-          {books.length > 0 ? (
-            books.map((item) => (
-              <div
-                key={item.id}
-                className="bg-cbookC-100 rounded-lg p-2 shadow-md overflow-hidden flex flex-col"
-                style={{ maxWidth: "170px" }} // Tamaño fijo para la casilla
-              >
-                <div className="flex flex-col flex-grow">
-                  <h3 className="text-xl font-cbookF font-bold mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-500 font-cbookF font-normal max-w-full">
-                    {item.synopsis}
-                  </p>
-                </div>
-              </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {/* Mostrar los resultados de búsqueda si hay resultados, de lo contrario, mostrar los libros más leídos */}
+          {searchResults.length > 0 ? (
+            searchResults.map((book) => (
+              <BookCard key={book.idLibro} book={book} />
             ))
           ) : (
-            <div>Loading...</div>
+            books.map((book) => (
+              <BookCard key={book.idLibro} book={book} />
+            ))
           )}
         </div>
       </div>
