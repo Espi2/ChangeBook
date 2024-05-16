@@ -7,11 +7,18 @@ import "./InicioDeSesin.css";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { setCookie } from "nookies";
+import { FontAwesomeIcon } from "@/node_modules/@fortawesome/react-fontawesome/index";
+import {
+  faEye,
+  faEyeSlash,
+} from "@/node_modules/@fortawesome/free-solid-svg-icons/index";
 
 const InicioDeSesin: FunctionComponent = () => {
   const [codigo, setCodigo] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false); // Nuevo estado para mostrar la contraseña
+
 
   const handleAuth = async () => {
     try {
@@ -32,7 +39,9 @@ const InicioDeSesin: FunctionComponent = () => {
       console.log("Error en la autenticacion:", error);
     }
   };
-
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -63,6 +72,10 @@ const InicioDeSesin: FunctionComponent = () => {
     }
   };
 
+    const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="container">
       {/*Panel izquierdo*/}
@@ -81,13 +94,16 @@ const InicioDeSesin: FunctionComponent = () => {
           </div>
           <div className="form-group">
             <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                placeholder="Contraseña"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              <button type="button" onClick={toggleShowPassword}>
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+              </button>
           </div>
           <button type="submit" className="login-btn">
             Acceder
