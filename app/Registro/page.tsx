@@ -172,14 +172,19 @@ const Registro: FunctionComponent = () => {
           </div>
 
           <div className="form-group">
-            <input
-              type="file"
-              id="credentialImage"
-              name="credentialImage"
-              accept="image/*"
-              onChange={handleCredentialImageChange}
-            />
-            {credentialImage && <p>Credencial: {credentialImage}</p>}
+            <div className="input-file-container">
+              <label htmlFor="credentialImage">
+                {credentialImage ? "Imagen Seleccionada 🙂" : "IMG Credencial"}
+              </label>
+              <input
+                type="file"
+                id="credentialImage"
+                name="credentialImage"
+                accept="image/*"
+                onChange={handleCredentialImageChange}
+              />
+            </div>
+            {credentialImage && <p></p>}
           </div>
 
           <div className="form-group flex items-center">
