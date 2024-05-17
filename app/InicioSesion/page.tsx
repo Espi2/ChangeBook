@@ -31,10 +31,13 @@ const InicioDeSesin: FunctionComponent = () => {
       setCookie(null, "token", access_token, {
         maxAge: 60,
         path: "/",
-        httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
+        
       });
+      
+     localStorage.setItem("codigoUsuario", codigo);
+
     } catch (error) {
       console.log("Error en la autenticacion:", error);
     }

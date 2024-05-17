@@ -34,13 +34,13 @@ interface Book {
   intercambios: number;
 }
 
-interface User {
+interface PerfilUsuario {
   codigo: string;
   nombre: string;
   strikes: number;
   imagenPerfil: string;
-  creadoEn: Date;
-  actualizadoEn: Date;
+  creadoEn: string; // Puedes cambiar el tipo según sea necesario
+  actualizadoEn: string; // Puedes cambiar el tipo según sea necesario
 }
 
 
@@ -52,7 +52,38 @@ function Home() {
   const [searchText, setSearchText] = useState("Los más leídos");
   const [books, setBooks] = useState<Book[]>([]);
   const [searchResults, setSearchResults] = useState<Book[]>([]); // Nuevo estado para los resultados de búsqueda
+const [perfilUsuario, setPerfilUsuario] = useState<PerfilUsuario | null>(null);
 
+const handleLogout = () => {
+  localStorage.removeItem("codigoUsuario");
+  // Otras operaciones de limpieza, como redireccionar a la página de inicio de sesión
+};
+
+useEffect(() => {
+  const codigoUsuario = localStorage.getItem("codigoUsuario");
+
+  const obtenerPerfilUsuario = async () => {
+    try {
+      const response = await axios.get(`api/user/get/${codigoUsuario}`);
+      setPerfilUsuario(response.data);
+      console.log(response.data)
+    } catch (error) {
+      console.error("Error al obtener el perfil del usuario:", error);
+    }
+  };
+
+  if (codigoUsuario) {
+    obtenerPerfilUsuario();
+  }
+}, []);
+
+
+useEffect(() => {
+  const codigoUsuario = localStorage.getItem("codigoUsuario");
+  if (!codigoUsuario) {
+    redirect("/InicioSesion");
+  }
+}, []);
 
  useEffect(() => {
     fetchBooks("Orgullo y Prejuicio")
@@ -189,21 +220,21 @@ function Home() {
             <span>Buscar</span>
           </a>
 
-          <a
-            href="InicioSesion"
-            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
-              navOption === "salir"
-                ? "bg-cbookC-700 rounded-l-3xl"
-                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
-            }`}
-            onClick={() => setNavOption("salir")}
-          >
-            <FontAwesomeIcon
-              icon={faSignOut}
-              className="inline-block w-8 h-8 mr-3"
-            ></FontAwesomeIcon>
-            <span>Salir</span>
-          </a>
+<a
+  href="InicioSesion"
+  className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+    navOption === "salir"
+      ? "bg-cbookC-700 rounded-l-3xl"
+      : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+  }`}
+  onClick={handleLogout}
+>
+  <FontAwesomeIcon
+    icon={faSignOut}
+    className="inline-block w-8 h-8 mr-3"
+  ></FontAwesomeIcon>
+  <span>Salir</span>
+</a>
         </div>
       </div>
       {/*Barra superior con notificaciones */}
@@ -234,28 +265,42 @@ function Home() {
         </section>
       </div>
 
-      {/*Muestra de info del perfil */}
-      <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-xl col-span-2 row-span-9 mr-3 mb-3 flex justify-center items-center">
-        <div className="">
-          {waitlist ? (
-            <div>hola</div>
-          ) : (
-            <div className="flex flex-col items-center">
-              <img
-                className="max-w-44 sm:max-w-20 md:max-w-24 lg:max-w-32 xl:max-w-48 opacity-60"
-                src="/libro_morado.png"
-                alt="Libro blanco"
-              />
-              <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center text-cbookC-800 opacity-60">
-                Aún no has buscado libros.
-              </span>
-            </div>
-          )}
-        </div>
+ <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-xl col-span-2 row-span-9 mr-3 mb-3 flex justify-center items-center">
+      <div className="">
+        {perfilUsuario ? (
+          <div className="flex flex-col items-center">
+            <img
+              className="max-w-44 sm:max-w-20 md:max-w-24 lg:max-w-32 xl:max-w-48 opacity-60"
+              src="/libro_morado.png"
+              alt="Libro blanco"
+            />
+            <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center text-cbookC-800 opacity-60">
+              Código: {perfilUsuario.codigo}<br />
+              Nombre: {perfilUsuario.nombre}<br />
+              Strikes: {perfilUsuario.strikes}<br />
+              Imagen de Perfil: {perfilUsuario.imagenPerfil}<br />
+              Creado En: {perfilUsuario.creadoEn}<br />
+              Actualizado En: {perfilUsuario.actualizadoEn}<br />
+            </span>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center">
+            <img
+              className="max-w-44 sm:max-w-20 md:max-w-24 lg:max-w-32 xl:max-w-48 opacity-60"
+              src="/libro_morado.png"
+              alt="Libro blanco"
+            />
+            <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center text-cbookC-800 opacity-60">
+              Aún no has buscado libros.
+            </span>
+          </div>
+        )}
       </div>
+    </div>
 
 {/* Muestra de los libros */}
       <div
+      
         className="bg-white rounded-2xl shadow-xl col-span-6 row-span-6 mb-3 overflow-auto "
         id="masLeidos"
       >
