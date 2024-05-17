@@ -7,7 +7,6 @@ export const fetchBooks = async (query: string) => { // Añade el parámetro 'qu
     const response = await axios.get(`api/libro/buscar/${query}`); // Utiliza el término de búsqueda en la URL
     return response.data;
   } catch (error) {
-    //alert("No encontramos resultados para tu busqueda")
     console.error('Error fetching books:', error);
     throw error;
   }

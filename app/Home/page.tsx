@@ -16,7 +16,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
 import { redirect } from "next/navigation";
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import "./styles.css";
 import { parseCookies } from 'nookies';
 
@@ -47,11 +47,13 @@ interface PerfilUsuario {
 
 
 function Home() {
+  const router = useRouter();
+
    const [navOption, setNavOption] = useState(""); /* Opcion de navegacion seleccionada */
   const [waitlist, setWaitlist] = useState(""); /* Representa la lista de espera */
   const [searchText, setSearchText] = useState("Los más leídos");
   const [books, setBooks] = useState<Book[]>([]);
-  const [searchResults, setSearchResults] = useState<Book[]>([]); // Nuevo estado para los resultados de búsqueda
+const [searchResults, setSearchResults] = useState<Book[]>([]); // Estado para los resultados de búsqueda
 const [perfilUsuario, setPerfilUsuario] = useState<PerfilUsuario | null>(null);
 
 const handleLogout = () => {
@@ -86,7 +88,7 @@ useEffect(() => {
 }, []);
 
  useEffect(() => {
-    fetchBooks("Orgullo y Prejuicio")
+    fetchBooks("")
   .then((fetchedBooks) => {
     setBooks(fetchedBooks);
   })
@@ -109,26 +111,20 @@ useEffect(() => {
     redirect("/inicioSesion");
   };
 
+
   const handleSearch = async (query: string) => {
-    console.log("Realizar búsqueda con el término:", query);
     try {
-      const response = await axios.get(`/api/libros/buscar/${query}`);
-      const searchResults = response.data;
-        setSearchResults(searchResults); // Actualiza los resultados de búsqueda en el nuevo estado
-        setSearchText("Resultados de la búsqueda");
-        
-       if (searchResults.length === 0)  {
-        alert("No se encontró ningún libro registrado con ese nombre.");
-        setSearchResults([]);
-        setSearchText("Resultados de la búsqueda");
-      }
+      const fetchedBooks = await fetchBooks(query);
+      setBooks(fetchedBooks);
+      setSearchText(`Resultados de búsqueda: ${query}`);
+
     } catch (error) {
-      console.error("Error al buscar libros:", error);
-      alert("Hubo un error al realizar la búsqueda. Por favor, intenta nuevamente.");
+      console.error('Error fetching books:', error);
+      setSearchText(`No se encontraron resultados para tu busqueda`);
+      setBooks([]);
+      // No actualizamos el estado 'books' en caso de error.
     }
   };
-
-  
 
   return (
     <div className="grid grid-cols-9 grid-rows-10 gap-3 bg-gray-50 w-screen h-screen ">
@@ -275,12 +271,9 @@ useEffect(() => {
               alt="Libro blanco"
             />
             <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center text-cbookC-800 opacity-60">
-              Código: {perfilUsuario.codigo}<br />
-              Nombre: {perfilUsuario.nombre}<br />
-              Strikes: {perfilUsuario.strikes}<br />
-              Imagen de Perfil: {perfilUsuario.imagenPerfil}<br />
-              Creado En: {perfilUsuario.creadoEn}<br />
-              Actualizado En: {perfilUsuario.actualizadoEn}<br />
+               {perfilUsuario.codigo}<br />
+               {perfilUsuario.nombre}<br />
+
             </span>
           </div>
         ) : (
