@@ -15,16 +15,17 @@ const SearchInput: React.FC<SearchInputProps> = ({ onSearch, placeholder }) => {
     setQuery(event.target.value);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      const response = await axios.get(`/api/libro/buscar/${query}`);
-      onSearch(response.data);
-    } catch (error) {
-      alert("No se encontró ningún libro registrado con ese nombre.");
-      //onSearch([]); // Clear the books
-    }
-  };
+const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
+  try {
+    // Envía solo el término de búsqueda al componente padre
+    onSearch(query);
+  } catch (error) {
+    alert("No se encontró ningún libro registrado con ese nombre.");
+    // onSearch([]); // Clear the books
+  }
+};
+
 
   return (
     <form onSubmit={handleSubmit}>
