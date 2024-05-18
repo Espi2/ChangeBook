@@ -1,6 +1,7 @@
-import React from "react";
+import React from 'react';
+import { useRouter } from 'next/navigation';
 
-interface Book {
+interface BookCardProps {
   idLibro: string;
   titulo: string;
   editorial: string;
@@ -9,31 +10,38 @@ interface Book {
   autor: string;
   calificacion: number;
   intercambios: number;
+  disponible: boolean;
+  userNombre: string;  // Aquí añadimos el campo userNombre
+  codigoUsuario: string; // Añadir esta propiedad
 }
 
-interface BookCardProps {
-  book: Book;
-}
+const BookCard: React.FC<BookCardProps> = ({
+  idLibro,
+  titulo,
+  editorial,
+  descripcion,
+  sinopsis,
+  autor,
+  calificacion,
+  intercambios,
+  disponible,
+  userNombre, // Aquí añadimos el campo userNombre
+  codigoUsuario, // Añadir esta propiedad
+}) => {
+  const router = useRouter();
 
-const truncateText = (text: string, maxLength: number): string => {
-  if (text.length <= maxLength) {
-    return text;
-  }
-  return text.substring(0, maxLength) + "...";
-};
-
-const BookCard: React.FC<BookCardProps> = ({ book }) => {
-  const maxLength = 130; // Ajusta este valor al número máximo de caracteres deseado
+  const handleUserClick = () => {
+    router.push(`/Perfil?codigoUsuario=${codigoUsuario}`);
+  };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="p-4">
-        <h2 className="font-bold text-lg">{book.titulo}</h2>
-        <p className="text-sm text-gray-500 italic">{book.autor}</p>
-        <p className="text-sm text-gray-600 text-justify">
-          {truncateText(book.sinopsis, maxLength)}
-        </p>
-      </div>
+    <div className="bg-white shadow-md rounded-md p-4">
+      <h2 className="text-lg font-bold">{titulo}</h2>
+      <p className="text-gray-600">{autor}</p>
+      <p className="text-gray-600">Disponible: {disponible ? '🟢' : '🔴'}</p>
+      <p className="text-gray-600">
+        Subido por: <span onClick={handleUserClick} className="text-blue-500 cursor-pointer">{userNombre}</span>
+      </p>
     </div>
   );
 };

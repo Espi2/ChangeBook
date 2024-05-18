@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import axios from "axios";
 
 interface AddBookFormProps {
@@ -10,12 +10,10 @@ const AddBookForm: React.FC<AddBookFormProps> = (props) => {
   const [formData, setFormData] = useState({
     titulo: "",
     editorial: "",
-    descripcion: "",
-    sinopsis: "",
     autor: "",
-    calificacion: 0,
-    intercambios: 0,
+    sinopsis: "",
   });
+
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -28,18 +26,16 @@ const AddBookForm: React.FC<AddBookFormProps> = (props) => {
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const codigoUsuario = localStorage.getItem("codigoUsuario");
     e.preventDefault();
     try {
-      await axios.post(`/api/libro/crear`, formData);
+      await axios.post(`/api/books/${codigoUsuario}`, formData);
       alert("Libro agregado exitosamente");
       setFormData({
         titulo: "",
         editorial: "",
-        descripcion: "",
+         autor: "",
         sinopsis: "",
-        autor: "",
-        calificacion: 0,
-        intercambios: 0,
       });
       props.closeModal();
     } catch (error) {
@@ -76,18 +72,7 @@ const AddBookForm: React.FC<AddBookFormProps> = (props) => {
           className="rounded-lg p-2 w-3/5 h-7 bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
         />
       </div>
-      <div>
-        <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
-          Categoría:
-        </label>
-        <input
-          type="text"
-          name="descripcion"
-          value={formData.descripcion}
-          onChange={handleChange}
-          className="rounded-lg p-2 w-3/5 h-7 bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
-        />
-      </div>
+      
       <div>
         <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
           Sinopsis:
@@ -110,32 +95,6 @@ const AddBookForm: React.FC<AddBookFormProps> = (props) => {
           onChange={handleChange}
           className="rounded-lg p-2 w-3/5 h-7 bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
         />
-      </div>
-      <div className="flex space-x-4">
-        <div>
-          <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
-            Calificación:
-          </label>
-          <input
-            type="number"
-            name="calificacion"
-            value={formData.calificacion}
-            onChange={handleChange}
-            className="rounded-lg p-2 w-full h-7 bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
-            Intercambios:
-          </label>
-          <input
-            type="number"
-            name="intercambios"
-            value={formData.intercambios}
-            onChange={handleChange}
-            className="rounded-lg p-2 w-full h-7 bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
-          />
-        </div>
       </div>
       <div className="flex justify-center space-x-4 mt-8">
         <button

@@ -1,6 +1,6 @@
 "use client";
 import BookCard from "./cardBook";
-import { fetchBooks } from "./libro.service";
+import { fetchBooks, ratedBooks } from "./libro.service";
 
 import React, { useState, useEffect } from "react";
 import SearchInput from "./search";
@@ -29,6 +29,10 @@ interface Book {
   autor: string;
   calificacion: number;
   intercambios: number;
+  disponible: boolean;
+  userNombre: string;
+  codigoUsuario: string; // Añadir esta propiedad
+
 }
 
 interface PerfilUsuario {
@@ -42,7 +46,6 @@ interface PerfilUsuario {
 
 function Home() {
   const router = useRouter();
-
   const [navOption, setNavOption] =
     useState(""); /* Opcion de navegacion seleccionada */
   const [waitlist, setWaitlist] =
@@ -89,9 +92,9 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    fetchBooks("")
-      .then((fetchedBooks) => {
-        setBooks(fetchedBooks);
+    ratedBooks()
+      .then((ratedBooks) => {
+        setBooks(ratedBooks);
       })
       .catch((error) => {
         console.error("Error fetching books:", error);
@@ -185,13 +188,13 @@ function Home() {
             <span>Lista de espera</span>
           </a>
           <a
-            href=""
+            href="PerfilUsuario"
             className={`py-4 text-white flex items-center p-3 transition duration-0 ${
               navOption === "perfil"
                 ? "bg-cbookC-700 rounded-l-3xl"
                 : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
             }`}
-            onClick={() => setNavOption("perfil")}
+            onClick={() => setNavOption("PerfilUsuario")}
           >
             <FontAwesomeIcon
               icon={faUser}
@@ -302,11 +305,9 @@ function Home() {
         </div>
         <div className="ml-4 mr-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {/* Mostrar los resultados de búsqueda si hay resultados, de lo contrario, mostrar los libros más leídos */}
-          {searchResults.length > 0
-            ? searchResults.map((book) => (
-                <BookCard key={book.idLibro} book={book} />
-              ))
-            : books.map((book) => <BookCard key={book.idLibro} book={book} />)}
+{books.map((book) => (
+            <BookCard key={book.idLibro} {...book} />
+          ))}
         </div>
       </div>
       {showModal && (
