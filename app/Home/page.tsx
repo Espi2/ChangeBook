@@ -23,16 +23,15 @@ import AddBookForm from "../Publicar/page";
 interface Book {
   idLibro: string;
   titulo: string;
+  autor: string;
   editorial: string;
   descripcion: string;
   sinopsis: string;
-  autor: string;
   calificacion: number;
   intercambios: number;
   disponible: boolean;
   userNombre: string;
   codigoUsuario: string; // Añadir esta propiedad
-
 }
 
 interface PerfilUsuario {
@@ -305,7 +304,7 @@ function Home() {
         </div>
         <div className="ml-4 mr-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {/* Mostrar los resultados de búsqueda si hay resultados, de lo contrario, mostrar los libros más leídos */}
-{books.map((book) => (
+          {books.map((book) => (
             <BookCard key={book.idLibro} {...book} />
           ))}
         </div>
@@ -313,7 +312,7 @@ function Home() {
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="bg-white p-6 rounded-lg shadow-lg z-10">
+          <div className="bg-white p-6 rounded-lg shadow-lg z-10 w-full max-w-3xl h-5/6 flex flex-col">
             <h2 className="text-center font-cbookF font-bold text-3xl justify-center text-cbookC-700 mt-3 mb-5">
               Publicar Nuevo Libro
             </h2>
@@ -321,9 +320,11 @@ function Home() {
               className="absolute top-0 right-0 p-2"
               onClick={() => setShowModal(false)}
             >
-              X
+              x
             </button>
-            <AddBookForm closeModal={handleModalClose} />
+            <div className="flex-1 overflow-auto">
+              <AddBookForm closeModal={handleModalClose} />
+            </div>
           </div>
         </div>
       )}
