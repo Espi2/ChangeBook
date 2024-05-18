@@ -18,7 +18,7 @@ const Registro: FunctionComponent = () => {
   const [email, setEmail] = useState("");
   const [termsChecked, setTermsChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [credentialImage, setCredentialImage] = useState("");
+  const [credentialImage, setCredentialImage] = useState<File | null>(null);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -52,7 +52,7 @@ const Registro: FunctionComponent = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (event.target.files && event.target.files[0]) {
-      setCredentialImage(event.target.files[0].name);
+      setCredentialImage(event.target.files[0]);
     }
   };
 
@@ -87,34 +87,31 @@ const Registro: FunctionComponent = () => {
 
       if (credencialResponse.ok) {
         // Si la creación de la credencial fue exitosa, entonces procede a crear el usuario
-        const userResponse = await fetch(`/api/user/post`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            codigo: studentCode,
-            nombre: username,
-            strikes: 0,
-            imagenPerfil: "notyet", // Se obtiene la imagen de la credencial
-          }),
-        });
-        const userData = await userResponse.json();
+        const formData = new FormData();
+        formData.append("codigo", studentCode);
+        formData.append("nombre", username);
 
-        if (userResponse.ok) {
-          alert("¡Registro exitoso!");
-          // Aquí redirigir al usuario a la página principal
-        } else {
-          alert("Error al crear el usuario.");
+        if (credentialImage) {
+          formData.append("file", credentialImage);
+          const userResponse = await fetch(`/api/user/post`, {
+            method: "POST",
+            body: formData,
+          });
+
+          if (userResponse.ok) {
+            alert("¡Registro exitoso!");
+            // Aquí redirigir al usuario a la página principal
+          } else {
+            alert("Error al crear el usuario.");
+          }
         }
-      } else {
-        alert("Error al crear la credencial.");
       }
     } catch (error) {
       console.error("Error:", error);
       alert("Error al procesar la solicitud");
     }
   };
+
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -224,5 +221,5 @@ const Registro: FunctionComponent = () => {
     </div>
   );
 };
-
+    
 export default Registro;

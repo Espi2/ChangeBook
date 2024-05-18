@@ -71,6 +71,7 @@ const PerfilUsuarioPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center mt-10">
+     <img src={perfilUsuario.imagenPerfil} alt="Imagen de perfil" className="w-16 h-16 rounded-full mr-4" />
       <h1 className="text-2xl font-bold mt-4">{perfilUsuario.nombre}</h1>
       <p className="text-gray-600">Código: {perfilUsuario.codigo}</p>
       <p className="text-gray-600">Strikes: {perfilUsuario.strikes}</p>
