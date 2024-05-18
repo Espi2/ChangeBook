@@ -9,6 +9,7 @@ export const fetchBooks = async (query: string) => {
       ...book,
       userNombre: book.user.nombre,
       codigoUsuario: book.user.codigo,
+      imagen: book.imagen, // Añadir esta propiedad
     }));
   } catch (error) {
     console.error('Error fetching books:', error);
@@ -23,6 +24,7 @@ export const ratedBooks = async () => {
       ...book,
       userNombre: book.user.nombre,
       codigoUsuario: book.user.codigo,
+      imagen: book.imagen, // Añadir esta propiedad
     }));
   } catch (error) {
     console.error('Error fetching books:', error);

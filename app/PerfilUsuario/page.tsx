@@ -8,13 +8,16 @@ import axios from 'axios';
 interface Book {
   idLibro: string;
   titulo: string;
+  autor: string;
   editorial: string;
   descripcion: string;
   sinopsis: string;
-  autor: string;
   calificacion: number;
   intercambios: number;
   disponible: boolean;
+  userNombre: string;
+  codigoUsuario: string;
+  imagen: string; // Añadir esta propiedad
 }
 
 interface User {

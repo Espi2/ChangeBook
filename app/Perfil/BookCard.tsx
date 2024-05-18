@@ -10,6 +10,9 @@ interface Book {
   calificacion: number;
   intercambios: number;
   disponible: boolean;
+  userNombre: string;
+  codigoUsuario: string;
+  imagen: string; // Añadir esta propiedad
 }
 
 interface BookCardProps {
@@ -20,6 +23,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="p-4">
+        <img src={book.imagen} alt={book.titulo} className="w-full h-48 object-cover rounded-md" />
         <h2 className="font-bold text-lg">{book.titulo}</h2>
         <p className="text-sm text-gray-600">by {book.autor}</p>
         <p className="text-gray-600">Estado: {book.disponible ? "🟢" : "🔴"}</p>

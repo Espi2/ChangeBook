@@ -11,8 +11,9 @@ interface BookCardProps {
   calificacion: number;
   intercambios: number;
   disponible: boolean;
-  userNombre: string; // Aquí añadimos el campo userNombre
-  codigoUsuario: string; // Añadir esta propiedad
+  userNombre: string;
+  codigoUsuario: string;
+  imagen: string; // Añadir esta propiedad
 }
 
 const BookCard: React.FC<BookCardProps> = ({
@@ -25,8 +26,9 @@ const BookCard: React.FC<BookCardProps> = ({
   calificacion,
   intercambios,
   disponible,
-  userNombre, // Aquí añadimos el campo userNombre
-  codigoUsuario, // Añadir esta propiedad
+  userNombre,
+  codigoUsuario,
+  imagen, // Añadir esta propiedad
 }) => {
   const router = useRouter();
 
@@ -36,15 +38,13 @@ const BookCard: React.FC<BookCardProps> = ({
 
   return (
     <div className="bg-white shadow-md rounded-md p-4">
+      <img src={imagen} alt={titulo} className="w-full h-48 object-cover rounded-md" />
       <h2 className="text-lg font-bold">{titulo}</h2>
       <p className="text-gray-600">{autor}</p>
       <p className="text-gray-600">Estado: {disponible ? "🟢" : "🔴"}</p>
       <p className="text-gray-600">
         Publicado por:{" "}
-        <span
-          onClick={handleUserClick}
-          className="text-blue-500 cursor-pointer"
-        >
+        <span onClick={handleUserClick} className="text-blue-500 cursor-pointer">
           {userNombre}
         </span>
       </p>

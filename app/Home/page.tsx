@@ -20,6 +20,7 @@ import "./styles.css";
 import { parseCookies } from "nookies";
 import AddBookForm from "../Publicar/page";
 
+
 interface Book {
   idLibro: string;
   titulo: string;
@@ -31,7 +32,8 @@ interface Book {
   intercambios: number;
   disponible: boolean;
   userNombre: string;
-  codigoUsuario: string; // Añadir esta propiedad
+  codigoUsuario: string;
+  imagen: string; // Añadir esta propiedad
 }
 
 interface PerfilUsuario {
@@ -304,7 +306,7 @@ function Home() {
         </div>
         <div className="ml-4 mr-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {/* Mostrar los resultados de búsqueda si hay resultados, de lo contrario, mostrar los libros más leídos */}
-          {books.map((book) => (
+           {books.map((book) => (
             <BookCard key={book.idLibro} {...book} />
           ))}
         </div>
