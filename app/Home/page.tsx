@@ -1,7 +1,6 @@
-
 "use client";
-import BookCard from './cardBook';
-import { fetchBooks } from './libro.service';
+import BookCard from "./cardBook";
+import { fetchBooks } from "./libro.service";
 
 import React, { useState, useEffect } from "react";
 import SearchInput from "./search";
@@ -16,12 +15,10 @@ import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
 import { redirect } from "next/navigation";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import "./styles.css";
-import { parseCookies } from 'nookies';
-
-
-
+import { parseCookies } from "nookies";
+import AddBookForm from "../Publicar/page";
 
 interface Book {
   idLibro: string;
@@ -39,65 +36,67 @@ interface PerfilUsuario {
   nombre: string;
   strikes: number;
   imagenPerfil: string;
-  creadoEn: string; // Puedes cambiar el tipo según sea necesario
-  actualizadoEn: string; // Puedes cambiar el tipo según sea necesario
+  creadoEn: string;
+  actualizadoEn: string;
 }
-
-
-
 
 function Home() {
   const router = useRouter();
 
-   const [navOption, setNavOption] = useState(""); /* Opcion de navegacion seleccionada */
-  const [waitlist, setWaitlist] = useState(""); /* Representa la lista de espera */
+  const [navOption, setNavOption] =
+    useState(""); /* Opcion de navegacion seleccionada */
+  const [waitlist, setWaitlist] =
+    useState(""); /* Representa la lista de espera */
   const [searchText, setSearchText] = useState("Los más leídos");
   const [books, setBooks] = useState<Book[]>([]);
-const [searchResults, setSearchResults] = useState<Book[]>([]); // Estado para los resultados de búsqueda
-const [perfilUsuario, setPerfilUsuario] = useState<PerfilUsuario | null>(null);
-
-const handleLogout = () => {
-  localStorage.removeItem("codigoUsuario");
-  // Otras operaciones de limpieza, como redireccionar a la página de inicio de sesión
-};
-
-useEffect(() => {
-  const codigoUsuario = localStorage.getItem("codigoUsuario");
-
-  const obtenerPerfilUsuario = async () => {
-    try {
-      const response = await axios.get(`api/user/get/${codigoUsuario}`);
-      setPerfilUsuario(response.data);
-      console.log(response.data)
-    } catch (error) {
-      console.error("Error al obtener el perfil del usuario:", error);
-    }
+  const [searchResults, setSearchResults] = useState<Book[]>([]); // Estado para los resultados de búsqueda
+  const [perfilUsuario, setPerfilUsuario] = useState<PerfilUsuario | null>(
+    null
+  );
+  const [showModal, setShowModal] = useState(false);
+  const handleModalClose = () => {
+    setShowModal(false);
   };
 
-  if (codigoUsuario) {
-    obtenerPerfilUsuario();
-  }
-}, []);
+  const handleLogout = () => {
+    localStorage.removeItem("codigoUsuario");
+    // Otras operaciones de limpieza, como redireccionar a la página de inicio de sesión
+  };
 
+  useEffect(() => {
+    const codigoUsuario = localStorage.getItem("codigoUsuario");
 
-useEffect(() => {
-  const codigoUsuario = localStorage.getItem("codigoUsuario");
-  if (!codigoUsuario) {
-    redirect("/InicioSesion");
-  }
-}, []);
+    const obtenerPerfilUsuario = async () => {
+      try {
+        const response = await axios.get(`api/user/get/${codigoUsuario}`);
+        setPerfilUsuario(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error al obtener el perfil del usuario:", error);
+      }
+    };
 
- useEffect(() => {
-    fetchBooks("")
-  .then((fetchedBooks) => {
-    setBooks(fetchedBooks);
-  })
-  .catch((error) => {
-    console.error('Error fetching books:', error);
-  });
-
+    if (codigoUsuario) {
+      obtenerPerfilUsuario();
+    }
   }, []);
 
+  useEffect(() => {
+    const codigoUsuario = localStorage.getItem("codigoUsuario");
+    if (!codigoUsuario) {
+      redirect("/InicioSesion");
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchBooks("")
+      .then((fetchedBooks) => {
+        setBooks(fetchedBooks);
+      })
+      .catch((error) => {
+        console.error("Error fetching books:", error);
+      });
+  }, []);
 
   const redirectHome = () => {
     redirect("/Home");
@@ -111,15 +110,13 @@ useEffect(() => {
     redirect("/inicioSesion");
   };
 
-
   const handleSearch = async (query: string) => {
     try {
       const fetchedBooks = await fetchBooks(query);
       setBooks(fetchedBooks);
       setSearchText(`Resultados de búsqueda: ${query}`);
-
     } catch (error) {
-      console.error('Error fetching books:', error);
+      console.error("Error fetching books:", error);
       setSearchText(`No se encontraron resultados para tu busqueda`);
       setBooks([]);
       // No actualizamos el estado 'books' en caso de error.
@@ -155,21 +152,23 @@ useEffect(() => {
             ></FontAwesomeIcon>
             <span>Inicio</span>
           </a>
-          <a
-            href="Publicar"
+          <button
             className={`py-4 text-white flex items-center p-3 transition duration-0 ${
               navOption === "publicar"
                 ? "bg-cbookC-700 rounded-l-3xl"
                 : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
             }`}
-            onClick={() => setNavOption("Publicar")}
+            onClick={() => {
+              setNavOption("Publicar");
+              setShowModal(true);
+            }}
           >
             <FontAwesomeIcon
               icon={faBook}
               className="inline-block w-8 h-8 mr-3"
             ></FontAwesomeIcon>
             <span>Publicar</span>
-          </a>
+          </button>
           <a
             href=""
             className={`py-4 text-white flex items-center p-3 transition duration-0 ${
@@ -216,21 +215,21 @@ useEffect(() => {
             <span>Buscar</span>
           </a>
 
-<a
-  href="InicioSesion"
-  className={`py-4 text-white flex items-center p-3 transition duration-0 ${
-    navOption === "salir"
-      ? "bg-cbookC-700 rounded-l-3xl"
-      : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
-  }`}
-  onClick={handleLogout}
->
-  <FontAwesomeIcon
-    icon={faSignOut}
-    className="inline-block w-8 h-8 mr-3"
-  ></FontAwesomeIcon>
-  <span>Salir</span>
-</a>
+          <a
+            href="InicioSesion"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "salir"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={handleLogout}
+          >
+            <FontAwesomeIcon
+              icon={faSignOut}
+              className="inline-block w-8 h-8 mr-3"
+            ></FontAwesomeIcon>
+            <span>Salir</span>
+          </a>
         </div>
       </div>
       {/*Barra superior con notificaciones */}
@@ -261,39 +260,39 @@ useEffect(() => {
         </section>
       </div>
 
- <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-xl col-span-2 row-span-9 mr-3 mb-3 flex justify-center items-center">
-      <div className="">
-        {perfilUsuario ? (
-          <div className="flex flex-col items-center">
-            <img
-              className="max-w-44 sm:max-w-20 md:max-w-24 lg:max-w-32 xl:max-w-48 opacity-60"
-              src="/libro_morado.png"
-              alt="Libro blanco"
-            />
-            <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center text-cbookC-800 opacity-60">
-               {perfilUsuario.codigo}<br />
-               {perfilUsuario.nombre}<br />
-
-            </span>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center">
-            <img
-              className="max-w-44 sm:max-w-20 md:max-w-24 lg:max-w-32 xl:max-w-48 opacity-60"
-              src="/libro_morado.png"
-              alt="Libro blanco"
-            />
-            <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center text-cbookC-800 opacity-60">
-              Aún no has buscado libros.
-            </span>
-          </div>
-        )}
+      <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-xl col-span-2 row-span-9 mr-3 mb-3 flex justify-center items-center">
+        <div className="">
+          {perfilUsuario ? (
+            <div className="flex flex-col items-center">
+              <img
+                className="max-w-44 sm:max-w-20 md:max-w-24 lg:max-w-32 xl:max-w-48 opacity-60"
+                src="/libro_morado.png"
+                alt="Libro blanco"
+              />
+              <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center text-cbookC-800 opacity-60">
+                {perfilUsuario.codigo}
+                <br />
+                {perfilUsuario.nombre}
+                <br />
+              </span>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center">
+              <img
+                className="max-w-44 sm:max-w-20 md:max-w-24 lg:max-w-32 xl:max-w-48 opacity-60"
+                src="/libro_morado.png"
+                alt="Libro blanco"
+              />
+              <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center text-cbookC-800 opacity-60">
+                Aún no has buscado libros.
+              </span>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
 
-{/* Muestra de los libros */}
+      {/* Muestra de los libros */}
       <div
-      
         className="bg-white rounded-2xl shadow-xl col-span-6 row-span-6 mb-3 overflow-auto "
         id="masLeidos"
       >
@@ -301,19 +300,32 @@ useEffect(() => {
         <div className="flex items-center ml-4 h-12 font-cbookF font-bold text-2xl">
           {searchText}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="ml-4 mr-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {/* Mostrar los resultados de búsqueda si hay resultados, de lo contrario, mostrar los libros más leídos */}
-          {searchResults.length > 0 ? (
-            searchResults.map((book) => (
-              <BookCard key={book.idLibro} book={book} />
-            ))
-          ) : (
-            books.map((book) => (
-              <BookCard key={book.idLibro} book={book} />
-            ))
-          )}
+          {searchResults.length > 0
+            ? searchResults.map((book) => (
+                <BookCard key={book.idLibro} book={book} />
+              ))
+            : books.map((book) => <BookCard key={book.idLibro} book={book} />)}
         </div>
       </div>
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <div className="bg-white p-6 rounded-lg shadow-lg z-10">
+            <h2 className="text-center font-cbookF font-bold text-3xl justify-center text-cbookC-700 mt-3 mb-5">
+              Publicar Nuevo Libro
+            </h2>
+            <button
+              className="absolute top-0 right-0 p-2"
+              onClick={() => setShowModal(false)}
+            >
+              X
+            </button>
+            <AddBookForm closeModal={handleModalClose} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

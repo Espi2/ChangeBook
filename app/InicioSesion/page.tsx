@@ -19,7 +19,6 @@ const InicioDeSesin: FunctionComponent = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false); // Nuevo estado para mostrar la contraseña
 
-
   const handleAuth = async () => {
     try {
       const response = await axios.post("/api/auth/login", {
@@ -33,11 +32,9 @@ const InicioDeSesin: FunctionComponent = () => {
         path: "/",
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-        
       });
-      
-     localStorage.setItem("codigoUsuario", codigo);
 
+      localStorage.setItem("codigoUsuario", codigo);
     } catch (error) {
       console.log("Error en la autenticacion:", error);
     }
@@ -75,7 +72,7 @@ const InicioDeSesin: FunctionComponent = () => {
     }
   };
 
-    const toggleShowPassword = () => {
+  const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
@@ -96,7 +93,8 @@ const InicioDeSesin: FunctionComponent = () => {
             />
           </div>
           <div className="form-group">
-            <input
+            <div className="password-input-container">
+              <input
                 type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
@@ -107,6 +105,7 @@ const InicioDeSesin: FunctionComponent = () => {
               <button type="button" onClick={toggleShowPassword}>
                 <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
               </button>
+            </div>
           </div>
           <button type="submit" className="login-btn">
             Acceder
