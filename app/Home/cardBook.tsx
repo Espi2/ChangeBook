@@ -1,5 +1,5 @@
-import React from 'react';
-import { useRouter } from 'next/navigation';
+import React from "react";
+import { useRouter } from "next/navigation";
 
 interface BookCardProps {
   idLibro: string;
@@ -11,7 +11,7 @@ interface BookCardProps {
   calificacion: number;
   intercambios: number;
   disponible: boolean;
-  userNombre: string;  // Aquí añadimos el campo userNombre
+  userNombre: string; // Aquí añadimos el campo userNombre
   codigoUsuario: string; // Añadir esta propiedad
 }
 
@@ -38,9 +38,15 @@ const BookCard: React.FC<BookCardProps> = ({
     <div className="bg-white shadow-md rounded-md p-4">
       <h2 className="text-lg font-bold">{titulo}</h2>
       <p className="text-gray-600">{autor}</p>
-      <p className="text-gray-600">Disponible: {disponible ? '🟢' : '🔴'}</p>
+      <p className="text-gray-600">Estado: {disponible ? "🟢" : "🔴"}</p>
       <p className="text-gray-600">
-        Subido por: <span onClick={handleUserClick} className="text-blue-500 cursor-pointer">{userNombre}</span>
+        Publicado por:{" "}
+        <span
+          onClick={handleUserClick}
+          className="text-blue-500 cursor-pointer"
+        >
+          {userNombre}
+        </span>
       </p>
     </div>
   );

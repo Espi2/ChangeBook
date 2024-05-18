@@ -17,7 +17,7 @@ const Registro: FunctionComponent = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [termsChecked, setTermsChecked] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // Nuevo estado para mostrar la contraseña
+  const [showPassword, setShowPassword] = useState(false);
   const [credentialImage, setCredentialImage] = useState("");
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {

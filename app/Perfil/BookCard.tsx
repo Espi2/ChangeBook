@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface Book {
   idLibro: string;
@@ -22,7 +22,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
       <div className="p-4">
         <h2 className="font-bold text-lg">{book.titulo}</h2>
         <p className="text-sm text-gray-600">by {book.autor}</p>
-        <p className="text-gray-600">Disponible: {book.disponible ? '🟢' : '🔴'}</p>
+        <p className="text-gray-600">Estado: {book.disponible ? "🟢" : "🔴"}</p>
       </div>
     </div>
   );

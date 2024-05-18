@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import axios from 'axios';
-import { fetchBooksByUser } from './libro.service';
-import BookCard from './BookCard';
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import axios from "axios";
+import { fetchBooksByUser } from "./libro.service";
+import BookCard from "./BookCard";
 
 interface PerfilUsuario {
   codigo: string;
@@ -29,8 +29,10 @@ interface Book {
 
 const PerfilUsuarioPage: React.FC = () => {
   const searchParams = useSearchParams();
-  const codigoUsuario = searchParams.get('codigoUsuario');
-  const [perfilUsuario, setPerfilUsuario] = useState<PerfilUsuario | null>(null);
+  const codigoUsuario = searchParams.get("codigoUsuario");
+  const [perfilUsuario, setPerfilUsuario] = useState<PerfilUsuario | null>(
+    null
+  );
   const [books, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
@@ -55,7 +57,7 @@ const PerfilUsuarioPage: React.FC = () => {
           setBooks(fetchedBooks);
         })
         .catch((error) => {
-          console.error('Error fetching books:', error);
+          console.error("Error fetching books:", error);
         });
     }
   }, [codigoUsuario]);
@@ -69,9 +71,13 @@ const PerfilUsuarioPage: React.FC = () => {
       <h1 className="text-2xl font-bold mt-4">{perfilUsuario.nombre}</h1>
       <p className="text-gray-600">Código: {perfilUsuario.codigo}</p>
       <p className="text-gray-600">Strikes: {perfilUsuario.strikes}</p>
-      <p className="text-gray-600">Miembro desde: {new Date(perfilUsuario.creadoEn).toLocaleDateString()}</p>
-      <p className="text-gray-600">Última actualización: {new Date(perfilUsuario.actualizadoEn).toLocaleDateString()}</p>
-
+      <p className="text-gray-600">
+        Miembro desde: {new Date(perfilUsuario.creadoEn).toLocaleDateString()}
+      </p>
+      <p className="text-gray-600">
+        Última actualización:{" "}
+        {new Date(perfilUsuario.actualizadoEn).toLocaleDateString()}
+      </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {books.map((book) => (
           <BookCard key={book.idLibro} book={book} />
