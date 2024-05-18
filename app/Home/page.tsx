@@ -114,16 +114,21 @@ function Home() {
     redirect("/inicioSesion");
   };
 
+
   const handleSearch = async (query: string) => {
     try {
       const fetchedBooks = await fetchBooks(query);
-      setBooks(fetchedBooks);
-      setSearchText(`Resultados de búsqueda: ${query}`);
+      if (fetchedBooks.length === 0) {
+        setSearchText(`No se encontraron resultados para tu búsqueda: ${query}`);
+        setBooks([]);
+      } else {
+        setSearchText(`Resultados de búsqueda: ${query}`);
+        setBooks(fetchedBooks);
+      }
     } catch (error) {
       console.error("Error fetching books:", error);
-      setSearchText(`No se encontraron resultados para tu busqueda`);
+      setSearchText(`No se encontraron resultados para tu búsqueda`);
       setBooks([]);
-      // No actualizamos el estado 'books' en caso de error.
     }
   };
 
