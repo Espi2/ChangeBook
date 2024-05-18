@@ -67,6 +67,21 @@ const Perfil: React.FC = () => {
     setBooks(books.filter(book => book.idLibro !== idLibro));
   };
 
+  const handleUpdateAvailability = (idLibro: string, disponible: boolean) => {
+setBooks(prevBooks =>
+prevBooks.map(book =>
+book.idLibro === idLibro ? { ...book, disponible: !disponible } : book
+)
+);
+};
+
+
+
+
+
+
+
+
   return (
     <div className="container mx-auto p-4">
       {user && (
@@ -89,11 +104,11 @@ const Perfil: React.FC = () => {
           </button>
         </div>
       )}
-      {showEditForm && <EditarPerfil />} {/* Muestra el formulario de edición si showEditForm es true */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {books.map((book) => (
-          <BookCard key={book.idLibro} book={book} onDelete={handleDeleteBook} />
-        ))}
+      {showEditForm && <EditarPerfil />}
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+{books.map((book) => (
+<BookCard key={book.idLibro} book={book} onDelete={handleDeleteBook} onUpdateAvailability={handleUpdateAvailability} />
+))}
       </div>
     </div>
   );
