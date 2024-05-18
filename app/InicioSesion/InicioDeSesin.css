@@ -92,6 +92,25 @@ body {
   margin-bottom: 10%;
 }
 
+.password-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-container input[type="password"] {
+  padding-right: 40px;
+}
+
+.password-input-container button {
+  position: absolute;
+  top: 23px;
+  right: +50px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 #textobienvenido {
   text-align: center;
   color: white;
