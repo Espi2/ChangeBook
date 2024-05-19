@@ -78,7 +78,7 @@ const Perfil: React.FC = () => {
   return (
     <div className="container mx-auto p-4 bg-gray-50">
       {user && (
-        <div className="flex items-center justify-between mb-4 bg-gradient-to-r from-cbookC-400 via-cbookC-600 to-cbookC-700 rounded-2xl shadow-xl h-56">
+        <div className="flex items-center justify-between mb-4 bg-gradient-to-r from-cbookC-400 via-cbookC-600 to-cbookC-700 rounded-2xl shadow-xl h-56" >
           <div className="flex items-center">
             <img
               loading="lazy"

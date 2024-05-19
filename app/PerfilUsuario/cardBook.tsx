@@ -1,5 +1,7 @@
 import React from "react";
 import { deleteBook, updateBookAvailability } from "./libro.service";
+import { useRouter } from "next/navigation";
+
 
 interface Book {
   idLibro: string;
@@ -34,6 +36,11 @@ const BookCard: React.FC<BookCardProps> = ({ book, onDelete }) => {
       }
     }
   };
+  const router = useRouter();
+
+    const handleCardClick = () => {
+    router.push(`/DetallesLibro?idLibro=${book.idLibro}`);
+  };
 
   const handleUpdateAvailability = async () => {
     try {
@@ -47,7 +54,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onDelete }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md flex w-full">
+    <div className="bg-white rounded-lg shadow-md flex w-full" onClick={handleCardClick}  style={{ cursor: 'pointer' }} >
       {/* Sección de la imagen */}
       <img
         src={book.imagen}

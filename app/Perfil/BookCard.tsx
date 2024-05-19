@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 
 interface Book {
   idLibro: string;
@@ -19,9 +20,16 @@ interface BookCardProps {
   book: Book;
 }
 
+
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
+    const router = useRouter();
+
+    const handleCardClick = () => {
+    router.push(`/DetallesLibro?idLibro=${book.idLibro}`);
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden" onClick={handleCardClick}  style={{ cursor: 'pointer' }} >
       <div className="p-4">
         <img src={book.imagen} alt={book.titulo} className="w-full h-48 object-cover rounded-md" />
         <h2 className="font-bold text-lg">{book.titulo}</h2>
