@@ -25,7 +25,7 @@ interface Credenciales {
     habilitado: boolean;
 }
 
-export default function () {
+export default function AdmitUser() {
 
     const [credenciales, setCredenciales] = useState<User[]>([]);
 
