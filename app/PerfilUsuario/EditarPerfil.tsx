@@ -90,7 +90,7 @@ const EditarPerfil: React.FC<EditarPerfilProps> = ({ closeModal }) => {
           <img
             src={imagenPreview}
             alt="Vista previa de la imagen"
-            className="object-cover h-36 w-36 rounded-full mt-4 mx-auto"
+            className="object-cover h-52 w-52 rounded-full mt-4 mx-auto"
           />
         )}
       </div>
@@ -114,4 +114,3 @@ const EditarPerfil: React.FC<EditarPerfilProps> = ({ closeModal }) => {
 };
 
 export default EditarPerfil;
-

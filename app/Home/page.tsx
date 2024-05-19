@@ -209,7 +209,7 @@ function Home() {
             <span>Mi perfil</span>
           </a>
           <a
-            href=""
+            href="Home"
             className={`py-4 text-white flex items-center p-3 transition duration-0 ${
               navOption === "buscar"
                 ? "bg-cbookC-700 rounded-l-3xl"
