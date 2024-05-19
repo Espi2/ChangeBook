@@ -13,9 +13,10 @@ const AddBookForm: React.FC<AddBookFormProps> = (props) => {
     editorial: "",
     sinopsis: "",
     isbn: "",
-    ano_de_publicacion: ""
+    ano_de_publicacion: "",
   });
   const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -29,7 +30,12 @@ const AddBookForm: React.FC<AddBookFormProps> = (props) => {
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -44,9 +50,9 @@ const AddBookForm: React.FC<AddBookFormProps> = (props) => {
     formDataWithImage.append("sinopsis", formData.sinopsis);
     formDataWithImage.append("isbn", formData.isbn);
     formDataWithImage.append("ano_de_publicacion", formData.ano_de_publicacion);
-    formDataWithImage.append("codigo", codigoUsuario!);  // Añadir el código de usuario al form data
+    formDataWithImage.append("codigo", codigoUsuario!); // Añadir el código de usuario al form data
     if (image) {
-      formDataWithImage.append("file", image);  // Cambiar el nombre del campo a "file"
+      formDataWithImage.append("file", image); // Cambiar el nombre del campo a "file"
     }
 
     try {
@@ -62,100 +68,113 @@ const AddBookForm: React.FC<AddBookFormProps> = (props) => {
         editorial: "",
         sinopsis: "",
         isbn: "",
-        ano_de_publicacion: ""
+        ano_de_publicacion: "",
       });
       setImage(null);
+      setImagePreview(null);
       props.closeModal();
     } catch (error) {
       console.error("Error al agregar libro:", error);
-      alert("Hubo un error al agregar el libro. Por favor, intenta nuevamente.");
+      alert(
+        "Hubo un error al agregar el libro. Por favor, intenta nuevamente."
+      );
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col h-full">
-      <div className="flex-1 overflow-auto">
-        <div>
-          <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
-            Título:
-          </label>
-          <input
-            type="text"
-            name="titulo"
-            value={formData.titulo}
-            onChange={handleChange}
-            className="rounded-lg p-2 w-3/5 h-7 bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
-          />
+      <div className="flex flex-1 overflow-auto">
+        <div className="w-3/5 p-4">
+          <div>
+            <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
+              Título:
+            </label>
+            <input
+              type="text"
+              name="titulo"
+              value={formData.titulo}
+              onChange={handleChange}
+              className="rounded-lg p-2 w-full bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
+              Autor:
+            </label>
+            <input
+              type="text"
+              name="autor"
+              value={formData.autor}
+              onChange={handleChange}
+              className="rounded-lg p-2 w-full bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
+              Editorial:
+            </label>
+            <input
+              type="text"
+              name="editorial"
+              value={formData.editorial}
+              onChange={handleChange}
+              className="rounded-lg p-2 w-full bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
+              Sinopsis:
+            </label>
+            <textarea
+              name="sinopsis"
+              value={formData.sinopsis}
+              onChange={handleChange}
+              className="rounded-lg p-2 w-full bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
+            ></textarea>
+          </div>
+          <div>
+            <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
+              ISBN:
+            </label>
+            <input
+              type="text"
+              name="isbn"
+              value={formData.isbn}
+              onChange={handleChange}
+              className="rounded-lg p-2 w-full bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
+              Año de Publicación:
+            </label>
+            <input
+              type="text"
+              name="ano_de_publicacion"
+              value={formData.ano_de_publicacion}
+              onChange={handleChange}
+              className="rounded-lg p-2 w-full bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
+            />
+          </div>
         </div>
-        <div>
-          <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
-            Autor:
-          </label>
-          <input
-            type="text"
-            name="autor"
-            value={formData.autor}
-            onChange={handleChange}
-            className="rounded-lg p-2 w-3/5 h-7 bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
-            Editorial:
-          </label>
-          <input
-            type="text"
-            name="editorial"
-            value={formData.editorial}
-            onChange={handleChange}
-            className="rounded-lg p-2 w-3/5 h-7 bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
-            Sinopsis:
-          </label>
-          <textarea
-            name="sinopsis"
-            value={formData.sinopsis}
-            onChange={handleChange}
-            className="rounded-lg p-2 w-3/5 h-3/4 bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
-          ></textarea>
-        </div>
-        <div>
-          <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
-            ISBN:
-          </label>
-          <input
-            type="text"
-            name="isbn"
-            value={formData.isbn}
-            onChange={handleChange}
-            className="rounded-lg p-2 w-3/5 h-7 bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
-            Año de Publicación:
-          </label>
-          <input
-            type="text"
-            name="ano_de_publicacion"
-            value={formData.ano_de_publicacion}
-            onChange={handleChange}
-            className="rounded-lg p-2 w-3/5 h-7 bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="font-cbookF block text-gray-600 font-bold mb-0 mt-1">
-            Imagen:
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="rounded-lg p-2 w-3/5 bg-gray-100 text-gray-600 font-cbookF focus:outline-none"
-          />
+        <div className="w-2/5 p-4 flex flex-col items-center">
+          <div className="w-full h-full flex flex-col items-center justify-center border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 p-4">
+            {imagePreview ? (
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="object-cover h-full w-full"
+              />
+            ) : (
+              <span className="text-gray-400">Selecciona una imagen</span>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="mt-4 w-full text-center text-gray-600 font-cbookF focus:outline-none"
+            />
+          </div>
         </div>
       </div>
       <div className="flex justify-center space-x-4 mt-8">
