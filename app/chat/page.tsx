@@ -1,47 +1,96 @@
-// pages/chat.tsx"use client"
-"use client"
-import { useEffect, useRef, useState } from 'react';
-import io, { Socket } from 'socket.io-client';
-import axios from 'axios';
-import { useRouter } from 'next/router';
+"use client";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "next/navigation";
-import './Chat.css'; // Asegúrate de crear y configurar este archivo CSS
+import { useEffect, useRef, useState } from "react";
+import io, { Socket } from "socket.io-client";
+import { redirect } from "next/navigation";
+import AddBookForm from "../Publicar/page";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import "./Chat.css";
+import {
+  faHome,
+  faSignOut,
+  faBook,
+  faClock,
+  faUser,
+  faSearch,
+  faBell,
+} from "@fortawesome/free-solid-svg-icons";
+
+interface Book {
+  idLibro: string;
+  titulo: string;
+  editorial: string;
+  descripcion: string;
+  sinopsis: string;
+  autor: string;
+  calificacion: number;
+  intercambios: number;
+  disponible: boolean;
+  isbn: string;
+  ano_de_publicacion: string;
+  userNombre: string;
+  codigoUsuario: string;
+  imagenPerfil: string;
+  imagen: string;
+}
 
 const Chat = () => {
-  const [messages, setMessages] = useState<{ message: string, username: string }[]>([]);
-  const [input, setInput] = useState('');
+  const [messages, setMessages] = useState<
+    { message: string; username: string }[]
+  >([]);
+  const [input, setInput] = useState("");
   const socketRef = useRef<Socket | null>(null);
   const searchParams = useSearchParams();
   const roomId = searchParams.get("roomId");
   const chatContainerRef = useRef<HTMLUListElement>(null);
+  const [navOption, setNavOption] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [books, setBooks] = useState<Book[]>([]);
+
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
 
   useEffect(() => {
-    if (!roomId || typeof roomId !== 'string') return;
+    if (!roomId || typeof roomId !== "string") return;
 
-    const username = localStorage.getItem('nombreUsuario') || prompt('Please enter your username:');
+    const username =
+      localStorage.getItem("nombreUsuario") ||
+      prompt("Please enter your username:");
     if (!username) return;
 
-    localStorage.setItem('nombreUsuario', username);
+    localStorage.setItem("nombreUsuario", username);
 
-    const socket = io('http://localhost:3500', {
+    const socket = io("http://localhost:3500", {
       auth: { username },
-      query: { room: roomId }
+      query: { room: roomId },
     });
 
     socketRef.current = socket;
 
-    socket.on('chat message', ({ message, username }) => {
+    socket.on("chat message", ({ message, username }) => {
       setMessages((prev) => [...prev, { message, username }]);
     });
 
     const fetchMessages = async () => {
       try {
-        const response = await axios.get('http://localhost:3500/chat/messages', {
-          params: { room: roomId }
-        });
-        setMessages(response.data.map((msg: { content: string, user: string }) => ({ message: msg.content, username: msg.user })));
+        const response = await axios.get(
+          "http://localhost:3500/chat/messages",
+          {
+            params: { room: roomId },
+          }
+        );
+        setMessages(
+          response.data.map((msg: { content: string; user: string }) => ({
+            message: msg.content,
+            username: msg.user,
+          }))
+        );
       } catch (error) {
-        console.error('Error fetching messages:', error);
+        console.error("Error fetching messages:", error);
       }
     };
 
@@ -52,55 +101,266 @@ const Chat = () => {
     };
   }, [roomId]);
 
+  const handleLogout = () => {
+    localStorage.removeItem("codigoUsuario");
+    redirect("/InicioSesion");
+  };
+
+  const router = useRouter();
+
+  const handleUserClick = () => {
+    router.push(`/Perfil?codigoUsuario=${books[0].codigoUsuario}`);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (input && socketRef.current) {
       try {
-        await axios.post('http://localhost:3500/chat/message', {
+        await axios.post("http://localhost:3500/chat/message", {
           message: input,
-          username: localStorage.getItem('nombreUsuario'),
+          username: localStorage.getItem("nombreUsuario"),
           room: roomId,
         });
-        setInput('');
+        setInput("");
       } catch (error) {
-        console.error('Error sending message:', error);
+        console.error("Error sending message:", error);
       }
     }
   };
 
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
   return (
-    <div className="chat-container">
-      <h1 className="chat-header">Chateando con: {roomId}</h1>
-      <ul id="messages" ref={chatContainerRef} className="chat-messages">
-        {messages.map((message, index) => (
-          <li key={index} className={`message ${message.username === localStorage.getItem('nombreUsuario') ? 'my-message' : 'other-message'}`}>
-            <p>{message.message}</p>
-            <small>{message.username}</small>
-          </li>
-        ))}
-      </ul>
-      <form id="form" onSubmit={handleSubmit} className="chat-form">
-        <input
-          type="text"
-          name="message"
-          id="input"
-          placeholder="Type a message"
-          autoComplete="off"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="chat-input"
+    <div className="grid grid-cols-9 grid-rows-10 gap-3 bg-gray-50 w-screen h-screen">
+      {/*MENU*/}
+      <div className="hidden sm:block bg-cbookC-500 rounded-r-3xl shadow-xl col-span-1 row-span-10 flex-col h-screen justify-between">
+        <div className="flex items-center justify-center m-5 mb-10">
+          <img
+            src="/logo_completo_blanco_recortado.png"
+            alt="Logo de la empresa"
+            className="w-48 h-auto"
+          />
+        </div>
+
+        <div className="flex flex-col items-left mx-3 gap-50 font-cbookF font-bold text-x1 cursor-pointer overflow-hidden mr-0">
+          <a
+            href="/Home"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "inicio"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={() => setNavOption("inicio")}
+          >
+            <FontAwesomeIcon
+              icon={faHome}
+              className="inline-block w-8 h-8 mr-3"
+            />
+            <span>Inicio</span>
+          </a>
+          <button
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "publicar"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={() => {
+              setNavOption("Publicar");
+              setShowModal(true);
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faBook}
+              className="inline-block w-8 h-8 mr-3"
+            />
+            <span>Publicar</span>
+          </button>
+          <a
+            href=""
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "lista"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={() => setNavOption("lista")}
+          >
+            <FontAwesomeIcon
+              icon={faClock}
+              className="inline-block w-8 h-8 mr-3"
+            />
+            <span>Lista de espera</span>
+          </a>
+          <a
+            href="PerfilUsuario"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "perfil"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={() => setNavOption("PerfilUsuario")}
+          >
+            <FontAwesomeIcon
+              icon={faUser}
+              className="inline-block w-8 h-8 mr-3"
+            />
+            <span>Mi perfil</span>
+          </a>
+          <a
+            href="Home"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "buscar"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={() => setNavOption("buscar")}
+          >
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="inline-block w-8 h-8 mr-3"
+            />
+            <span>Buscar</span>
+          </a>
+
+          <a
+            href="InicioSesion"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "salir"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={handleLogout}
+          >
+            <FontAwesomeIcon
+              icon={faSignOut}
+              className="inline-block w-8 h-8 mr-3"
+            />
+            <span>Salir</span>
+          </a>
+        </div>
+      </div>
+      {/*NOTIFICACIONES*/}
+      <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl col-span-8 row-span-1 mt-3 mr-3 flex items-center justify-end">
+        <a href="" className="flex items-center">
+          <span className="font-cbookF font-bold text-x1 text-cbookC-700 mr-2">
+            Notificaciones
+          </span>
+          <FontAwesomeIcon icon={faBell} className="w-8 h-8 text-cbookC-700" />
+        </a>
+        <img
+          className="ml-6 w-10 h-10 mr-6"
+          src="/libro_morado.png"
+          alt="Libro"
         />
-        <button type="submit" className="chat-button">Send</button>
-      </form>
+      </div>
+      {/* CHAT */}
+      <div className="flex flex-col items-center justify-center bg-gradient-to-r from-cbookC-500 via-cbookC-700 to-cbookC-600 rounded-2xl shadow-xl col-span-6 row-span-9 mb-3 overflow-hidden">
+        <h1 className="text-2xl font-bold font-cbookF text-cbookC-200 mb-4 mt-4">
+          Chateando con: {roomId}
+        </h1>
+        <ul
+          ref={chatContainerRef}
+          className="flex flex-col flex-grow w-full max-w-full overflow-y-auto bg-cbookC-300 shadow-md p-4"
+        >
+          {messages.map((message, index) => (
+            <li
+              key={index}
+              className={`flex flex-col py-2 ${
+                message.username === localStorage.getItem("nombreUsuario")
+                  ? "self-end items-end"
+                  : "items-start"
+              }`}
+            >
+              <p
+                className={`message-bubble ${
+                  message.username === localStorage.getItem("nombreUsuario")
+                    ? "sender-bubble"
+                    : "receiver-bubble"
+                }`}
+              >
+                {message.message}
+              </p>
+              <small className="text-gray-600">{message.username}</small>
+            </li>
+          ))}
+        </ul>
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-full flex items-center bg-gradient-to-r from-cbookC-500 via-cbookC-700 to-cbookC-600 p-4"
+        >
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type a message"
+            className="flex-1 py-2 px-4 mr-2 font-cbookF rounded-lg focus:outline-none focus:border-cbookC-800"
+          />
+          <button
+            type="submit"
+            className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+          >
+            Enviar
+          </button>
+        </form>
+      </div>
+
+      {/*INFO USER*/}
+      <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-xl col-span-2 row-span-9 mr-3 mb-3 flex justify-center items-center">
+        <div className="flex flex-col items-center justify-between h-full space-y-4 p-8">
+          {books.length > 0 ? (
+            <>
+              <span className="text-center font-cbookF font-bold text-3xl max-w-44 justify-center text-cbookC-700">
+                Prestador
+              </span>
+              <img
+                src={books[0].imagenPerfil}
+                alt="Imagen de perfil"
+                className="w-40 h-40 rounded-full"
+              />
+              <span className="text-center font-cbookF font-bold text-2xl max-w-52 justify-center text-gray-500">
+                {books[0].userNombre}
+                <br />
+                <br />
+                Intercambios: {books[0].intercambios}
+              </span>
+              <button
+                onClick={handleUserClick}
+                className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+              >
+                Ver perfil
+              </button>
+            </>
+          ) : (
+            <div className="flex flex-col items-center"></div>
+          )}
+        </div>
+      </div>
+      {/*FORM PUBLICAR*/}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <div className="bg-white p-6 rounded-lg shadow-lg z-10 w-full max-w-3xl h-5/6 flex flex-col">
+            <h2 className="text-center font-cbookF font-bold text-3xl justify-center text-cbookC-700 mt-3 mb-5">
+              Publicar Nuevo Libro
+            </h2>
+            <button
+              className="absolute top-0 right-0 p-2"
+              onClick={() => setShowModal(false)}
+            >
+              x
+            </button>
+            <div className="flex-1 overflow-auto">
+              <AddBookForm closeModal={handleModalClose} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Chat;
-
