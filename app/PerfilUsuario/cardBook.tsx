@@ -79,7 +79,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onDelete }) => {
           </p>
         </div>
         {/* Botones de acciones */}
-        <div className="flex flex-row-reverse mt-4 w-full justify-end">
+        <div className="flex flex-row-reverse mt-4 w-full justify-start">
           <button
             onClick={handleDelete}
             className="bg-red-500 hover:bg-red-400 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline ml-2"
@@ -92,10 +92,9 @@ const BookCard: React.FC<BookCardProps> = ({ book, onDelete }) => {
           >
             Ver detalles del libro
           </button>
-
           <button
             onClick={handleUpdateAvailability}
-            className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline ml-2"
+            className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline ml-"
           >
             Cambiar Disponibilidad
           </button>
