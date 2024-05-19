@@ -15,7 +15,7 @@ interface BookCardProps {
   ano_de_publicacion: string;
   userNombre: string;
   codigoUsuario: string;
-  imagenPerfil:string;
+  imagenPerfil: string;
   imagen: string;
 }
 
@@ -39,25 +39,35 @@ const BookCard: React.FC<BookCardProps> = ({
   const router = useRouter();
 
   return (
-    <div className="bg-cbookC-100 shadow-md rounded-md p-4 h-full flex">
+    <div className="bg-white rounded-md p-4 h-full flex">
       <div className="flex-1">
-        <h2 className="text-lg font-bold font-cbookF">{titulo}</h2>
-        <p className="text-gray-600 font-cbookF">{autor}</p>
-        <p className="text-gray-600 font-cbookF">Año publicacion: {ano_de_publicacion}</p>
-        <p className="text-gray-600 font-cbookF">Editorial: {editorial}</p>
-        <p className="text-gray-600 font-cbookF">ISBN: {isbn}</p>
-        <p className="text-gray-600 font-cbookF">
+        <h2 className="text-3xl font-bold font-cbookF">{titulo}</h2>
+        <p className="text-2xl text-cbookC-600 font-cbookF font-bold">
+          {autor}
+        </p>
+        <br />
+        <p className="text-xl text-gray-600 font-cbookF">
+          Año publicacion: {ano_de_publicacion}
+        </p>
+        <p className="text-xl text-gray-600 font-cbookF">
+          Editorial: {editorial}
+        </p>
+        <p className="text-xl text-gray-600 font-cbookF">ISBN: {isbn}</p>
+        <p className="text-xl text-gray-600 font-cbookF">
           Estatus: {disponible ? "Disponible" : "No Disponible"}
         </p>
-        <p className="text-gray-600 font-cbookF">Sinopsis: {sinopsis}</p>
-
+        <br />
+        <p className="text-xl text-gray-600 font-cbookF text-justify">
+          Sinopsis
+          <br /> {sinopsis}
+        </p>
       </div>
-      <div className="ml-4 flex-shrink-0">
+      <div className="ml-4 flex-shrink-0 w-64 h-96 mt-0">
         <img
           loading="lazy"
           src={imagen}
           alt={titulo}
-          className="w-full max-w-xs object-cover rounded-md"
+          className="object-cover w-full h-full rounded-md"
         />
       </div>
     </div>
