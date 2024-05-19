@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const EditarPerfil: React.FC = () => {
+interface EditarPerfilProps {
+  closeModal: () => void;
+}
+
+const EditarPerfil: React.FC<EditarPerfilProps> = ({ closeModal }) => {
   const [imagenPerfil, setImagenPerfil] = useState<File | null>(null);
   const [nombre, setNombre] = useState("");
   const [modificacionNombre, setModificacionNombre] = useState(false);
@@ -90,12 +94,19 @@ const EditarPerfil: React.FC = () => {
           />
         )}
       </div>
-      <div className="mt-4">
+      <div className="mt-4 flex justify-between">
         <button
-          className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline mt-4"
           type="submit"
+          className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
         >
           Guardar
+        </button>
+        <button
+          type="button"
+          className="bg-gray-200 hover:bg-gray-300 text-cbookC-700 font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+          onClick={closeModal}
+        >
+          Cancelar
         </button>
       </div>
     </form>
@@ -103,3 +114,4 @@ const EditarPerfil: React.FC = () => {
 };
 
 export default EditarPerfil;
+
