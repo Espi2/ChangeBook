@@ -31,6 +31,7 @@ const AddBookForm: React.FC<AddBookFormProps> = (props) => {
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      setImage(file); // Actualizar el estado de la imagen
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
@@ -52,7 +53,7 @@ const AddBookForm: React.FC<AddBookFormProps> = (props) => {
     formDataWithImage.append("ano_de_publicacion", formData.ano_de_publicacion);
     formDataWithImage.append("codigo", codigoUsuario!); // Añadir el código de usuario al form data
     if (image) {
-      formDataWithImage.append("file", image); // Cambiar el nombre del campo a "file"
+      formDataWithImage.append("file", image); // Añadir la imagen solo si existe
     }
 
     try {
@@ -197,3 +198,4 @@ const AddBookForm: React.FC<AddBookFormProps> = (props) => {
 };
 
 export default AddBookForm;
+
