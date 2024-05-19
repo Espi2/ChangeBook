@@ -103,7 +103,22 @@ const Perfil: React.FC = () => {
           </button>
         </div>
       )}
-      {showEditForm && <EditarPerfil />}
+      {showEditForm && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-white p-4 rounded-lg shadow-md w-1/3">
+            <h2 className="text-center font-cbookF font-bold text-3xl justify-center text-cbookC-700 mt-3 mb-8">
+              Editar Perfil
+            </h2>
+            <button
+              onClick={() => setShowEditForm(false)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 focus:outline-none flex"
+            >
+              x
+            </button>
+            <EditarPerfil />
+          </div>
+        </div>
+      )}
       <div className="grid grid-cols-1 gap-4">
         {books.map((book) => (
           <BookCard

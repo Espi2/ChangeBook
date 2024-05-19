@@ -6,6 +6,7 @@ const EditarPerfil: React.FC = () => {
   const [nombre, setNombre] = useState("");
   const [modificacionNombre, setModificacionNombre] = useState(false);
   const [modificacionImagen, setModificacionImagen] = useState(false);
+  const [imagenPreview, setImagenPreview] = useState<string | null>(null);
 
   const handleNombreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNombre(event.target.value);
@@ -14,8 +15,14 @@ const EditarPerfil: React.FC = () => {
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setImagenPerfil(event.target.files[0]);
+      const file = event.target.files[0];
+      setImagenPerfil(file);
       setModificacionImagen(true);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagenPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -51,17 +58,46 @@ const EditarPerfil: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="text-center">
       <div>
         <input
           type="text"
-          placeholder="Nuevo Nombre"
+          placeholder="Nuevo nombre de usuario"
           value={nombre}
           onChange={handleNombreChange}
+          className="rounded-lg p-2 w-full bg-gray-100 text-gray-600 font-cbookF focus:outline-none mb-8"
         />
-        <input type="file" accept="image/*" onChange={handleImageChange} />
+        <div className="mt-2">
+          <label
+            htmlFor="imagenInput"
+            className="cursor-pointer font-cbookF text-cbookC-800"
+          >
+            Subir imagen
+          </label>
+          <input
+            id="imagenInput"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+          />
+        </div>
+        {imagenPreview && (
+          <img
+            src={imagenPreview}
+            alt="Vista previa de la imagen"
+            className="object-cover h-36 w-36 rounded-full mt-4 mx-auto"
+          />
+        )}
       </div>
-      <button type="submit">Actualizar Perfil</button>
+      <div className="mt-4">
+        <button
+          className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline mt-4"
+          type="submit"
+        >
+          Guardar
+        </button>
+      </div>
     </form>
   );
 };
