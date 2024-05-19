@@ -1,6 +1,6 @@
 'use-client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Report } from "../interfaces/interfaces";
 import { ReportCard } from "./ReportCard";
 
@@ -8,23 +8,38 @@ interface Props {
     report: Report;
 }
 
+interface Responsee {
+    idReporte: string;
+    fecha: Date;
+    descripcion: string;
+    codigo_remitente: string;
+    resuelto: boolean;
+}
+
 export const StrikeGridItem = ({ report }: Props) => {
 
     const [response1, setResponse1] = useState(null);
     const [response2, setResponse2] = useState(null);
+    const [, setReloadPage] = useState(false); // Variable de estado para forzar la recarga de la página
+
+    useEffect(() => {
+        if (response1 !== null || response2 !== null) {
+            window.location.reload();
+        }
+    }, [response1, response2]);
 
     const handleButtonClick1 = async () => {
         try {
-            // const response = await fetch(`/api/endpoint1/${report.codigo}`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({ /* datos que necesites enviar en el cuerpo */ }),
-            // });
-            // const data = await response.json();
-            // setResponse1(data);
-            console.log('btn 1')
+            const response = await fetch(`/api/user/addStrike/${report.user.codigo}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            const data = await response.json();
+            setResponse1(data);
+            await handleButtonClick2();
+            console.log('btn 1');
         } catch (error) {
             console.error('Error fetching data from endpoint 1:', error);
         }
@@ -32,15 +47,15 @@ export const StrikeGridItem = ({ report }: Props) => {
 
     const handleButtonClick2 = async () => {
         try {
-            // const response = await fetch(`/api/endpoint2/${report.codigo}`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({ /* datos que necesites enviar en el cuerpo */ }),
-            // });
-            // const data = await response.json();
-            // setResponse2(data);
+            const response = await fetch(`/api/report/resolve/${report.user.codigo}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await response.json();
+            console.log(data);
+            setResponse2(data);
             console.log('btn 2')
         } catch (error) {
             console.error('Error fetching data from endpoint 2:', error);
@@ -67,10 +82,16 @@ export const StrikeGridItem = ({ report }: Props) => {
             <div className="flex justify-center p-4">
                 <div className="flex space-x-4">
                     <button
-                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-green-700"
-                        onClick={handleButtonClick2}
+                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
+                        onClick={handleButtonClick1}
                     >
                         Agregar Strike
+                    </button>
+                    <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        onClick={handleButtonClick2}
+                    >
+                        Eliminar Reporte
                     </button>
                 </div>
             </div>
