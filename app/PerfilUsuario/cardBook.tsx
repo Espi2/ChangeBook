@@ -52,7 +52,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onDelete }) => {
       <img
         src={book.imagen}
         alt={book.titulo}
-        className="w-44 h-72 object-cover rounded-l-md"
+        className="w-44 h-72 object-cover p-3"
       />
       {/* Sección de la información */}
       <div className="flex flex-col justify-between p-4 w-auto">
