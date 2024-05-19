@@ -1,61 +1,47 @@
 'use-client';
 
 import Image from "next/image";
-import { SeedProduct } from "../interfaces/interfaces"
-import { useState } from "react";
+import { SeedProduct, UserCred } from "../interfaces/interfaces"
+import { useEffect, useState } from "react";
 
 interface Props {
-    product: SeedProduct;
+    product: UserCred;
 }
 
 export const UserGridItem = ({ product }: Props) => {
 
     const [response1, setResponse1] = useState(null);
-    const [response2, setResponse2] = useState(null);
+
+    useEffect(() => {
+        if (response1 !== null) {
+            window.location.reload();
+        }
+    }, [response1]);
 
     const handleButtonClick1 = async () => {
         try {
-            // const response = await fetch(`/api/endpoint1/${product.codigo}`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({ /* datos que necesites enviar en el cuerpo */ }),
-            // });
-            // const data = await response.json();
-            // setResponse1(data);
-            console.log('btn 1')
+            const response = await fetch(`/api/credenciales/habilitarUser/${product.codigo}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ habilitar: true }),
+            });
+            const data = await response.json();
+            setResponse1(data);
+            console.log('btn 1');
         } catch (error) {
             console.error('Error fetching data from endpoint 1:', error);
         }
     };
 
-    const handleButtonClick2 = async () => {
-        try {
-            // const response = await fetch(`/api/endpoint2/${product.codigo}`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({ /* datos que necesites enviar en el cuerpo */ }),
-            // });
-            // const data = await response.json();
-            // setResponse2(data);
-            console.log('btn 2')
-        } catch (error) {
-            console.error('Error fetching data from endpoint 2:', error);
-        }
-    };
-
     return (
         <div className="rounded-md overflow-hidden border border-gray-300 shadow-lg">
-            <Image
-                // src="/libro_morado.png" // Ruta de la imagen (ajústala según sea necesario)
-                src={`/${product.imagenCredencial}`}
+            <img
+                src={product.imagenCredencial}
                 alt={product.nombre}
-                className="w-full object-cover"
-                width={500}
-                height={500}
+                loading="lazy"
+                className="min-w-64"
             />
             <div className="p-4 flex flex-col">
                 <h3 className="text-lg font-semibold">{product.nombre}</h3>
@@ -69,14 +55,11 @@ export const UserGridItem = ({ product }: Props) => {
                     >
                         Aceptar
                     </button>
-                    <button
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
-                        onClick={handleButtonClick2}
-                    >
-                        Declinar
-                    </button>
                 </div>
             </div>
         </div>
     )
 }
+
+
+// SELECT * FROM users INNER JOIN credenciales ON users.codigo = credenciales.codigo WHERE credenciales.habilitado = false;

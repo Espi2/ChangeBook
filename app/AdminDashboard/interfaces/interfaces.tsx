@@ -288,3 +288,21 @@ export const initialReportData: SeedReportData = {
         }
     ]
 }
+
+export interface UserCred {
+    codigo: string;
+    nombre: string;
+    strikes: number;
+    imagenCredencial: string;
+    imagenPerfil: string;
+    creadoEn: Date;
+    actualizadoEn: Date;
+    credenciales: Credencial;
+}
+
+interface Credencial {
+    codigo: string;
+    password: string;
+    correo: string;
+    habilitado: boolean;
+}

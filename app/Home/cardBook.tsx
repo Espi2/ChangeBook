@@ -32,21 +32,28 @@ const BookCard: React.FC<BookCardProps> = ({
 }) => {
   const router = useRouter();
 
+
+    const handleCardClick = () => {
+    router.push(`/DetallesLibro?idLibro=${idLibro}`);
+  };
+
   const handleUserClick = () => {
     router.push(`/Perfil?codigoUsuario=${codigoUsuario}`);
   };
 
   return (
-    <div className="bg-cbookC-100 shadow-md rounded-md p-4">
+    <div className="bg-cbookC-100 shadow-md rounded-md p-4" >
       <img
         loading="lazy"
         src={imagen}
         alt={titulo}
         className="w-full max-h-64 object-cover rounded-md"
+        onClick={handleCardClick}
+         style={{ cursor: 'pointer' }} 
       />
-      <h2 className="text-lg font-bold font-cbookF">{titulo}</h2>
-      <p className="text-gray-600 font-cbookF">{autor}</p>
-      <p className="text-gray-600 font-cbookF">
+      <h2  style={{ cursor: 'pointer' }}  onClick={handleCardClick} className="text-lg font-bold font-cbookF">{titulo}</h2>
+      <p   style={{ cursor: 'pointer' }}  onClick={handleCardClick} className="text-gray-600 font-cbookF">{autor}</p>
+      <p   onClick={handleCardClick} className="text-gray-600 font-cbookF">
         Estado: {disponible ? "🟢" : "🔴"}
       </p>
       <p className="text-gray-600 font-cbookF">
