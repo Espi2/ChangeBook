@@ -2,7 +2,6 @@ import React from "react";
 import { deleteBook, updateBookAvailability } from "./libro.service";
 import { useRouter } from "next/navigation";
 
-
 interface Book {
   idLibro: string;
   titulo: string;
@@ -38,7 +37,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onDelete }) => {
   };
   const router = useRouter();
 
-    const handleCardClick = () => {
+  const handleCardClick = () => {
     router.push(`/DetallesLibro?idLibro=${book.idLibro}`);
   };
 
@@ -54,7 +53,10 @@ const BookCard: React.FC<BookCardProps> = ({ book, onDelete }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md flex w-full"   style={{ cursor: 'pointer' }} >
+    <div
+      className="bg-white rounded-lg shadow-md flex w-full"
+      style={{ cursor: "pointer" }}
+    >
       {/* Sección de la imagen */}
       <img
         src={book.imagen}
@@ -76,29 +78,28 @@ const BookCard: React.FC<BookCardProps> = ({ book, onDelete }) => {
             Estado: {book.disponible ? "🟢" : "🔴"}
           </p>
         </div>
-       {/* Botones de acciones */}
-<div className="flex flex-row-reverse mt-4 w-full justify-end">
-    <button
-    onClick={handleDelete}
-    className="bg-red-500 hover:bg-red-400 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline ml-2"
-  >
-    Eliminar
-  </button>
-  <button
-    onClick={handleCardClick}
-    className="bg-pink-300 hover:bg-pink-200 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline ml-2"
-  >
-    Ver detalles del libro
-  </button>
+        {/* Botones de acciones */}
+        <div className="flex flex-row-reverse mt-4 w-full justify-end">
+          <button
+            onClick={handleDelete}
+            className="bg-red-500 hover:bg-red-400 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline ml-2"
+          >
+            Eliminar
+          </button>
+          <button
+            onClick={handleCardClick}
+            className="bg-cbookC-500 hover:bg-cbookC-400 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline ml-2"
+          >
+            Ver detalles del libro
+          </button>
 
-  <button
-    onClick={handleUpdateAvailability}
-    className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline ml-2"
-  >
-    Cambiar Disponibilidad
-  </button>
-</div>
-
+          <button
+            onClick={handleUpdateAvailability}
+            className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline ml-2"
+          >
+            Cambiar Disponibilidad
+          </button>
+        </div>
       </div>
     </div>
   );

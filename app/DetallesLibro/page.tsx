@@ -236,28 +236,30 @@ const DetallesLibro = () => {
 
       {/* Información del propietario del libro */}
       <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-xl col-span-2 row-span-9 mr-3 mb-3 flex justify-center items-center">
-        <div>
+        <div className="flex flex-col items-center justify-between h-full space-y-4 p-8">
           {books.length > 0 ? (
-            <div className="flex flex-col items-center">
+            <>
+              <span className="text-center font-cbookF font-bold text-3xl max-w-44 justify-center text-cbookC-700">
+                Prestador
+              </span>
               <img
                 src={books[0].imagenPerfil}
                 alt="Imagen de perfil"
-                className="w-16 h-16 rounded-full mr-4"
+                className="w-40 h-40 rounded-full"
               />
-              <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center text-cbookC-800 opacity-60">
+              <span className="text-center font-cbookF font-bold text-2xl max-w-52 justify-center text-gray-500">
+                {books[0].userNombre}
                 <br />
-                Prestador: {books[0].userNombre}
                 <br />
-                <br />
-                intercambios: {books[0].intercambios}
+                Intercambios: {books[0].intercambios}
               </span>
               <button
                 onClick={handleUserClick}
-                className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline mt-4"
+                className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
               >
                 Ver perfil
               </button>
-            </div>
+            </>
           ) : (
             <div className="flex flex-col items-center"></div>
           )}
