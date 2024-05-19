@@ -61,28 +61,34 @@ function Home() {
     setShowModal(false);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("codigoUsuario");
-    // Otras operaciones de limpieza, como redireccionar a la página de inicio de sesión
+const handleLogout = () => {
+  localStorage.removeItem("codigoUsuario");
+  localStorage.removeItem("nombreUsuario"); // Eliminar el nombre de usuario del localStorage
+  // Otras operaciones de limpieza, como redireccionar a la página de inicio de sesión
+  router.push("/InicioSesion"); // Redireccionar a la página de inicio de sesión
+};
+
+
+useEffect(() => {
+  const codigoUsuario = localStorage.getItem("codigoUsuario");
+
+  const obtenerPerfilUsuario = async () => {
+    try {
+      const response = await axios.get(`api/user/get/${codigoUsuario}`);
+      const perfil = response.data;
+      setPerfilUsuario(perfil);
+      console.log(perfil);
+      localStorage.setItem("nombreUsuario", perfil.nombre); // Guardar el nombre de usuario en el localStorage
+    } catch (error) {
+      console.error("Error al obtener el perfil del usuario:", error);
+    }
   };
 
-  useEffect(() => {
-    const codigoUsuario = localStorage.getItem("codigoUsuario");
+  if (codigoUsuario) {
+    obtenerPerfilUsuario();
+  }
+}, []);
 
-    const obtenerPerfilUsuario = async () => {
-      try {
-        const response = await axios.get(`api/user/get/${codigoUsuario}`);
-        setPerfilUsuario(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error al obtener el perfil del usuario:", error);
-      }
-    };
-
-    if (codigoUsuario) {
-      obtenerPerfilUsuario();
-    }
-  }, []);
 
   useEffect(() => {
     const codigoUsuario = localStorage.getItem("codigoUsuario");

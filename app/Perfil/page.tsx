@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { fetchBooksByUser } from "./libro.service";
 import BookCard from "./BookCard";
@@ -32,10 +32,9 @@ interface Book {
 
 const PerfilUsuarioPage: React.FC = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const codigoUsuario = searchParams.get("codigoUsuario");
-  const [perfilUsuario, setPerfilUsuario] = useState<PerfilUsuario | null>(
-    null
-  );
+  const [perfilUsuario, setPerfilUsuario] = useState<PerfilUsuario | null>(null);
   const [books, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
@@ -69,6 +68,17 @@ const PerfilUsuarioPage: React.FC = () => {
     return <div>Cargando...</div>;
   }
 
+  const handleChat = () => {
+    const currentUserCode = localStorage.getItem("codigoUsuario");
+    if (currentUserCode) {
+      // Ordenar los IDs para que el roomId sea el mismo independientemente del orden
+      const roomId = [currentUserCode, codigoUsuario].sort().join("-");
+      router.push(`/chat?roomId=${roomId}`);
+    } else {
+      console.error("User ID not found in localStorage.");
+    }
+  };
+
   return (
     <div className="flex flex-col items-center mt-10">
       <img
@@ -83,9 +93,14 @@ const PerfilUsuarioPage: React.FC = () => {
         Miembro desde: {new Date(perfilUsuario.creadoEn).toLocaleDateString()}
       </p>
       <p className="text-gray-600">
-        Última actualización:{" "}
-        {new Date(perfilUsuario.actualizadoEn).toLocaleDateString()}
+        Última actualización: {new Date(perfilUsuario.actualizadoEn).toLocaleDateString()}
       </p>
+      <button 
+        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+        onClick={handleChat}
+      >
+        Chatear
+      </button>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {books.map((book) => (
           <BookCard key={book.idLibro} book={book} />
