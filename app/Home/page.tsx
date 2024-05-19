@@ -20,7 +20,6 @@ import "./styles.css";
 import { parseCookies } from "nookies";
 import AddBookForm from "../Publicar/page";
 
-
 interface Book {
   idLibro: string;
   titulo: string;
@@ -114,12 +113,13 @@ function Home() {
     redirect("/inicioSesion");
   };
 
-
   const handleSearch = async (query: string) => {
     try {
       const fetchedBooks = await fetchBooks(query);
       if (fetchedBooks.length === 0) {
-        setSearchText(`No se encontraron resultados para tu búsqueda: ${query}`);
+        setSearchText(
+          `No se encontraron resultados para tu búsqueda: ${query}`
+        );
         setBooks([]);
       } else {
         setSearchText(`Resultados de búsqueda: ${query}`);
@@ -302,16 +302,16 @@ function Home() {
 
       {/* Muestra de los libros */}
       <div
-        className="bg-white rounded-2xl shadow-xl col-span-6 row-span-6 mb-3 overflow-auto "
+        className="bg-white rounded-2xl shadow-xl col-span-6 row-span-6 mb-3 overflow-auto"
         id="masLeidos"
       >
         {/* Cambios para mostrar los resultados de la búsqueda */}
         <div className="flex items-center ml-4 h-12 font-cbookF font-bold text-2xl">
           {searchText}
         </div>
-        <div className="ml-4 mr-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="ml-4 mr-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
           {/* Mostrar los resultados de búsqueda si hay resultados, de lo contrario, mostrar los libros más leídos */}
-           {books.map((book) => (
+          {books.map((book) => (
             <BookCard key={book.idLibro} {...book} />
           ))}
         </div>

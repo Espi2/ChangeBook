@@ -37,14 +37,24 @@ const BookCard: React.FC<BookCardProps> = ({
   };
 
   return (
-    <div className="bg-white shadow-md rounded-md p-4">
-      <img src={imagen} alt={titulo} className="w-full h-48 object-cover rounded-md" />
-      <h2 className="text-lg font-bold">{titulo}</h2>
-      <p className="text-gray-600">{autor}</p>
-      <p className="text-gray-600">Estado: {disponible ? "🟢" : "🔴"}</p>
-      <p className="text-gray-600">
+    <div className="bg-cbookC-100 shadow-md rounded-md p-4">
+      <img
+        loading="lazy"
+        src={imagen}
+        alt={titulo}
+        className="w-full h-48 object-cover rounded-md"
+      />
+      <h2 className="text-lg font-bold font-cbookF">{titulo}</h2>
+      <p className="text-gray-600 font-cbookF">{autor}</p>
+      <p className="text-gray-600 font-cbookF">
+        Estado: {disponible ? "🟢" : "🔴"}
+      </p>
+      <p className="text-gray-600 font-cbookF">
         Publicado por:{" "}
-        <span onClick={handleUserClick} className="text-blue-500 cursor-pointer">
+        <span
+          onClick={handleUserClick}
+          className="text-cbookC-600 cursor-pointer"
+        >
           {userNombre}
         </span>
       </p>
