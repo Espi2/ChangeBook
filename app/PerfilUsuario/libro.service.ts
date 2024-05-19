@@ -22,3 +22,13 @@ export const deleteBook = async (idLibro: string) => {
     throw error;
   }
 };
+
+export const updateBookAvailability = async (idLibro: string, disponible: boolean) => {
+  try {
+    const response = await axios.patch(`/api/books/${idLibro}`, { disponible });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating book availability:', error);
+    throw error;
+  }
+};
