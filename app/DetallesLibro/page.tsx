@@ -5,11 +5,18 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faSignOut, faBook, faClock, faUser, faSearch, faBell } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHome,
+  faSignOut,
+  faBook,
+  faClock,
+  faUser,
+  faSearch,
+  faBell,
+} from "@fortawesome/free-solid-svg-icons";
 import { redirect } from "next/navigation";
 import AddBookForm from "../Publicar/page";
 import { useRouter } from "next/navigation";
-
 
 interface Book {
   idLibro: string;
@@ -25,7 +32,7 @@ interface Book {
   ano_de_publicacion: string;
   userNombre: string;
   codigoUsuario: string;
-  imagenPerfil:string;
+  imagenPerfil: string;
   imagen: string;
 }
 
@@ -43,7 +50,9 @@ const DetallesLibro = () => {
   const idLibro = searchParams.get("idLibro");
   const [navOption, setNavOption] = useState("");
   const [books, setBooks] = useState<Book[]>([]);
-  const [perfilUsuario, setPerfilUsuario] = useState<PerfilUsuario | null>(null);
+  const [perfilUsuario, setPerfilUsuario] = useState<PerfilUsuario | null>(
+    null
+  );
   const [showModal, setShowModal] = useState(false);
 
   const handleModalClose = () => {
@@ -206,10 +215,7 @@ const DetallesLibro = () => {
           <span className="font-cbookF font-bold text-x1 text-cbookC-700 mr-2">
             Notificaciones
           </span>
-          <FontAwesomeIcon
-            icon={faBell}
-            className="w-8 h-8 text-cbookC-700"
-          />
+          <FontAwesomeIcon icon={faBell} className="w-8 h-8 text-cbookC-700" />
         </a>
         <img
           className="ml-6 w-10 h-10 mr-6"
@@ -220,8 +226,7 @@ const DetallesLibro = () => {
 
       {/* Muestra de los libros */}
       <div className="bg-white rounded-2xl shadow-xl col-span-6 row-span-9 mb-3 overflow-auto">
-        <div className="flex items-center ml-4 h-12 font-cbookF font-bold text-2xl">
-        </div>
+        <div className="flex items-center ml-4 h-4 font-cbookF font-bold text-2xl"></div>
         <div className="ml-4 mr-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-4 mb-4">
           {books.map((book) => (
             <BookCard key={book.idLibro} {...book} />
@@ -234,11 +239,11 @@ const DetallesLibro = () => {
         <div>
           {books.length > 0 ? (
             <div className="flex flex-col items-center">
-        <img
-        src={books[0].imagenPerfil}
-        alt="Imagen de perfil"
-        className="w-16 h-16 rounded-full mr-4"
-      />
+              <img
+                src={books[0].imagenPerfil}
+                alt="Imagen de perfil"
+                className="w-16 h-16 rounded-full mr-4"
+              />
               <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center text-cbookC-800 opacity-60">
                 <br />
                 Prestador: {books[0].userNombre}
@@ -246,13 +251,15 @@ const DetallesLibro = () => {
                 <br />
                 intercambios: {books[0].intercambios}
               </span>
-              <button onClick={handleUserClick} className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline mt-4"
- >Ver perfil</button>
+              <button
+                onClick={handleUserClick}
+                className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline mt-4"
+              >
+                Ver perfil
+              </button>
             </div>
           ) : (
-            <div className="flex flex-col items-center">
-
-            </div>
+            <div className="flex flex-col items-center"></div>
           )}
         </div>
       </div>
