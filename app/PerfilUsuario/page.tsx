@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import BookCard from "./cardBook";
 import EditarPerfil from "./EditarPerfil"; // Importa el componente EditarPerfil
 import { fetchBooks } from "./libro.service";
-import { fetchUser } from "./user.service";
 import axios from "axios";
 
 interface Book {
@@ -78,7 +77,7 @@ const Perfil: React.FC = () => {
   return (
     <div className="container mx-auto p-4 bg-gray-50">
       {user && (
-        <div className="flex items-center justify-between mb-4 bg-gradient-to-r from-cbookC-400 via-cbookC-600 to-cbookC-700 rounded-2xl shadow-xl h-56" >
+        <div className="flex items-center justify-between mb-4 bg-gradient-to-r from-cbookC-400 via-cbookC-600 to-cbookC-700 rounded-2xl shadow-xl h-56">
           <div className="flex items-center">
             <img
               loading="lazy"
@@ -105,7 +104,7 @@ const Perfil: React.FC = () => {
       )}
       {showEditForm && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg shadow-md w-1/3">
+          <div className="bg-white p-4 rounded-lg shadow-md w-1/3 relative">
             <h2 className="text-center font-cbookF font-bold text-3xl justify-center text-cbookC-700 mt-3 mb-8">
               Editar Perfil
             </h2>
@@ -115,7 +114,7 @@ const Perfil: React.FC = () => {
             >
               x
             </button>
-            <EditarPerfil />
+            <EditarPerfil closeModal={() => setShowEditForm(false)} />
           </div>
         </div>
       )}
@@ -134,3 +133,4 @@ const Perfil: React.FC = () => {
 };
 
 export default Perfil;
+
