@@ -42,7 +42,7 @@ const BookCard: React.FC<BookCardProps> = ({
         loading="lazy"
         src={imagen}
         alt={titulo}
-        className="w-full h-48 object-cover rounded-md"
+        className="w-full max-h-64 object-cover rounded-md"
       />
       <h2 className="text-lg font-bold font-cbookF">{titulo}</h2>
       <p className="text-gray-600 font-cbookF">{autor}</p>

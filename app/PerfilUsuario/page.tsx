@@ -1,10 +1,10 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import BookCard from './cardBook';
-import EditarPerfil from './EditarPerfil'; // Importa el componente EditarPerfil
-import { fetchBooks } from './libro.service';
-import { fetchUser } from './user.service';
-import axios from 'axios';
+"use client";
+import React, { useEffect, useState } from "react";
+import BookCard from "./cardBook";
+import EditarPerfil from "./EditarPerfil"; // Importa el componente EditarPerfil
+import { fetchBooks } from "./libro.service";
+import { fetchUser } from "./user.service";
+import axios from "axios";
 
 interface Book {
   idLibro: string;
@@ -59,12 +59,12 @@ const Perfil: React.FC = () => {
         setBooks(fetchedBooks);
       })
       .catch((error) => {
-        console.error('Error fetching books:', error);
+        console.error("Error fetching books:", error);
       });
   }, []);
 
   const handleDeleteBook = (idLibro: string) => {
-    setBooks(books.filter(book => book.idLibro !== idLibro));
+    setBooks(books.filter((book) => book.idLibro !== idLibro));
   };
 
   return (
@@ -72,7 +72,12 @@ const Perfil: React.FC = () => {
       {user && (
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
-            <img src={user.imagenPerfil} alt="Imagen de perfil" className="w-16 h-16 rounded-full mr-4" />
+            <img
+              loading="lazy"
+              src={user.imagenPerfil}
+              alt="Imagen de perfil"
+              className="w-16 h-16 rounded-full mr-4"
+            />
             <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center text-cbookC-800 opacity-60">
               {user.codigo}
               <br />
@@ -89,10 +94,15 @@ const Perfil: React.FC = () => {
           </button>
         </div>
       )}
-      {showEditForm && <EditarPerfil />} {/* Muestra el formulario de edición si showEditForm es true */}
+      {showEditForm && <EditarPerfil />}{" "}
+      {/* Muestra el formulario de edición si showEditForm es true */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {books.map((book) => (
-          <BookCard key={book.idLibro} book={book} onDelete={handleDeleteBook} />
+          <BookCard
+            key={book.idLibro}
+            book={book}
+            onDelete={handleDeleteBook}
+          />
         ))}
       </div>
     </div>
