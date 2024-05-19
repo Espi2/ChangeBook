@@ -83,3 +83,208 @@ export const initialData: SeedData = {
         }
     ]
 }
+
+export interface SeedReport {
+    codigo: string;
+    nombre: string;
+    imagenCredencial: string;
+    creadoEn: Date;
+    report: Reports[];
+}
+
+export interface Reports {
+    fecha: Date;
+    descripcion: string;
+    codigo: string;
+}
+
+// export interface SeedReportData {
+//     reports: SeedReport[],
+// }
+
+// export const initialReportData: SeedReportData = {
+//     reports: [
+//         {
+//             codigo: 'SR001',
+//             nombre: 'Reporte de Semilla 1',
+//             imagenCredencial: 'http://example.com/imagen1.jpg',
+//             creadoEn: new Date('2024-01-01T10:00:00Z'),
+//             report: [
+//                 {
+//                     fecha: new Date('2024-02-01T10:00:00Z'),
+//                     descripcion: 'Descripción del reporte 1.1',
+//                     codigo: 'R001'
+//                 },
+//                 {
+//                     fecha: new Date('2024-03-01T10:00:00Z'),
+//                     descripcion: 'Descripción del reporte 1.2',
+//                     codigo: 'R002'
+//                 }
+//             ]
+//         },
+//         {
+//             codigo: 'SR002',
+//             nombre: 'Reporte de Semilla 2',
+//             imagenCredencial: 'http://example.com/imagen2.jpg',
+//             creadoEn: new Date('2024-02-01T11:00:00Z'),
+//             report: [
+//                 {
+//                     fecha: new Date('2024-03-01T11:00:00Z'),
+//                     descripcion: 'Descripción del reporte 2.1',
+//                     codigo: 'R003'
+//                 },
+//                 {
+//                     fecha: new Date('2024-04-01T11:00:00Z'),
+//                     descripcion: 'Descripción del reporte 2.2',
+//                     codigo: 'R004'
+//                 }
+//             ]
+//         },
+//         {
+//             codigo: 'SR003',
+//             nombre: 'Reporte de Semilla 3',
+//             imagenCredencial: 'http://example.com/imagen3.jpg',
+//             creadoEn: new Date('2024-03-01T12:00:00Z'),
+//             report: [
+//                 {
+//                     fecha: new Date('2024-04-01T12:00:00Z'),
+//                     descripcion: 'Descripción del reporte 3.1',
+//                     codigo: 'R005'
+//                 },
+//                 {
+//                     fecha: new Date('2024-05-01T12:00:00Z'),
+//                     descripcion: 'Descripción del reporte 3.2',
+//                     codigo: 'R006'
+//                 }
+//             ]
+//         },
+//         {
+//             codigo: 'SR004',
+//             nombre: 'Reporte de Semilla 4',
+//             imagenCredencial: 'http://example.com/imagen4.jpg',
+//             creadoEn: new Date('2024-04-01T13:00:00Z'),
+//             report: [
+//                 {
+//                     fecha: new Date('2024-05-01T13:00:00Z'),
+//                     descripcion: 'Descripción del reporte 4.1',
+//                     codigo: 'R007'
+//                 },
+//                 {
+//                     fecha: new Date('2024-06-01T13:00:00Z'),
+//                     descripcion: 'Descripción del reporte 4.2',
+//                     codigo: 'R008'
+//                 }
+//             ]
+//         },
+//         {
+//             codigo: 'SR005',
+//             nombre: 'Reporte de Semilla 5',
+//             imagenCredencial: 'http://example.com/imagen5.jpg',
+//             creadoEn: new Date('2024-05-01T14:00:00Z'),
+//             report: [
+//                 {
+//                     fecha: new Date('2024-06-01T14:00:00Z'),
+//                     descripcion: 'Descripción del reporte 5.1',
+//                     codigo: 'R009'
+//                 },
+//                 {
+//                     fecha: new Date('2024-07-01T14:00:00Z'),
+//                     descripcion: 'Descripción del reporte 5.2',
+//                     codigo: 'R010'
+//                 }
+//             ]
+//         }
+//     ]
+// }
+
+export interface User {
+    codigo: string;
+    nombre: string;
+    strikes: number;
+    imagenCredencial: string;
+    imagenPerfil: string;
+    creadoEn: Date;
+    actualizadoEn: Date;
+}
+
+export interface Report {
+    idReporte: string;
+    fecha: Date;
+    descripcion: string;
+    codigo_remitente: string;
+    resuelto: boolean;
+    user: User;
+}
+
+export interface SeedReportData {
+    reports: Report[];
+}
+
+export const initialReportData: SeedReportData = {
+    reports: [
+        {
+            idReporte: "c6246967-2ab8-4748-b9d1-06f02ea13bc1",
+            fecha: new Date("2024-05-18T22:22:56.199Z"),
+            descripcion: "Reporte 1",
+            codigo_remitente: "222790811",
+            resuelto: false,
+            user: {
+                codigo: "222790812",
+                nombre: "Ana García",
+                strikes: 1,
+                imagenCredencial: "",
+                imagenPerfil: "notyet",
+                creadoEn: new Date("2024-05-18T05:28:13.808Z"),
+                actualizadoEn: new Date("2024-05-18T05:28:13.808Z")
+            }
+        },
+        {
+            idReporte: "c6246967-2ab8-4748-b9d1-06f02ea13bc2",
+            fecha: new Date("2024-06-18T22:22:56.199Z"),
+            descripcion: "Reporte 2",
+            codigo_remitente: "222790812",
+            resuelto: true,
+            user: {
+                codigo: "222790813",
+                nombre: "Carlos Pérez",
+                strikes: 0,
+                imagenCredencial: "",
+                imagenPerfil: "notyet",
+                creadoEn: new Date("2024-06-18T05:28:13.808Z"),
+                actualizadoEn: new Date("2024-06-18T05:28:13.808Z")
+            }
+        },
+        {
+            idReporte: "c6246967-2ab8-4748-b9d1-06f02ea13bc3",
+            fecha: new Date("2024-07-18T22:22:56.199Z"),
+            descripcion: "Reporte 3",
+            codigo_remitente: "222790813",
+            resuelto: false,
+            user: {
+                codigo: "222790814",
+                nombre: "Laura Martínez",
+                strikes: 2,
+                imagenCredencial: "",
+                imagenPerfil: "notyet",
+                creadoEn: new Date("2024-07-18T05:28:13.808Z"),
+                actualizadoEn: new Date("2024-07-18T05:28:13.808Z")
+            }
+        },
+        {
+            idReporte: "c6246967-2ab8-4748-b9d1-06f02ea13bc4",
+            fecha: new Date("2024-08-18T22:22:56.199Z"),
+            descripcion: "Reporte 4",
+            codigo_remitente: "222790814",
+            resuelto: true,
+            user: {
+                codigo: "222790815",
+                nombre: "Miguel Rodríguez",
+                strikes: 3,
+                imagenCredencial: "",
+                imagenPerfil: "notyet",
+                creadoEn: new Date("2024-08-18T05:28:13.808Z"),
+                actualizadoEn: new Date("2024-08-18T05:28:13.808Z")
+            }
+        }
+    ]
+}

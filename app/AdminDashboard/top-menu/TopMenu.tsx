@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export const TopMenu = () => {
   return (
-    <nav className='flex px-5 justify-between items-centered w-full'>
+    <nav className='flex p-5 justify-between items-centered w-full mb-5 bg-gray-100'>
         <div>
             <Link href='/AdminDashboard'>
                 <span>Logo</span>
