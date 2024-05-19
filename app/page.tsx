@@ -10,6 +10,7 @@ import Home from "./Home/page";
 import ResultadoBusqueda from "./ResultadoBusqueda/page";
 import Perfil from "./PerfilUsuario/page";
 import PerfilUsuario from "./Perfil/page";
+import AdmitUser from "./AdminDashboard/Admit/page";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/Perfil" element={<PerfilUsuario />} />
         <Route path="/ResultadoBusqueda" element={<ResultadoBusqueda />} />
         <Route path="/Home" element={<Home />} />
+        <Route path="/AdminDashboard/Admit" element={<AdmitUser />} />
       </Routes>
     </Router>
   );

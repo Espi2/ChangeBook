@@ -62,7 +62,7 @@ const InicioDeSesin: FunctionComponent = () => {
 
       if (data.success) {
         handleAuth();
-        router.push("/Home");
+        codigo === '000000000' ? router.push("/AdminDashboard/Admit") : router.push("/Home");
       } else {
         alert(data.message);
       }
