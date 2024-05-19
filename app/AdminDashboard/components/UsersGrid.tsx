@@ -9,7 +9,7 @@ interface Props{
 
 export const UsersGrid = ({products}: Props) => {
   return (
-    <div className='grid grid-cols-2 sm:grid-cols-2 gap-10 mb-10 mx-3'>
+    <div className='grid grid-cols-2 sm:grid-cols-2 gap-10 mb-10 mx-3 bg-white'>
         {
             products.map( product => (
                 <UserGridItem
