@@ -76,34 +76,35 @@ const Perfil: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 bg-gray-50">
       {user && (
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 bg-gradient-to-r from-cbookC-400 via-cbookC-600 to-cbookC-700 rounded-2xl shadow-xl h-56">
           <div className="flex items-center">
             <img
               loading="lazy"
               src={user.imagenPerfil}
               alt="Imagen de perfil"
-              className="w-16 h-16 rounded-full mr-4"
+              className="ml-8 w-36 h-36 rounded-full mr-4"
             />
-            <span className="text-center font-cbookF font-bold text-2xl max-w-44 justify-center text-cbookC-800 opacity-60">
-              {user.codigo}
-              <br />
+            <span className="text-justify font-cbookF font-bold text-2xl max-w-full justify-center text-white ml-5">
               {user.nombre}
               <br />
-              strikes: {user.strikes}
+              <span className="text-cbookC-700">{user.codigo}</span>
+              <br />
+              <br />
+              Strikes: {user.strikes}
             </span>
           </div>
           <button
             onClick={() => setShowEditForm(!showEditForm)}
-            className="bg-blue-500 text-white py-1 px-2 rounded"
+            className="bg-cbookC-400 hover:bg-cbookC-300 mr-8 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline mt-4"
           >
             Editar Perfil
           </button>
         </div>
       )}
       {showEditForm && <EditarPerfil />}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         {books.map((book) => (
           <BookCard
             key={book.idLibro}
