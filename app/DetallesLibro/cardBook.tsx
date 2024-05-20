@@ -90,25 +90,25 @@ const BookCard: React.FC<BookCardProps> = ({
           Estatus: {disponible ? "Disponible" : "No Disponible"}
         </p>
         <br />
-        <p className="text-xl text-gray-600 font-cbookF text-justify">
+        <p className="text-xl text-gray-600 font-cbookF text-justify mb-8">
           Sinopsis
           <br /> {sinopsis}
         </p>
         <button
           onClick={handleWishListClick}
-          className="mt-2 bg-cbookC-600 text-white py-1 px-4 rounded"
+          className="mt-2 bg-cbookC-600 hover:bg-cbookC-500 text-white py-1 px-4 rounded"
         >
           Añadir a WishList
         </button>
         <button
           onClick={handleShowReviews}
-          className="mt-2 bg-blue-600 text-white py-1 px-4 rounded"
+          className="mt-2 bg-cbookC-500 hover:bg-cbookC-400 text-white py-1 px-4 rounded m-5"
         >
           Ver Reseñas
         </button>
         <button
           onClick={handleAddReview}
-          className="mt-2 bg-green-600 text-white py-1 px-4 rounded"
+          className="mt-2 bg-cbookC-500 hover:bg-cbookC-400 text-white py-1 px-4 rounded"
         >
           Agregar Reseña
         </button>

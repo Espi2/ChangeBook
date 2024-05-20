@@ -1,7 +1,7 @@
 "use client";
 import Image from "@/node_modules/next/image";
 import Link from "@/node_modules/next/link";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import React, { FunctionComponent } from "react";
 import "./Registro.css";
 
@@ -19,6 +19,20 @@ const Registro: FunctionComponent = () => {
   const [termsChecked, setTermsChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [credentialImage, setCredentialImage] = useState<File | null>(null);
+
+
+    useEffect(() => {
+    const hasReloaded = localStorage.getItem('hasReloaded');
+
+    if (!hasReloaded) {
+      localStorage.setItem('hasReloaded', 'true');
+      window.location.reload();
+    }
+  }, []);
+
+   const handleClearLocalStorage = () => {
+    localStorage.removeItem("hasReloaded");
+  };
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -204,7 +218,7 @@ const Registro: FunctionComponent = () => {
           </button>
         </form>
         <p className="register-text">
-          ¿Ya tienes una cuenta? <Link href={"../InicioSesion"}>Acceder</Link>{" "}
+          ¿Ya tienes una cuenta? <Link onClick={handleClearLocalStorage} href={"../InicioSesion"}>Acceder</Link>{" "}
         </p>
       </div>
 
