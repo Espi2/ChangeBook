@@ -5,6 +5,18 @@ import { useSearchParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { fetchBooksByUser } from "./libro.service";
 import BookCard from "./BookCard";
+import AddBookForm from "../Publicar/page";
+import { redirect } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faSignOut,
+  faBook,
+  faClock,
+  faUser,
+  faSearch,
+  faBell,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface PerfilUsuario {
   codigo: string;
@@ -34,7 +46,11 @@ const PerfilUsuarioPage: React.FC = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const codigoUsuario = searchParams.get("codigoUsuario");
-  const [perfilUsuario, setPerfilUsuario] = useState<PerfilUsuario | null>(null);
+  const [navOption, setNavOption] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [perfilUsuario, setPerfilUsuario] = useState<PerfilUsuario | null>(
+    null
+  );
   const [books, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
@@ -68,6 +84,14 @@ const PerfilUsuarioPage: React.FC = () => {
     return <div>Cargando...</div>;
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem("codigoUsuario");
+    redirect("/InicioSesion");
+  };
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
   const handleChat = () => {
     const currentUserCode = localStorage.getItem("codigoUsuario");
     if (currentUserCode) {
@@ -80,32 +104,172 @@ const PerfilUsuarioPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center mt-10">
-      <img
-        src={perfilUsuario.imagenPerfil}
-        alt="Imagen de perfil"
-        className="w-16 h-16 rounded-full mr-4"
-      />
-      <h1 className="text-2xl font-bold mt-4">{perfilUsuario.nombre}</h1>
-      <p className="text-gray-600">Código: {perfilUsuario.codigo}</p>
-      <p className="text-gray-600">Strikes: {perfilUsuario.strikes}</p>
-      <p className="text-gray-600">
-        Miembro desde: {new Date(perfilUsuario.creadoEn).toLocaleDateString()}
-      </p>
-      <p className="text-gray-600">
-        Última actualización: {new Date(perfilUsuario.actualizadoEn).toLocaleDateString()}
-      </p>
-      <button 
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-        onClick={handleChat}
-      >
-        Chatear
-      </button>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {books.map((book) => (
-          <BookCard key={book.idLibro} book={book} />
-        ))}
+    <div className="grid grid-cols-9 grid-rows-10 gap-3 bg-gray-50 w-screen h-screen">
+      <div className="hidden sm:block bg-cbookC-500 rounded-r-3xl shadow-xl col-span-1 row-span-10 flex-col h-screen justify-between">
+        <div className="flex items-center justify-center m-5 mb-10">
+          <img
+            src="/logo_completo_blanco_recortado.png"
+            alt="Logo de la empresa"
+            className="w-48 h-auto"
+          />
+        </div>
+
+        <div className="flex flex-col items-left mx-3 gap-50 font-cbookF font-bold text-x1 cursor-pointer overflow-hidden mr-0">
+          <a
+            href="/Home"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "inicio"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={() => setNavOption("inicio")}
+          >
+            <FontAwesomeIcon
+              icon={faHome}
+              className="inline-block w-8 h-8 mr-3"
+            />
+            <span>Inicio</span>
+          </a>
+          <button
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "publicar"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={() => {
+              setNavOption("Publicar");
+              setShowModal(true);
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faBook}
+              className="inline-block w-8 h-8 mr-3"
+            />
+            <span>Publicar</span>
+          </button>
+          <a
+            href=""
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "lista"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={() => setNavOption("lista")}
+          >
+            <FontAwesomeIcon
+              icon={faClock}
+              className="inline-block w-8 h-8 mr-3"
+            />
+            <span>Lista de espera</span>
+          </a>
+          <a
+            href="PerfilUsuario"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "perfil"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={() => setNavOption("PerfilUsuario")}
+          >
+            <FontAwesomeIcon
+              icon={faUser}
+              className="inline-block w-8 h-8 mr-3"
+            />
+            <span>Mi perfil</span>
+          </a>
+          <a
+            href="Home"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "buscar"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={() => setNavOption("buscar")}
+          >
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="inline-block w-8 h-8 mr-3"
+            />
+            <span>Buscar</span>
+          </a>
+
+          <a
+            href="InicioSesion"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "salir"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={handleLogout}
+          >
+            <FontAwesomeIcon
+              icon={faSignOut}
+              className="inline-block w-8 h-8 mr-3"
+            />
+            <span>Salir</span>
+          </a>
+        </div>
       </div>
+      {perfilUsuario && (
+        <div className="flex items-center justify-between col-span-8 row-span-1 mt-3 mr-3 mb-4 border-gray-200 border-2 bg-gradient-to-r from-cbookC-400 via-cbookC-600 to-cbookC-700 rounded-2xl shadow-xl h-56">
+          <div className="flex items-center">
+            <img
+              loading="lazy"
+              src={perfilUsuario.imagenPerfil}
+              alt="Imagen de perfil"
+              className="ml-8 w-36 h-36 rounded-full mr-4"
+            />
+            <span className="text-justify font-cbookF font-bold text-2xl max-w-full justify-center text-white ml-5">
+              <h1 className="text-2xl font-bold">{perfilUsuario.nombre}</h1>
+              <p className="text-cbookC-700">{perfilUsuario.codigo}</p>
+              <br></br>
+              <p className="text-xl text-white">
+                Strikes: {perfilUsuario.strikes}
+              </p>
+              <p className="text-xl text-white">
+                Miembro desde:{" "}
+                {new Date(perfilUsuario.creadoEn).toLocaleDateString()}
+              </p>
+              <p className="text-xl text-white">
+                Última actualización:{" "}
+                {new Date(perfilUsuario.actualizadoEn).toLocaleDateString()}
+              </p>
+            </span>
+          </div>
+          <button
+            className="bg-cbookC-400 hover:bg-cbookC-300 mr-8 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+            onClick={handleChat}
+          >
+            Chatear
+          </button>
+        </div>
+      )}
+      <div className="col-span-8 row-span-9 mt-44 mr-4 overflow-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {books.map((book) => (
+            <BookCard key={book.idLibro} book={book} />
+          ))}
+        </div>
+      </div>
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <div className="bg-white p-6 rounded-lg shadow-lg z-10 w-full max-w-3xl h-5/6 flex flex-col">
+            <h2 className="text-center font-cbookF font-bold text-3xl justify-center text-cbookC-700 mt-3 mb-5">
+              Publicar Nuevo Libro
+            </h2>
+            <button
+              className="absolute top-0 right-0 p-2"
+              onClick={() => setShowModal(false)}
+            >
+              x
+            </button>
+            <div className="flex-1 overflow-auto">
+              <AddBookForm closeModal={handleModalClose} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
