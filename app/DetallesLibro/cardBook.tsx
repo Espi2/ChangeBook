@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import ReviewModal from "./ReviewModal"; 
+import ReviewModal from "./ReviewModal";
 
 interface BookCardProps {
   idLibro: string;
@@ -69,36 +69,40 @@ const BookCard: React.FC<BookCardProps> = ({
     <div className="bg-white rounded-md p-4 h-full flex">
       <div className="flex-1">
         <h2 className="text-3xl font-bold font-cbookF">{titulo}</h2>
-        <p className="text-2xl text-cbookC-600 font-cbookF font-bold">{autor}</p>
+        <p className="text-2xl text-cbookC-600 font-cbookF font-bold">
+          {autor}
+        </p>
         <br />
         <p className="text-xl text-gray-600 font-cbookF">
           Año publicacion: {ano_de_publicacion}
         </p>
-        <p className="text-xl text-gray-600 font-cbookF">Editorial: {editorial}</p>
+        <p className="text-xl text-gray-600 font-cbookF">
+          Editorial: {editorial}
+        </p>
         <p className="text-xl text-gray-600 font-cbookF">ISBN: {isbn}</p>
         <p className="text-xl text-gray-600 font-cbookF">
           Estatus: {disponible ? "Disponible" : "No Disponible"}
         </p>
         <br />
-        <p className="text-xl text-gray-600 font-cbookF text-justify">
+        <p className="text-xl text-gray-600 font-cbookF text-justify mb-8">
           Sinopsis
           <br /> {sinopsis}
         </p>
         <button
           onClick={handleWishListClick}
-          className="mt-2 bg-cbookC-600 text-white py-1 px-4 rounded"
+          className="mt-2 bg-cbookC-600 hover:bg-cbookC-500 text-white py-1 px-4 rounded"
         >
           Añadir a WishList
         </button>
         <button
           onClick={handleShowReviews}
-          className="mt-2 bg-blue-600 text-white py-1 px-4 rounded"
+          className="mt-2 bg-cbookC-500 hover:bg-cbookC-400 text-white py-1 px-4 rounded m-5"
         >
           Ver Reseñas
         </button>
         <button
           onClick={handleAddReview}
-          className="mt-2 bg-green-600 text-white py-1 px-4 rounded"
+          className="mt-2 bg-cbookC-500 hover:bg-cbookC-400 text-white py-1 px-4 rounded"
         >
           Agregar Reseña
         </button>
