@@ -221,6 +221,7 @@ const Chat = () => {
           room: roomId,
         });
         setInput("");
+      window.location.reload();
       } catch (error) {
         console.error("Error sending message:", error);
       }
