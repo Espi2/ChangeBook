@@ -1,6 +1,7 @@
 import React from "react";
 import { deleteBook, updateBookAvailability } from "./libro.service";
 import { useRouter } from "next/navigation";
+import "./styles.css";
 
 interface Book {
   idLibro: string;
