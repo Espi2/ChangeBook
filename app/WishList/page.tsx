@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faHome } from "@fortawesome/free-solid-svg-icons";
 import { faSignOut } from "@fortawesome/free-solid-svg-icons/faSignOut";
 import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
 import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
@@ -210,21 +210,21 @@ function Home() {
             ></FontAwesomeIcon>
             <span>Publicar</span>
           </button>
-          <a
-            href="/WishList"
-            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
-              navOption === "wishlist"
-                ? "bg-cbookC-700 rounded-l-3xl"
-                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
-            }`}
-            onClick={() => setNavOption("wishlist")}
-          >
-            <FontAwesomeIcon
-              icon={faClock}
-              className="inline-block w-8 h-8 mr-3"
-            ></FontAwesomeIcon>
-            <span>Wish List</span>
-          </a>
+<a
+  href="/WishList"
+  className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+    navOption === "wishlist"
+      ? "bg-cbookC-700 rounded-l-3xl"
+      : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+  }`}
+  onClick={() => setNavOption("wishlist")}
+>
+  <FontAwesomeIcon
+    icon={faHeart}
+    className="inline-block w-8 h-8 mr-3"
+  ></FontAwesomeIcon>
+  <span>Wish List</span>
+</a>
           <a
             href="PerfilUsuario"
             className={`py-4 text-white flex items-center p-3 transition duration-0 ${

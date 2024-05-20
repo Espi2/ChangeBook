@@ -54,6 +54,15 @@ if(confirmDelete){
           codigo: usuarioCodigo,
         }
       });
+    try {
+  await axios.post(`/api/notificaciones/agregarPara`, {
+          codigoUsuario : usuarioCodigo,
+          mensaje: `Se elimino el libro ${titulo} de tu wishlist` ,
+        });
+    } catch (error) {
+      console.error("Error mandando la notificacion", error);
+    }
+
       alert("Libro eliminado de la lista de deseos.");
        window.location.reload();
     } catch (error) {
