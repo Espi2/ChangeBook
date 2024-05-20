@@ -11,8 +11,13 @@ import ResultadoBusqueda from "./ResultadoBusqueda/page";
 import Perfil from "./PerfilUsuario/page";
 import PerfilUsuario from "./Perfil/page";
 import AdmitUser from "./AdminDashboard/Admit/page";
+import "./InicioSesion/InicioDeSesin.css";
+import "./InicioSesion/global.css";
+import "./Registro/Registro.css"; 
+import Registro from "./Registro/page";
 
-function App() {
+
+function App({  }) {
   return (
     <Router>
       <Routes>
