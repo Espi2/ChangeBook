@@ -14,6 +14,7 @@ import {
   faUser,
   faSearch,
   faBell,
+  faHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import { redirect } from "next/navigation";
 import AddBookForm from "../Publicar/page";
@@ -159,19 +160,19 @@ const Perfil: React.FC = () => {
             <span>Publicar</span>
           </button>
           <a
-            href=""
+            href="/WishList"
             className={`py-4 text-white flex items-center p-3 transition duration-0 ${
-              navOption === "lista"
+              navOption === "wishlist"
                 ? "bg-cbookC-700 rounded-l-3xl"
                 : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
             }`}
-            onClick={() => setNavOption("lista")}
+            onClick={() => setNavOption("wishlist")}
           >
             <FontAwesomeIcon
-              icon={faClock}
+              icon={faHeart}
               className="inline-block w-8 h-8 mr-3"
-            />
-            <span>Lista de espera</span>
+            ></FontAwesomeIcon>
+            <span>Wish List</span>
           </a>
           <a
             href="PerfilUsuario"
@@ -263,7 +264,10 @@ const Perfil: React.FC = () => {
           </div>
         </div>
       )}
-      <div className="col-span-8 row-span-9 border-gray-200 border-2 overflow-auto mt-44">
+      <div
+        className="col-span-8 row-span-9 border-gray-200 border-2 overflow-auto mt-44"
+        id="masLeidos"
+      >
         <div className="grid grid-cols-1 gap-4">
           {books.map((book) => (
             <BookCard

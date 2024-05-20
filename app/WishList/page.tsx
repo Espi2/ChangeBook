@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faHome } from "@fortawesome/free-solid-svg-icons";
 import { faSignOut } from "@fortawesome/free-solid-svg-icons/faSignOut";
 import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
 import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
@@ -210,21 +210,21 @@ function Home() {
             ></FontAwesomeIcon>
             <span>Publicar</span>
           </button>
-          <a
-            href="/WishList"
-            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
-              navOption === "wishlist"
-                ? "bg-cbookC-700 rounded-l-3xl"
-                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
-            }`}
-            onClick={() => setNavOption("wishlist")}
-          >
-            <FontAwesomeIcon
-              icon={faClock}
-              className="inline-block w-8 h-8 mr-3"
-            ></FontAwesomeIcon>
-            <span>Wish List</span>
-          </a>
+<a
+  href="/WishList"
+  className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+    navOption === "wishlist"
+      ? "bg-cbookC-700 rounded-l-3xl"
+      : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+  }`}
+  onClick={() => setNavOption("wishlist")}
+>
+  <FontAwesomeIcon
+    icon={faHeart}
+    className="inline-block w-8 h-8 mr-3"
+  ></FontAwesomeIcon>
+  <span>Wish List</span>
+</a>
           <a
             href="PerfilUsuario"
             className={`py-4 text-white flex items-center p-3 transition duration-0 ${
@@ -359,25 +359,31 @@ function Home() {
               className="flex-col overflow-auto border-cbookC-600"
               id="masLeidos"
             >
-              {perfilUsuario?.notificaciones.length !== 0 ? (
-                perfilUsuario.notificaciones.map((notificacion) => (
-                  <div
-                    key={notificacion.idNotificacion}
-                    className="border border-cbookC-500 rounded-md flex items-center justify-between p-2 mb-2"
-                  >
-                    <p className="flex-1">{notificacion.mensaje}</p>
-                    <button
-                      className="ml-4 p-2 rounded-xl bg-cbookC-500 text-cbookC-200 hover:text-white"
-                      onClick={() =>
-                        solveNotification(notificacion.idNotificacion)
-                      }
+              {perfilUsuario ? (
+                perfilUsuario?.notificaciones.length !== 0 ? (
+                  perfilUsuario.notificaciones.map((notificacion) => (
+                    <div
+                      key={notificacion.idNotificacion}
+                      className="border border-cbookC-500 rounded-md flex items-center justify-between p-2 mb-2"
                     >
-                      Descartar
-                    </button>
+                      <p className="flex-1">{notificacion.mensaje}</p>
+                      <button
+                        className="ml-4 p-2 rounded-xl bg-cbookC-500 text-cbookC-200 hover:text-white"
+                        onClick={() =>
+                          solveNotification(notificacion.idNotificacion)
+                        }
+                      >
+                        Descartar
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center">
+                    No hay notificaciones por mostrar
                   </div>
-                ))
+                )
               ) : (
-                <div>No hay notificaciones por mostrar</div>
+                <></>
               )}
             </div>
           </div>

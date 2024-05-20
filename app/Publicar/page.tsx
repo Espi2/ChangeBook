@@ -62,6 +62,10 @@ const AddBookForm: React.FC<AddBookFormProps> = (props) => {
           "Content-Type": "multipart/form-data",
         },
       });
+      await axios.post("/api/notificaciones/agregarPara", {
+        codigoUsuario,
+        mensaje: `Agregaste el libro '${formData.titulo}'`,
+      });
       alert("Libro agregado exitosamente");
       setFormData({
         titulo: "",
@@ -198,4 +202,3 @@ const AddBookForm: React.FC<AddBookFormProps> = (props) => {
 };
 
 export default AddBookForm;
-

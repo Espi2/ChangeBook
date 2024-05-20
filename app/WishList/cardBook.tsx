@@ -31,10 +31,13 @@ const BookCard: React.FC<BookCardProps> = ({
   userNombre,
   codigoUsuario,
   imagen,
-  fetchWishList
+  fetchWishList,
 }) => {
   const router = useRouter();
-  const usuarioCodigo = typeof window !== 'undefined' ? localStorage.getItem("codigoUsuario") : null;
+  const usuarioCodigo =
+    typeof window !== "undefined"
+      ? localStorage.getItem("codigoUsuario")
+      : null;
 
   const handleCardClick = () => {
     router.push(`/DetallesLibro?idLibro=${idLibro}`);
@@ -45,21 +48,30 @@ const BookCard: React.FC<BookCardProps> = ({
   };
 
   const handleRemoveFromWishList = async () => {
-        const confirmDelete = window.confirm("¿Deseas eliminar este libro?");
-if(confirmDelete){
-    try {
-      await axios.delete(`/api/wishlist/borrarLibro`, {
-        data: {
-          idLibro,
-          codigo: usuarioCodigo,
+    const confirmDelete = window.confirm("¿Deseas eliminar este libro?");
+    if (confirmDelete) {
+      try {
+        await axios.delete(`/api/wishlist/borrarLibro`, {
+          data: {
+            idLibro,
+            codigo: usuarioCodigo,
+          },
+        });
+        try {
+          await axios.post(`/api/notificaciones/agregarPara`, {
+            codigoUsuario: usuarioCodigo,
+            mensaje: `Se elimino el libro '${titulo}' de tu wishlist`,
+          });
+        } catch (error) {
+          console.error("Error mandando la notificacion", error);
         }
-      });
-      alert("Libro eliminado de la lista de deseos.");
-       window.location.reload();
-    } catch (error) {
-      console.error("Error eliminando libro de la lista de deseos:", error);
+
+        alert("Libro eliminado de la lista de deseos.");
+        window.location.reload();
+      } catch (error) {
+        console.error("Error eliminando libro de la lista de deseos:", error);
+      }
     }
-  }
   };
 
   return (
@@ -70,10 +82,22 @@ if(confirmDelete){
         alt={titulo}
         className="w-full max-h-64 object-cover rounded-md"
         onClick={handleCardClick}
-        style={{ cursor: 'pointer' }} 
+        style={{ cursor: "pointer" }}
       />
-      <h2 style={{ cursor: 'pointer' }} onClick={handleCardClick} className="text-lg font-bold font-cbookF">{titulo}</h2>
-      <p style={{ cursor: 'pointer' }} onClick={handleCardClick} className="text-gray-600 font-cbookF">{autor}</p>
+      <h2
+        style={{ cursor: "pointer" }}
+        onClick={handleCardClick}
+        className="text-lg font-bold font-cbookF"
+      >
+        {titulo}
+      </h2>
+      <p
+        style={{ cursor: "pointer" }}
+        onClick={handleCardClick}
+        className="text-gray-600 font-cbookF"
+      >
+        {autor}
+      </p>
       <p onClick={handleCardClick} className="text-gray-600 font-cbookF">
         Estado: {disponible ? "🟢" : "🔴"}
       </p>
@@ -86,7 +110,7 @@ if(confirmDelete){
           {userNombre}
         </span>
       </p>
-      
+
       <button
         onClick={handleRemoveFromWishList}
         className="mt-2 bg-red-600 text-white py-1 px-4 rounded"

@@ -1,6 +1,7 @@
 import React from "react";
 import { deleteBook, updateBookAvailability } from "./libro.service";
 import { useRouter } from "next/navigation";
+import "./styles.css";
 
 interface Book {
   idLibro: string;
@@ -28,7 +29,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onDelete }) => {
     const confirmDelete = window.confirm("¿Deseas eliminar este libro?");
     if (confirmDelete) {
       try {
-        await deleteBook(book.idLibro);
+        await deleteBook(book.idLibro, book.titulo);
         onDelete(book.idLibro);
       } catch (error) {
         console.error("Error deleting book:", error);

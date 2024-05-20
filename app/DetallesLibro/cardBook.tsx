@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import ReviewModal from "./ReviewModal";
 
 interface BookCardProps {
   idLibro: string;
@@ -36,7 +38,38 @@ const BookCard: React.FC<BookCardProps> = ({
   imagenPerfil,
   imagen,
 }) => {
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [isAddingReview, setIsAddingReview] = useState(false);
+  const usuarioCodigo = localStorage.getItem("codigoUsuario");
   const router = useRouter();
+
+  const handleWishListClick = async () => {
+    try {
+      await axios.post(`/api/wishlist/anadirLibro`, {
+        idLibro,
+        codigo: usuarioCodigo,
+      });
+
+      await axios.post(`/api/notificaciones/agregarPara`, {
+        codigoUsuario: usuarioCodigo,
+        mensaje: `Agregaste el libro '${titulo}' a tu lista de deseos`,
+      });
+
+      alert("Libro añadido a la lista de deseos.");
+    } catch (error) {
+      alert("El libro ya está en tu lista de deseos");
+    }
+  };
+
+  const handleShowReviews = () => {
+    setIsAddingReview(false);
+    setShowReviewModal(true);
+  };
+
+  const handleAddReview = () => {
+    setIsAddingReview(true);
+    setShowReviewModal(true);
+  };
 
   return (
     <div className="bg-white rounded-md p-4 h-full flex">
@@ -57,10 +90,28 @@ const BookCard: React.FC<BookCardProps> = ({
           Estatus: {disponible ? "Disponible" : "No Disponible"}
         </p>
         <br />
-        <p className="text-xl text-gray-600 font-cbookF text-justify">
+        <p className="text-xl text-gray-600 font-cbookF text-justify mb-8">
           Sinopsis
           <br /> {sinopsis}
         </p>
+        <button
+          onClick={handleWishListClick}
+          className="mt-2 bg-cbookC-600 hover:bg-cbookC-500 text-white py-1 px-4 rounded"
+        >
+          Añadir a WishList
+        </button>
+        <button
+          onClick={handleShowReviews}
+          className="mt-2 bg-cbookC-500 hover:bg-cbookC-400 text-white py-1 px-4 rounded m-5"
+        >
+          Ver Reseñas
+        </button>
+        <button
+          onClick={handleAddReview}
+          className="mt-2 bg-cbookC-500 hover:bg-cbookC-400 text-white py-1 px-4 rounded"
+        >
+          Agregar Reseña
+        </button>
       </div>
       <div className="ml-4 flex-shrink-0 w-64 h-96 mt-0">
         <img
@@ -70,6 +121,13 @@ const BookCard: React.FC<BookCardProps> = ({
           className="object-cover w-full h-full rounded-md"
         />
       </div>
+      {showReviewModal && (
+        <ReviewModal
+          idLibro={idLibro}
+          isAddingReview={isAddingReview}
+          onClose={() => setShowReviewModal(false)}
+        />
+      )}
     </div>
   );
 };
