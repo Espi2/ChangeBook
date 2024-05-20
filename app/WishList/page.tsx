@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faHome } from "@fortawesome/free-solid-svg-icons";
 import { faSignOut } from "@fortawesome/free-solid-svg-icons/faSignOut";
 import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
 import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
@@ -183,7 +183,7 @@ useEffect(() => {
   onClick={() => setNavOption("wishlist")}
 >
   <FontAwesomeIcon
-    icon={faClock}
+    icon={faHeart}
     className="inline-block w-8 h-8 mr-3"
   ></FontAwesomeIcon>
   <span>Wish List</span>

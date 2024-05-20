@@ -7,10 +7,10 @@ import SearchInput from "./search";
 import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faHome } from "@fortawesome/free-solid-svg-icons";
 import { faSignOut } from "@fortawesome/free-solid-svg-icons/faSignOut";
 import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
-import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
+import { faClock} from "@fortawesome/free-solid-svg-icons/faClock";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
@@ -231,7 +231,7 @@ function Home() {
   onClick={() => setNavOption("wishlist")}
 >
   <FontAwesomeIcon
-    icon={faClock}
+    icon={faHeart}
     className="inline-block w-8 h-8 mr-3"
   ></FontAwesomeIcon>
   <span>Wish List</span>

@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
-
+import axios from "axios";
 interface Book {
   idLibro: string;
   titulo: string;
@@ -23,10 +23,26 @@ interface BookCardProps {
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
     const router = useRouter();
+    const usuarioCodigo = localStorage.getItem("codigoUsuario");
+
+    const handleWishListClick = async () => {
+
+    try {
+      await axios.post(`/api/wishlist/anadirLibro`, {
+        idLibro: book.idLibro,
+        codigo: usuarioCodigo,
+      });
+      alert("Libro añadido a la lista de deseos.");
+    } catch (error) {
+      console.error("Error añadiendo libro a la lista de deseos:", error);
+    }
+  };
 
     const handleCardClick = () => {
     router.push(`/DetallesLibro?idLibro=${book.idLibro}`);
   };
+
+  
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden" onClick={handleCardClick}  style={{ cursor: 'pointer' }} >
@@ -35,7 +51,14 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
         <h2 className="font-bold text-lg">{book.titulo}</h2>
         <p className="text-sm text-gray-600">by {book.autor}</p>
         <p className="text-gray-600">Estado: {book.disponible ? "🟢" : "🔴"}</p>
+                        <button
+          onClick={handleWishListClick}
+          className="mt-2 bg-cbookC-600 text-white py-1 px-4 rounded"
+        >
+          Añadir a WishList
+        </button>
       </div>
+      
     </div>
   );
 };
