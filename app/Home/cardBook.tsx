@@ -14,9 +14,9 @@ interface BookCardProps {
   disponible: boolean;
   userNombre: string;
   codigoUsuario: string;
-  imagen: string; 
-  inWishList?: boolean; // Añadir esta propiedad
-  refreshWishList?: () => void; // Función para refrescar la lista de deseos
+  imagen: string;
+  inWishList?: boolean;
+  refreshWishList?: () => void;
 }
 
 const BookCard: React.FC<BookCardProps> = ({
@@ -32,7 +32,7 @@ const BookCard: React.FC<BookCardProps> = ({
   userNombre,
   codigoUsuario,
   imagen,
-   inWishList = false,
+  inWishList = false,
   refreshWishList,
 }) => {
   const router = useRouter();
@@ -58,15 +58,15 @@ const BookCard: React.FC<BookCardProps> = ({
     }
   };
 
-    const handleRemoveFromWishList = async () => {
+  const handleRemoveFromWishList = async () => {
     try {
       await axios.delete(`/api/wishlist/borrarLibro`, {
         data: {
           idLibro,
           codigo: usuarioCodigo,
-        }
+        },
       });
-       alert("Libro eliminado de la lista de deseos.");
+      alert("Libro eliminado de la lista de deseos.");
       if (refreshWishList) {
         refreshWishList();
       }
@@ -76,49 +76,62 @@ const BookCard: React.FC<BookCardProps> = ({
   };
 
   return (
-    <div className="bg-cbookC-100 shadow-md rounded-md p-4">
-      <img
-        loading="lazy"
-        src={imagen}
-        alt={titulo}
-        className="w-full max-h-64 object-cover rounded-md"
-        onClick={handleCardClick}
-        style={{ cursor: 'pointer' }} 
-      />
-      <h2 style={{ cursor: 'pointer' }} onClick={handleCardClick} className="text-lg font-bold font-cbookF">{titulo}</h2>
-      <p style={{ cursor: 'pointer' }} onClick={handleCardClick} className="text-gray-600 font-cbookF">{autor}</p>
-      <p onClick={handleCardClick} className="text-gray-600 font-cbookF">
-        Estado: {disponible ? "🟢" : "🔴"}
-      </p>
-      <p className="text-gray-600 font-cbookF">
-        Publicado por:{" "}
-        <span
-          onClick={handleUserClick}
-          className="text-cbookC-600 cursor-pointer"
+    <div className="bg-cbookC-100 shadow-md rounded-md p-4 flex flex-col h-full">
+      <div className="flex-grow">
+        <img
+          loading="lazy"
+          src={imagen}
+          alt={titulo}
+          className="w-full max-h-64 object-cover rounded-md"
+          onClick={handleCardClick}
+          style={{ cursor: "pointer" }}
+        />
+        <h2
+          style={{ cursor: "pointer" }}
+          onClick={handleCardClick}
+          className="text-lg font-bold font-cbookF"
         >
-          {userNombre}
-        </span>
-      </p>
-      
-     {!inWishList ? (
-        <button
-          onClick={handleWishListClick}
-          className="mt-2 bg-cbookC-600 text-white py-1 px-4 rounded"
+          {titulo}
+        </h2>
+        <p
+          style={{ cursor: "pointer" }}
+          onClick={handleCardClick}
+          className="text-gray-600 font-cbookF"
         >
-          Añadir a WishList
-        </button>
-      ) : (
-        <button
-          onClick={handleRemoveFromWishList}
-          className="mt-2 bg-red-600 text-white py-1 px-4 rounded"
-        >
-          Eliminar
-        </button>
-      )}
-     
+          {autor}
+        </p>
+        <p onClick={handleCardClick} className="text-gray-600 font-cbookF">
+          Estado: {disponible ? "🟢" : "🔴"}
+        </p>
+        <p className="text-gray-600 font-cbookF">
+          Publicado por:{" "}
+          <span
+            onClick={handleUserClick}
+            className="text-cbookC-600 cursor-pointer"
+          >
+            {userNombre}
+          </span>
+        </p>
+      </div>
+      <div className="mt-2 flex justify-center">
+        {!inWishList ? (
+          <button
+            onClick={handleWishListClick}
+            className="bg-cbookC-600 text-white py-1 px-4 rounded w-auto"
+          >
+            Añadir a WishList
+          </button>
+        ) : (
+          <button
+            onClick={handleRemoveFromWishList}
+            className="bg-red-600 text-white py-1 px-4 rounded w-full"
+          >
+            Eliminar
+          </button>
+        )}
+      </div>
     </div>
   );
 };
 
 export default BookCard;
-
