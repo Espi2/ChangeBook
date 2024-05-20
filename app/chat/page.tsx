@@ -18,6 +18,7 @@ import {
   faSearch,
   faBell,
   faHeart,
+  faTimes
 
 } from "@fortawesome/free-solid-svg-icons";
 
