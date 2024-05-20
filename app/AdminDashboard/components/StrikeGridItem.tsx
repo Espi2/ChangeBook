@@ -47,7 +47,7 @@ export const StrikeGridItem = ({ report }: Props) => {
 
     const handleButtonClick2 = async () => {
         try {
-            const response = await fetch(`/api/report/resolve/${report.user.codigo}`, {
+            const response = await fetch(`/api/report/resolve/${report.idReporte}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
