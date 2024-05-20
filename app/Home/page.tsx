@@ -7,10 +7,10 @@ import SearchInput from "./search";
 import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faHome } from "@fortawesome/free-solid-svg-icons";
 import { faSignOut } from "@fortawesome/free-solid-svg-icons/faSignOut";
 import { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
-import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
+import { faClock} from "@fortawesome/free-solid-svg-icons/faClock";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
@@ -231,7 +231,7 @@ function Home() {
   onClick={() => setNavOption("wishlist")}
 >
   <FontAwesomeIcon
-    icon={faClock}
+    icon={faHeart}
     className="inline-block w-8 h-8 mr-3"
   ></FontAwesomeIcon>
   <span>Wish List</span>
@@ -285,19 +285,28 @@ function Home() {
         </div>
       </div>
       {/*Barra superior con notificaciones */}
-      <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl col-span-8 row-span-1 mt-3 mr-3 flex items-center justify-end ">
-        <a
-          onClick={notificacionModalShow}
-          className="flex items-center hover:cursor-pointer"
-        >
-          <span className="font-cbookF font-bold text-x1 text-cbookC-700 mr-2">
-            Notificaciones
-          </span>
-          <FontAwesomeIcon
-            icon={faBell}
-            className="w-8 h-8 text-cbookC-700"
-          ></FontAwesomeIcon>
-        </a>
+      <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl col-span-8 row-span-1 mt-3 mr-3 flex items-center justify-end relative">
+        <div>
+          <a
+            onClick={notificacionModalShow}
+            className="flex items-center hover:cursor-pointer"
+          >
+            <span className="font-cbookF font-bold text-x1 text-cbookC-700 mr-2">
+              Notificaciones
+            </span>
+            <div className="relative">
+              <FontAwesomeIcon
+                icon={faBell}
+                className="w-8 h-8 text-cbookC-700 relative z-10"
+              />
+              {perfilUsuario && perfilUsuario.notificaciones.length > 0 && (
+                <div className="absolute -bottom-1 -right-3 right-0 bg-red-500 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs z-20">
+                  {perfilUsuario.notificaciones.length}
+                </div>
+              )}
+            </div>
+          </a>
+        </div>
         <img
           className="ml-6 w-10 h-10 mr-6"
           src="/libro_morado.png"

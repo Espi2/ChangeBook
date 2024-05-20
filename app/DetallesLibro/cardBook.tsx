@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
-
+import axios from "axios";
 interface BookCardProps {
   idLibro: string;
   titulo: string;
@@ -36,7 +36,20 @@ const BookCard: React.FC<BookCardProps> = ({
   imagenPerfil,
   imagen,
 }) => {
+  const usuarioCodigo = localStorage.getItem("codigoUsuario");
   const router = useRouter();
+  const handleWishListClick = async () => {
+
+    try {
+      await axios.post(`/api/wishlist/anadirLibro`, {
+        idLibro,
+        codigo: usuarioCodigo,
+      });
+      alert("Libro añadido a la lista de deseos.");
+    } catch (error) {
+      console.error("Error añadiendo libro a la lista de deseos:", error);
+    }
+  };
 
   return (
     <div className="bg-white rounded-md p-4 h-full flex">
@@ -61,6 +74,12 @@ const BookCard: React.FC<BookCardProps> = ({
           Sinopsis
           <br /> {sinopsis}
         </p>
+                <button
+          onClick={handleWishListClick}
+          className="mt-2 bg-cbookC-600 text-white py-1 px-4 rounded"
+        >
+          Añadir a WishList
+        </button>
       </div>
       <div className="ml-4 flex-shrink-0 w-64 h-96 mt-0">
         <img
@@ -69,6 +88,7 @@ const BookCard: React.FC<BookCardProps> = ({
           alt={titulo}
           className="object-cover w-full h-full rounded-md"
         />
+
       </div>
     </div>
   );
