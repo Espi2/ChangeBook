@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import ReactStars from "react-stars";
 
 interface ReviewModalProps {
   idLibro: string;
@@ -77,23 +78,17 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
               <label className="text-gray-600 text-xl font-cbookF">
                 Calificación:{" "}
               </label>
-              <select
-                className="text-cbookC-700 text-xl font-cbookF ml-2"
+              <ReactStars
+                count={5}
+                size={24}
+                half={false} // Aquí se deshabilitan las medias estrellas
                 value={newReview.calificacion}
-                onChange={(e) =>
-                  setNewReview({
-                    ...newReview,
-                    calificacion: parseInt(e.target.value),
-                  })
+                onChange={(newRating) =>
+                  setNewReview({ ...newReview, calificacion: newRating })
                 }
-              >
-                <option value={0}>Seleccione</option>
-                {[1, 2, 3, 4, 5].map((num) => (
-                  <option key={num} value={num}>
-                    {num}
-                  </option>
-                ))}
-              </select>
+                edit={true}
+                color2={"#ffd700"}
+              />
             </div>
             <button
               className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline mt-8 mb-4"
@@ -117,7 +112,17 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                     className="mb-2 text-gray-600 text-xl font-cbookF mt-8"
                   >
                     <p>{review.comentario}</p>
-                    <p>Calificación: {review.calificacion}</p>
+                    <div className="flex items-center">
+                      <p className="mr-2">Calificación: </p>
+                      <ReactStars
+                        count={5}
+                        size={24}
+                        half={false} // Aquí se deshabilitan las medias estrellas
+                        value={review.calificacion}
+                        edit={false}
+                        color2={"#ffd700"}
+                      />
+                    </div>
                   </li>
                 ))}
               </ul>
