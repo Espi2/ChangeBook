@@ -47,10 +47,18 @@ const EditarPerfil: React.FC<EditarPerfilProps> = ({ closeModal }) => {
         }
 
         await axios.patch(`/api/user/patchImage/${codigoUsuario}`, formData);
+        await axios.post(`/api/notificaciones/agregarPara`, {
+          codigoUsuario,
+          mensaje: "Se modificó tu imagen",
+        });
       }
 
       if (modificacionNombre) {
         await axios.patch(`/api/user/patch/${codigoUsuario}`, { nombre });
+        await axios.post(`/api/notificaciones/agregarPara`, {
+          codigoUsuario,
+          mensaje: "Se modificó tu nombre",
+        });
       }
 
       alert("Perfil actualizado exitosamente.");
