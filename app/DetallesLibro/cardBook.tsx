@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import ReviewModal from "./ReviewModal";
+import ReactStars from "react-stars";
 
 interface BookCardProps {
   idLibro: string;
@@ -80,11 +81,9 @@ const BookCard: React.FC<BookCardProps> = ({
         </p>
         <br />
         <p className="text-xl text-gray-600 font-cbookF">
-          Año publicacion: {ano_de_publicacion}
+          Año publicación: {ano_de_publicacion}
         </p>
-        <p className="text-xl text-gray-600 font-cbookF">
-          Editorial: {editorial}
-        </p>
+        <p className="text-xl text-gray-600 font-cbookF">Editorial: {editorial}</p>
         <p className="text-xl text-gray-600 font-cbookF">ISBN: {isbn}</p>
         <p className="text-xl text-gray-600 font-cbookF">
           Estatus: {disponible ? "Disponible" : "No Disponible"}
@@ -94,6 +93,17 @@ const BookCard: React.FC<BookCardProps> = ({
           Sinopsis
           <br /> {sinopsis}
         </p>
+        <div className="text-xl text-gray-600 font-cbookF text-justify mb-8">
+          <p>Calificación</p>
+          <ReactStars
+            count={5}
+            size={24}
+            half={true}
+            value={calificacion}
+            edit={false}
+            color2={"#ffd700"}
+          />
+        </div>
         <button
           onClick={handleWishListClick}
           className="mt-2 bg-cbookC-600 hover:bg-cbookC-500 text-white py-1 px-4 rounded"
