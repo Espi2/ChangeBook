@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 interface ReviewModalProps {
   idLibro: string;
@@ -49,12 +51,15 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="bg-white p-6 rounded-lg shadow-lg z-10 w-full max-w-xl relative">
-        <button
-          className="absolute -mt-2 top-0 right-0 p-2 text-xl text-gray-400 hover:text-gray-900"
+        <a
+          className="absolute top-0 right-0 p-2 text-xl text-gray-400 hover:text-gray-900 hover:cursor-pointer"
           onClick={onClose}
         >
-          x
-        </button>
+          <FontAwesomeIcon
+            icon={faTimes}
+            className="text-cbookC-700 w-8 h-8"
+          ></FontAwesomeIcon>
+        </a>
         {isAddingReview ? (
           <div className="flex flex-col items-center">
             <h2 className="text-3xl font-cbookF font-bold text-cbookC-700 mt-3 mb-5 flex justify-center">
