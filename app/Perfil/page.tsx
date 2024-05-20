@@ -47,8 +47,8 @@ interface Book {
 const PerfilUsuarioPage: React.FC = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const codigoUsuario = '222790811'
-  // const codigoUsuario = searchParams.get("codigoUsuario");
+  //const codigoUsuario = '222790811'
+  const codigoUsuario = searchParams.get("codigoUsuario");
   const [navOption, setNavOption] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showReport, setShowReport] = useState(false);
