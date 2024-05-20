@@ -254,11 +254,23 @@ const DetallesLibro = () => {
               <span className="text-center font-cbookF font-bold text-3xl max-w-44 justify-center text-cbookC-700">
                 Prestador
               </span>
-              <img
-                src={books[0].imagenPerfil}
-                alt="Imagen de perfil"
-                className="w-40 h-40 rounded-full"
-              />
+              <div>
+                {books[0].imagenPerfil ? (
+                  <img
+                    loading="lazy"
+                    src={books[0].imagenPerfil}
+                    alt="Imagen de perfil"
+                    className="w-40 h-40 rounded-full"
+                  />
+                ) : (
+                  <img
+                    loading="lazy"
+                    src="/no-user.png"
+                    alt="Imagen de perfil"
+                    className="w-40 h-40 rounded-full"
+                  />
+                )}
+              </div>
               <span className="text-center font-cbookF font-bold text-2xl max-w-52 justify-center text-gray-500">
                 {books[0].userNombre}
                 <br />

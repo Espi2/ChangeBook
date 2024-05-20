@@ -22,6 +22,7 @@
     "react": "^18.3.0",
     "react-dom": "^18",
     "react-router-dom": "^6.23.0",
+    "react-stars": "^2.2.5",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.5",
     "socket.io": "^4.7.5",

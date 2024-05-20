@@ -221,7 +221,7 @@ const Chat = () => {
           room: roomId,
         });
         setInput("");
-      window.location.reload();
+        window.location.reload();
       } catch (error) {
         console.error("Error sending message:", error);
       }
@@ -431,11 +431,23 @@ const Chat = () => {
               <span className="text-center font-cbookF font-bold text-3xl max-w-44 justify-center text-cbookC-700">
                 Informacion del usuario
               </span>
-              <img
-                src={otherUser.imagenPerfil}
-                alt="Imagen de perfil"
-                className="w-40 h-40 rounded-full"
-              />
+              <div>
+                {otherUser.imagenPerfil ? (
+                  <img
+                    loading="lazy"
+                    src={otherUser.imagenPerfil}
+                    alt="Imagen de perfil"
+                    className="w-40 h-40 rounded-full"
+                  />
+                ) : (
+                  <img
+                    loading="lazy"
+                    src="/no-user.png"
+                    alt="Imagen de perfil"
+                    className="w-40 h-40 rounded-full"
+                  />
+                )}
+              </div>
               <span className="text-center font-cbookF font-bold text-2xl max-w-52 justify-center text-gray-500">
                 {otherUser.nombre}
               </span>

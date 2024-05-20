@@ -225,12 +225,23 @@ const Perfil: React.FC = () => {
       {user && (
         <div className="flex items-center justify-between col-span-8 row-span-1 mt-3 mr-3 mb-4 border-gray-200 border-2 bg-gradient-to-r from-cbookC-400 via-cbookC-600 to-cbookC-700 rounded-2xl shadow-xl h-56">
           <div className="flex items-center">
-            <img
-              loading="lazy"
-              src={user.imagenPerfil}
-              alt="Imagen de perfil"
-              className="ml-8 w-36 h-36 rounded-full mr-4"
-            />
+            <div>
+              {user.imagenPerfil ? (
+                <img
+                  loading="lazy"
+                  src={user.imagenPerfil}
+                  alt="Imagen de perfil"
+                  className="ml-8 w-36 h-36 rounded-full mr-4"
+                />
+              ) : (
+                <img
+                  loading="lazy"
+                  src="/no-user.png"
+                  alt="Imagen de perfil"
+                  className="ml-8 w-36 h-36 rounded-full mr-4"
+                />
+              )}
+            </div>
             <span className="text-justify font-cbookF font-bold text-2xl max-w-full justify-center text-white ml-5">
               {user.nombre}
               <br />

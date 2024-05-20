@@ -109,9 +109,9 @@ const PerfilUsuarioPage: React.FC = () => {
   };
 
   const handleReportModal = () => {
-    console.log('Antes' + showReport);
+    console.log("Antes" + showReport);
     setShowReport(!showReport);
-    console.log('Despues: ' + showReport)
+    console.log("Despues: " + showReport);
   };
 
   return (
@@ -128,10 +128,11 @@ const PerfilUsuarioPage: React.FC = () => {
         <div className="flex flex-col items-left mx-3 gap-50 font-cbookF font-bold text-x1 cursor-pointer overflow-hidden mr-0">
           <a
             href="/Home"
-            className={`py-4 text-white flex items-center p-3 transition duration-0 ${navOption === "inicio"
-              ? "bg-cbookC-700 rounded-l-3xl"
-              : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
-              }`}
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "inicio"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
             onClick={() => setNavOption("inicio")}
           >
             <FontAwesomeIcon
@@ -141,10 +142,11 @@ const PerfilUsuarioPage: React.FC = () => {
             <span>Inicio</span>
           </a>
           <button
-            className={`py-4 text-white flex items-center p-3 transition duration-0 ${navOption === "publicar"
-              ? "bg-cbookC-700 rounded-l-3xl"
-              : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
-              }`}
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "publicar"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
             onClick={() => {
               setNavOption("Publicar");
               setShowModal(true);
@@ -156,27 +158,28 @@ const PerfilUsuarioPage: React.FC = () => {
             />
             <span>Publicar</span>
           </button>
-         <a
-  href="/WishList"
-  className={`py-4 text-white flex items-center p-3 transition duration-0 ${
-    navOption === "wishlist"
-      ? "bg-cbookC-700 rounded-l-3xl"
-      : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
-  }`}
-  onClick={() => setNavOption("wishlist")}
->
-  <FontAwesomeIcon
-    icon={faHeart}
-    className="inline-block w-8 h-8 mr-3"
-  ></FontAwesomeIcon>
-  <span>Wish List</span>
-</a>
+          <a
+            href="/WishList"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "wishlist"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={() => setNavOption("wishlist")}
+          >
+            <FontAwesomeIcon
+              icon={faHeart}
+              className="inline-block w-8 h-8 mr-3"
+            ></FontAwesomeIcon>
+            <span>Wish List</span>
+          </a>
           <a
             href="PerfilUsuario"
-            className={`py-4 text-white flex items-center p-3 transition duration-0 ${navOption === "perfil"
-              ? "bg-cbookC-700 rounded-l-3xl"
-              : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
-              }`}
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "perfil"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
             onClick={() => setNavOption("PerfilUsuario")}
           >
             <FontAwesomeIcon
@@ -187,10 +190,11 @@ const PerfilUsuarioPage: React.FC = () => {
           </a>
           <a
             href="Home"
-            className={`py-4 text-white flex items-center p-3 transition duration-0 ${navOption === "buscar"
-              ? "bg-cbookC-700 rounded-l-3xl"
-              : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
-              }`}
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "buscar"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
             onClick={() => setNavOption("buscar")}
           >
             <FontAwesomeIcon
@@ -202,10 +206,11 @@ const PerfilUsuarioPage: React.FC = () => {
 
           <a
             href="InicioSesion"
-            className={`py-4 text-white flex items-center p-3 transition duration-0 ${navOption === "salir"
-              ? "bg-cbookC-700 rounded-l-3xl"
-              : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
-              }`}
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "salir"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
             onClick={handleLogout}
           >
             <FontAwesomeIcon
@@ -220,12 +225,23 @@ const PerfilUsuarioPage: React.FC = () => {
       {perfilUsuario && (
         <div className="flex items-center justify-between col-span-8 row-span-1 mt-3 mr-3 mb-4 border-gray-200 border-2 bg-gradient-to-r from-cbookC-400 via-cbookC-600 to-cbookC-700 rounded-2xl shadow-xl h-56">
           <div className="flex items-center">
-            <img
-              loading="lazy"
-              src={perfilUsuario.imagenPerfil}
-              alt="Imagen de perfil"
-              className="ml-8 w-36 h-36 rounded-full mr-4"
-            />
+            <div>
+              {perfilUsuario.imagenPerfil ? (
+                <img
+                  loading="lazy"
+                  src={perfilUsuario.imagenPerfil}
+                  alt="Imagen de perfil"
+                  className="ml-8 w-36 h-36 rounded-full mr-4"
+                />
+              ) : (
+                <img
+                  loading="lazy"
+                  src="/no-user.png"
+                  alt="Imagen de perfil"
+                  className="ml-8 w-36 h-36 rounded-full mr-4"
+                />
+              )}
+            </div>
             <span className="text-justify font-cbookF font-bold text-2xl max-w-full justify-center text-white ml-5">
               <h1 className="text-2xl font-bold">{perfilUsuario.nombre}</h1>
               <p className="text-cbookC-700">{perfilUsuario.codigo}</p>
@@ -292,8 +308,7 @@ const PerfilUsuarioPage: React.FC = () => {
           codigo={codigoUsuario}
           onButtonClick={handleReportModal}
         />
-      )
-      }
+      )}
     </div>
   );
 };
