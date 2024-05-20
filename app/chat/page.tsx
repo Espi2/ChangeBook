@@ -44,11 +44,33 @@ const Chat = () => {
   const [input, setInput] = useState("");
   const socketRef = useRef<Socket | null>(null);
   const searchParams = useSearchParams();
-  const roomId = searchParams.get("roomId");
   const chatContainerRef = useRef<HTMLUListElement>(null);
   const [navOption, setNavOption] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [books, setBooks] = useState<Book[]>([]);
+  const roomId = searchParams.get("roomId");
+const [codigoUsuario1, codigoUsuario2] = roomId ? roomId.split('-') : ['', ''];
+const myCodigoUsuario = localStorage.getItem("codigoUsuario");
+const otherCodigoUsuario = codigoUsuario1 === myCodigoUsuario ? codigoUsuario2 : codigoUsuario1;
+
+
+const [otherUser, setOtherUser] = useState<{ nombre: string, imagenPerfil: string, strikes: number, creadoEn: string } | null>(null);
+
+useEffect(() => {
+  if (!otherCodigoUsuario) return;
+
+  const fetchOtherUserInfo = async () => {
+    try {
+      const response = await axios.get(`api/user/get/${otherCodigoUsuario}`);
+      setOtherUser(response.data);
+    } catch (error) {
+      console.error("Error fetching other user info:", error);
+    }
+  };
+
+  fetchOtherUserInfo();
+}, [otherCodigoUsuario]);
+
 
   const handleModalClose = () => {
     setShowModal(false);
@@ -257,90 +279,55 @@ const Chat = () => {
           alt="Libro"
         />
       </div>
-      {/* CHAT */}
-      <div className="flex flex-col items-center justify-center bg-gradient-to-r from-cbookC-500 via-cbookC-700 to-cbookC-600 rounded-2xl shadow-xl col-span-6 row-span-9 mb-3 overflow-hidden">
-        <h1 className="text-2xl font-bold font-cbookF text-cbookC-200 mb-4 mt-4">
-          Chateando con: {roomId}
-        </h1>
-        <ul
-          ref={chatContainerRef}
-          className="chat-container flex flex-col flex-grow w-full max-w-full overflow-y-auto bg-cbookC-300 shadow-md p-4"
-        >
-          {messages.map((message, index) => (
-            <li
-              key={index}
-              className={`flex flex-col py-0 ${
-                message.username === localStorage.getItem("nombreUsuario")
-                  ? "self-end items-end"
-                  : "items-start"
-              }`}
-            >
-              <div
-                className={`message-bubble ${
-                  message.username === localStorage.getItem("nombreUsuario")
-                    ? "sender-bubble"
-                    : "receiver-bubble"
-                }`}
-              >
-                <strong className="message-username text-cbookC-400">
-                  {message.username}
-                </strong>
-                <p className="message-text">{message.message}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <form
-          onSubmit={handleSubmit}
-          className="w-full max-w-full flex items-center bg-gradient-to-r from-cbookC-500 via-cbookC-700 to-cbookC-600 p-4"
-        >
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type a message"
-            className="flex-1 py-2 px-4 mr-2 font-cbookF rounded-lg focus:outline-none focus:border-cbookC-800"
-          />
-          <button
-            type="submit"
-            className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+   {/* CHAT */}
+    <div className="flex flex-col items-center justify-center bg-gradient-to-r from-cbookC-500 via-cbookC-700 to-cbookC-600 rounded-2xl shadow-xl col-span-6 row-span-9 mb-3 overflow-hidden">
+      <h1 className="text-2xl font-bold font-cbookF text-cbookC-200 mb-4 mt-4">
+        Chateando con: {otherUser?.nombre || 'Cargando...'}
+      </h1>
+      <ul
+        ref={chatContainerRef}
+        className="chat-container flex flex-col flex-grow w-full max-w-full overflow-y-auto bg-cbookC-300 shadow-md p-4"
+      >
+        {messages.map((message, index) => (
+          <li
+            key={index}
+            className={`flex flex-col py-0 ${message.username === localStorage.getItem("nombreUsuario") ? "self-end items-end" : "items-start"}`}
           >
-            Enviar
-          </button>
-        </form>
-      </div>
+            <div className={`message-bubble ${message.username === localStorage.getItem("nombreUsuario") ? "sender-bubble" : "receiver-bubble"}`}>
+              <strong className="message-username text-cbookC-400">{message.username}</strong>
+              <p className="message-text">{message.message}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <form onSubmit={handleSubmit} className="w-full max-w-full flex items-center bg-gradient-to-r from-cbookC-500 via-cbookC-700 to-cbookC-600 p-4">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Type a message"
+          className="flex-1 py-2 px-4 mr-2 font-cbookF rounded-lg focus:outline-none focus:border-cbookC-800"
+        />
+        <button type="submit" className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline">Enviar</button>
+      </form>
+    </div>
 
-      {/*INFO USER*/}
-      <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-xl col-span-2 row-span-9 mr-3 mb-3 flex justify-center items-center">
-        <div className="flex flex-col items-center justify-between h-full space-y-4 p-8">
-          {books.length > 0 ? (
-            <>
-              <span className="text-center font-cbookF font-bold text-3xl max-w-44 justify-center text-cbookC-700">
-                Prestador
-              </span>
-              <img
-                src={books[0].imagenPerfil}
-                alt="Imagen de perfil"
-                className="w-40 h-40 rounded-full"
-              />
-              <span className="text-center font-cbookF font-bold text-2xl max-w-52 justify-center text-gray-500">
-                {books[0].userNombre}
-                <br />
-                <br />
-                Intercambios: {books[0].intercambios}
-              </span>
-              <button
-                onClick={handleUserClick}
-                className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
-              >
-                Ver perfil
-              </button>
-            </>
-          ) : (
-            <div className="flex flex-col items-center"></div>
-          )}
-        </div>
+    {/*INFO USER*/}
+    <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-xl col-span-2 row-span-9 mr-3 mb-3 flex justify-center items-center">
+      <div className="flex flex-col items-center justify-between h-full space-y-4 p-8">
+        {otherUser ? (
+          <>
+            <span className="text-center font-cbookF font-bold text-3xl max-w-44 justify-center text-cbookC-700">Informacion del usuario</span>
+            <img src={otherUser.imagenPerfil} alt="Imagen de perfil" className="w-40 h-40 rounded-full" />
+            <span className="text-center font-cbookF font-bold text-2xl max-w-52 justify-center text-gray-500">{otherUser.nombre}</span>
+            <span className="text-center font-cbookF font-bold text-xl max-w-52 justify-center text-gray-500">Strikes: {otherUser.strikes}</span>
+            <span className="text-center font-cbookF font-bold text-xl max-w-52 justify-center text-gray-500">Creado en: {new Date(otherUser.creadoEn).toLocaleDateString()}</span>
+          </>
+        ) : (
+          <div className="flex flex-col items-center">Cargando...</div>
+        )}
       </div>
+    </div>
       {/*FORM PUBLICAR*/}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
