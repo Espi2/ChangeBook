@@ -65,9 +65,7 @@ const DetallesLibro = () => {
     router.push(`/Perfil?codigoUsuario=${books[0].codigoUsuario}`);
   };
 
-
-
-    const handleChat = () => {
+  const handleChat = () => {
     const currentUserCode = localStorage.getItem("codigoUsuario");
     if (currentUserCode) {
       // Ordenar los IDs para que el roomId sea el mismo independientemente del orden
@@ -161,21 +159,21 @@ const DetallesLibro = () => {
             />
             <span>Publicar</span>
           </button>
-         <a
-  href="/WishList"
-  className={`py-4 text-white flex items-center p-3 transition duration-0 ${
-    navOption === "wishlist"
-      ? "bg-cbookC-700 rounded-l-3xl"
-      : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
-  }`}
-  onClick={() => setNavOption("wishlist")}
->
-  <FontAwesomeIcon
-    icon={faHeart}
-    className="inline-block w-8 h-8 mr-3"
-  ></FontAwesomeIcon>
-  <span>Wish List</span>
-</a>
+          <a
+            href="/WishList"
+            className={`py-4 text-white flex items-center p-3 transition duration-0 ${
+              navOption === "wishlist"
+                ? "bg-cbookC-700 rounded-l-3xl"
+                : "hover:bg-cbookC-700 hover:rounded-l-3xl hover:pr-12"
+            }`}
+            onClick={() => setNavOption("wishlist")}
+          >
+            <FontAwesomeIcon
+              icon={faHeart}
+              className="inline-block w-8 h-8 mr-3"
+            ></FontAwesomeIcon>
+            <span>Wish List</span>
+          </a>
           <a
             href="PerfilUsuario"
             className={`py-4 text-white flex items-center p-3 transition duration-0 ${
@@ -273,13 +271,12 @@ const DetallesLibro = () => {
               >
                 Ver perfil
               </button>
-              <button 
+              <button
                 className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
-        onClick={handleChat}
-      >
-        Chatear
-      </button>
-      
+                onClick={handleChat}
+              >
+                Chatear
+              </button>
             </>
           ) : (
             <div className="flex flex-col items-center"></div>

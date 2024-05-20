@@ -12,15 +12,23 @@ interface Review {
   calificacion: number;
 }
 
-const ReviewModal: React.FC<ReviewModalProps> = ({ idLibro, isAddingReview, onClose }) => {
+const ReviewModal: React.FC<ReviewModalProps> = ({
+  idLibro,
+  isAddingReview,
+  onClose,
+}) => {
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [newReview, setNewReview] = useState({ comentario: "", calificacion: 0 });
-  
+  const [newReview, setNewReview] = useState({
+    comentario: "",
+    calificacion: 0,
+  });
+
   useEffect(() => {
     if (!isAddingReview) {
-      axios.get(`api/comentarios/get/${idLibro}`)
-        .then(response => setReviews(response.data.comments))
-        .catch(error => console.error("Error fetching reviews:", error));
+      axios
+        .get(`api/comentarios/get/${idLibro}`)
+        .then((response) => setReviews(response.data.comments))
+        .catch((error) => console.error("Error fetching reviews:", error));
     }
   }, [idLibro, isAddingReview]);
 
@@ -40,42 +48,69 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ idLibro, isAddingReview, onCl
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-black opacity-50"></div>
-      <div className="bg-white p-6 rounded-lg shadow-lg z-10 w-full max-w-lg">
-        <button className="absolute top-0 right-0 p-2" onClick={onClose}>x</button>
+      <div className="bg-white p-6 rounded-lg shadow-lg z-10 w-full max-w-xl relative">
+        <button
+          className="absolute -mt-2 top-0 right-0 p-2 text-xl text-gray-400 hover:text-gray-900"
+          onClick={onClose}
+        >
+          x
+        </button>
         {isAddingReview ? (
-          <div>
-            <h2 className="text-2xl mb-4">Agregar Reseña</h2>
+          <div className="flex flex-col items-center">
+            <h2 className="text-3xl font-cbookF font-bold text-cbookC-700 mt-3 mb-5 flex justify-center">
+              Agregar Reseña
+            </h2>
             <textarea
-              className="w-full p-2 border rounded mb-2"
+              className="w-full p-2 border rounded mb-8 mt-4 bg-gray-100 text-gray-600 text-xl font-cbookF focus:outline-none"
               placeholder="Escribe tu reseña"
               value={newReview.comentario}
-              onChange={(e) => setNewReview({ ...newReview, comentario: e.target.value })}
+              onChange={(e) =>
+                setNewReview({ ...newReview, comentario: e.target.value })
+              }
             />
-            <div>
-              <label>Calificación: </label>
+            <div className="flex items-center">
+              <label className="text-gray-600 text-xl font-cbookF">
+                Calificación:{" "}
+              </label>
               <select
+                className="text-cbookC-700 text-xl font-cbookF ml-2"
                 value={newReview.calificacion}
-                onChange={(e) => setNewReview({ ...newReview, calificacion: parseInt(e.target.value) })}
+                onChange={(e) =>
+                  setNewReview({
+                    ...newReview,
+                    calificacion: parseInt(e.target.value),
+                  })
+                }
               >
                 <option value={0}>Seleccione</option>
                 {[1, 2, 3, 4, 5].map((num) => (
-                  <option key={num} value={num}>{num}</option>
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
                 ))}
               </select>
             </div>
-            <button className="mt-4 bg-green-600 text-white py-1 px-4 rounded" onClick={handleAddReview}>
+            <button
+              className="bg-cbookC-700 hover:bg-cbookC-600 text-white font-cbookF font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline mt-8 mb-4"
+              onClick={handleAddReview}
+            >
               Agregar
             </button>
           </div>
         ) : (
           <div>
-            <h2 className="text-2xl mb-4">Reseñas</h2>
+            <h2 className="text-3xl font-cbookF font-bold text-cbookC-700 mt-3 mb-5 flex justify-center">
+              Reseñas
+            </h2>
             {reviews.length === 0 ? (
               <p>No hay reseñas.</p>
             ) : (
               <ul>
                 {reviews.map((review, index) => (
-                  <li key={index} className="mb-2">
+                  <li
+                    key={index}
+                    className="mb-2 text-gray-600 text-xl font-cbookF mt-8"
+                  >
                     <p>{review.comentario}</p>
                     <p>Calificación: {review.calificacion}</p>
                   </li>
