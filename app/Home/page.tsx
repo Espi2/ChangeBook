@@ -14,6 +14,7 @@ import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 import "./styles.css";
@@ -35,6 +36,13 @@ interface Book {
   imagen: string; // Añadir esta propiedad
 }
 
+interface Notificacion {
+  idNotificacion: string;
+  mensaje: string;
+  resuelto: boolean;
+  fecha: Date;
+}
+
 interface PerfilUsuario {
   codigo: string;
   nombre: string;
@@ -42,6 +50,7 @@ interface PerfilUsuario {
   imagenPerfil: string;
   creadoEn: string;
   actualizadoEn: string;
+  notificaciones: Notificacion[];
 }
 
 function Home() {
@@ -61,34 +70,62 @@ function Home() {
     setShowModal(false);
   };
 
-const handleLogout = () => {
-  localStorage.removeItem("codigoUsuario");
-  localStorage.removeItem("nombreUsuario"); // Eliminar el nombre de usuario del localStorage
-  // Otras operaciones de limpieza, como redireccionar a la página de inicio de sesión
-  router.push("/InicioSesion"); // Redireccionar a la página de inicio de sesión
-};
+  //MANEJO DE LAS NOTIFICACIONES EN MENU
+  //OCUPAS INFO DE PERFIL DEL USUARIO
+  const [notificacionModal, setNotificacionModal] = useState(false);
+  const notificacionModalShow = () => {
+    setNotificacionModal(true);
+  };
 
+  const notificacionModalClose = () => {
+    setNotificacionModal(false);
+  };
 
-useEffect(() => {
-  const codigoUsuario = localStorage.getItem("codigoUsuario");
+  const solveNotification = (idNotificacion: string) => {
+    // Verificar si perfilUsuario no es null o undefined antes de usarlo
+    if (perfilUsuario) {
+      axios.delete(`api/notificaciones/borrar/${idNotificacion}`);
+      const nuevasNotificaciones = perfilUsuario.notificaciones.filter(
+        (notificacion) => notificacion.idNotificacion !== idNotificacion
+      );
 
-  const obtenerPerfilUsuario = async () => {
-    try {
-      const response = await axios.get(`api/user/get/${codigoUsuario}`);
-      const perfil = response.data;
-      setPerfilUsuario(perfil);
-      console.log(perfil);
-      localStorage.setItem("nombreUsuario", perfil.nombre); // Guardar el nombre de usuario en el localStorage
-    } catch (error) {
-      console.error("Error al obtener el perfil del usuario:", error);
+      // Crear un nuevo objeto de perfil de usuario con las notificaciones actualizadas
+      const nuevoPerfilUsuario: PerfilUsuario = {
+        ...perfilUsuario,
+        notificaciones: nuevasNotificaciones,
+      };
+      setPerfilUsuario(nuevoPerfilUsuario); // Aquí deberías usar setPerfilUsuario en lugar de setPerfil
     }
   };
 
-  if (codigoUsuario) {
-    obtenerPerfilUsuario();
-  }
-}, []);
+  const handleLogout = () => {
+    localStorage.removeItem("codigoUsuario");
+    localStorage.removeItem("nombreUsuario"); // Eliminar el nombre de usuario del localStorage
+    // Otras operaciones de limpieza, como redireccionar a la página de inicio de sesión
+    router.push("/InicioSesion"); // Redireccionar a la página de inicio de sesión
+  };
 
+  useEffect(() => {
+    const codigoUsuario = localStorage.getItem("codigoUsuario");
+
+    const obtenerPerfilUsuario = async () => {
+      try {
+        const response = await axios.get(`api/user/get/${codigoUsuario}`);
+        const perfil = response.data;
+        setPerfilUsuario(perfil);
+        if (perfil.notificaciones.length > 0) {
+        }
+        console.log(perfil);
+        localStorage.setItem("nombreUsuario", perfil.nombre); // Guardar el nombre de usuario en el localStorage
+      } catch (error) {
+        console.error("Error al obtener el perfil del usuario:", error);
+      }
+    };
+
+    if (codigoUsuario) {
+      obtenerPerfilUsuario();
+    }
+  }, []);
 
   useEffect(() => {
     const codigoUsuario = localStorage.getItem("codigoUsuario");
@@ -249,7 +286,10 @@ useEffect(() => {
       </div>
       {/*Barra superior con notificaciones */}
       <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl col-span-8 row-span-1 mt-3 mr-3 flex items-center justify-end ">
-        <a href="" className="flex items-center">
+        <a
+          onClick={notificacionModalShow}
+          className="flex items-center hover:cursor-pointer"
+        >
           <span className="font-cbookF font-bold text-x1 text-cbookC-700 mr-2">
             Notificaciones
           </span>
@@ -337,6 +377,52 @@ useEffect(() => {
             </button>
             <div className="flex-1 overflow-auto">
               <AddBookForm closeModal={handleModalClose} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {notificacionModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <div className="bg-white p-6 rounded-lg shadow-lg z-10 w-3/5 max-w-screen-2xl h-3/6 flex flex-col relative">
+            <h2 className="text-center font-cbookF font-bold text-3xl justify-center text-cbookC-700 mt-3 mb-5">
+              Notificaciones
+            </h2>
+            <button
+              className="absolute top-0 right-0 p-2"
+              onClick={notificacionModalClose}
+            >
+              <FontAwesomeIcon
+                icon={faTimes}
+                className="text-cbookC-700 w-8 h-8"
+              ></FontAwesomeIcon>
+            </button>
+            {/* Renderización de las notificaciones */}
+            <div
+              className="flex-col overflow-auto border-cbookC-600"
+              id="masLeidos"
+            >
+              {perfilUsuario?.notificaciones.length !== 0 ? (
+                perfilUsuario.notificaciones.map((notificacion) => (
+                  <div
+                    key={notificacion.idNotificacion}
+                    className="border border-cbookC-500 rounded-md flex items-center justify-between p-2 mb-2"
+                  >
+                    <p className="flex-1">{notificacion.mensaje}</p>
+                    <button
+                      className="ml-4 p-2 rounded-xl bg-cbookC-500 text-cbookC-200 hover:text-white"
+                      onClick={() =>
+                        solveNotification(notificacion.idNotificacion)
+                      }
+                    >
+                      Descartar
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <div>No hay notificaciones por mostrar</div>
+              )}
             </div>
           </div>
         </div>
