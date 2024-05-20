@@ -14,9 +14,8 @@ interface BookCardProps {
   disponible: boolean;
   userNombre: string;
   codigoUsuario: string;
-  imagen: string; 
-  inWishList?: boolean; // Añadir esta propiedad
-  refreshWishList?: () => void; // Función para refrescar la lista de deseos
+  imagen: string;
+  fetchWishList?: () => void;
 }
 
 const BookCard: React.FC<BookCardProps> = ({
@@ -32,11 +31,10 @@ const BookCard: React.FC<BookCardProps> = ({
   userNombre,
   codigoUsuario,
   imagen,
-   inWishList = false,
-  refreshWishList,
+  fetchWishList
 }) => {
   const router = useRouter();
-  const usuarioCodigo = localStorage.getItem("codigoUsuario");
+  const usuarioCodigo = typeof window !== 'undefined' ? localStorage.getItem("codigoUsuario") : null;
 
   const handleCardClick = () => {
     router.push(`/DetallesLibro?idLibro=${idLibro}`);
@@ -46,19 +44,9 @@ const BookCard: React.FC<BookCardProps> = ({
     router.push(`/Perfil?codigoUsuario=${codigoUsuario}`);
   };
 
-  const handleWishListClick = async () => {
-    try {
-      await axios.post(`/api/wishlist/anadirLibro`, {
-        idLibro,
-        codigo: usuarioCodigo,
-      });
-      alert("Libro añadido a la lista de deseos.");
-    } catch (error) {
-      console.error("Error añadiendo libro a la lista de deseos:", error);
-    }
-  };
-
-    const handleRemoveFromWishList = async () => {
+  const handleRemoveFromWishList = async () => {
+        const confirmDelete = window.confirm("¿Deseas eliminar este libro?");
+if(confirmDelete){
     try {
       await axios.delete(`/api/wishlist/borrarLibro`, {
         data: {
@@ -66,13 +54,12 @@ const BookCard: React.FC<BookCardProps> = ({
           codigo: usuarioCodigo,
         }
       });
-       alert("Libro eliminado de la lista de deseos.");
-      if (refreshWishList) {
-        refreshWishList();
-      }
+      alert("Libro eliminado de la lista de deseos.");
+       window.location.reload();
     } catch (error) {
       console.error("Error eliminando libro de la lista de deseos:", error);
     }
+  }
   };
 
   return (
@@ -100,25 +87,14 @@ const BookCard: React.FC<BookCardProps> = ({
         </span>
       </p>
       
-     {!inWishList ? (
-        <button
-          onClick={handleWishListClick}
-          className="mt-2 bg-cbookC-600 text-white py-1 px-4 rounded"
-        >
-          Añadir a WishList
-        </button>
-      ) : (
-        <button
-          onClick={handleRemoveFromWishList}
-          className="mt-2 bg-red-600 text-white py-1 px-4 rounded"
-        >
-          Eliminar
-        </button>
-      )}
-     
+      <button
+        onClick={handleRemoveFromWishList}
+        className="mt-2 bg-red-600 text-white py-1 px-4 rounded"
+      >
+        Eliminar
+      </button>
     </div>
   );
 };
 
 export default BookCard;
-
