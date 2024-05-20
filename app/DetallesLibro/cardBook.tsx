@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import ReviewModal from "./ReviewModal"; 
+import ReviewModal from "./ReviewModal";
 
 interface BookCardProps {
   idLibro: string;
@@ -49,9 +49,15 @@ const BookCard: React.FC<BookCardProps> = ({
         idLibro,
         codigo: usuarioCodigo,
       });
+
+      await axios.post(`/api/notificaciones/agregarPara`, {
+        codigoUsuario: usuarioCodigo,
+        mensaje: `Agregaste el libro '${titulo}' a tu lista de deseos`,
+      });
+
       alert("Libro añadido a la lista de deseos.");
     } catch (error) {
-      console.error("Error añadiendo libro a la lista de deseos:", error);
+      alert("El libro ya está en tu lista de deseos");
     }
   };
 
@@ -69,12 +75,16 @@ const BookCard: React.FC<BookCardProps> = ({
     <div className="bg-white rounded-md p-4 h-full flex">
       <div className="flex-1">
         <h2 className="text-3xl font-bold font-cbookF">{titulo}</h2>
-        <p className="text-2xl text-cbookC-600 font-cbookF font-bold">{autor}</p>
+        <p className="text-2xl text-cbookC-600 font-cbookF font-bold">
+          {autor}
+        </p>
         <br />
         <p className="text-xl text-gray-600 font-cbookF">
           Año publicacion: {ano_de_publicacion}
         </p>
-        <p className="text-xl text-gray-600 font-cbookF">Editorial: {editorial}</p>
+        <p className="text-xl text-gray-600 font-cbookF">
+          Editorial: {editorial}
+        </p>
         <p className="text-xl text-gray-600 font-cbookF">ISBN: {isbn}</p>
         <p className="text-xl text-gray-600 font-cbookF">
           Estatus: {disponible ? "Disponible" : "No Disponible"}
