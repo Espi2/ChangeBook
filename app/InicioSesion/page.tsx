@@ -1,5 +1,5 @@
 "use client";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useState, useEffect } from "react";
 import React from "react";
 import Link from "@/node_modules/next/link";
 import Image from "@/node_modules/next/image";
@@ -18,6 +18,20 @@ const InicioDeSesin: FunctionComponent = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false); // Nuevo estado para mostrar la contraseña
+
+    useEffect(() => {
+    const hasReloaded = localStorage.getItem('hasReloaded');
+
+    if (!hasReloaded) {
+      localStorage.setItem('hasReloaded', 'true');
+      window.location.reload();
+    }
+  }, []);
+
+   const handleClearLocalStorage = () => {
+    localStorage.removeItem("hasReloaded");
+  };
+
 
   const handleAuth = async () => {
     try {
@@ -112,7 +126,7 @@ const InicioDeSesin: FunctionComponent = () => {
           </button>
         </form>
         <p className="register-text">
-          ¿No tienes una cuenta? <Link href={"../Registro"}>Regístrate</Link>{" "}
+          ¿No tienes una cuenta? <Link onClick={handleClearLocalStorage} href={"../Registro"}>Regístrate</Link>{" "}
         </p>
       </div>
 
