@@ -359,25 +359,31 @@ function Home() {
               className="flex-col overflow-auto border-cbookC-600"
               id="masLeidos"
             >
-              {perfilUsuario?.notificaciones.length !== 0 ? (
-                perfilUsuario.notificaciones.map((notificacion) => (
-                  <div
-                    key={notificacion.idNotificacion}
-                    className="border border-cbookC-500 rounded-md flex items-center justify-between p-2 mb-2"
-                  >
-                    <p className="flex-1">{notificacion.mensaje}</p>
-                    <button
-                      className="ml-4 p-2 rounded-xl bg-cbookC-500 text-cbookC-200 hover:text-white"
-                      onClick={() =>
-                        solveNotification(notificacion.idNotificacion)
-                      }
+              {perfilUsuario ? (
+                perfilUsuario?.notificaciones.length !== 0 ? (
+                  perfilUsuario.notificaciones.map((notificacion) => (
+                    <div
+                      key={notificacion.idNotificacion}
+                      className="border border-cbookC-500 rounded-md flex items-center justify-between p-2 mb-2"
                     >
-                      Descartar
-                    </button>
+                      <p className="flex-1">{notificacion.mensaje}</p>
+                      <button
+                        className="ml-4 p-2 rounded-xl bg-cbookC-500 text-cbookC-200 hover:text-white"
+                        onClick={() =>
+                          solveNotification(notificacion.idNotificacion)
+                        }
+                      >
+                        Descartar
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center">
+                    No hay notificaciones por mostrar
                   </div>
-                ))
+                )
               ) : (
-                <div>No hay notificaciones por mostrar</div>
+                <></>
               )}
             </div>
           </div>
