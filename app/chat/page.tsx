@@ -264,27 +264,29 @@ const Chat = () => {
         </h1>
         <ul
           ref={chatContainerRef}
-          className="flex flex-col flex-grow w-full max-w-full overflow-y-auto bg-cbookC-300 shadow-md p-4"
+          className="chat-container flex flex-col flex-grow w-full max-w-full overflow-y-auto bg-cbookC-300 shadow-md p-4"
         >
           {messages.map((message, index) => (
             <li
               key={index}
-              className={`flex flex-col py-2 ${
+              className={`flex flex-col py-0 ${
                 message.username === localStorage.getItem("nombreUsuario")
                   ? "self-end items-end"
                   : "items-start"
               }`}
             >
-              <p
+              <div
                 className={`message-bubble ${
                   message.username === localStorage.getItem("nombreUsuario")
                     ? "sender-bubble"
                     : "receiver-bubble"
                 }`}
               >
-                {message.message}
-              </p>
-              <small className="text-gray-600">{message.username}</small>
+                <strong className="message-username text-cbookC-400">
+                  {message.username}
+                </strong>
+                <p className="message-text">{message.message}</p>
+              </div>
             </li>
           ))}
         </ul>
